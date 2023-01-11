@@ -1,6 +1,17 @@
-<template></template>
+<template>
+  <div id="app">
+    <FormView :label="label" @on-cilck="a" />
+  </div>
+</template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import FormView from "./components/FormView.vue";
+import { ref } from "vue";
+const label = ref("666");
+const a = (payload: number) => {
+  console.log(payload);
+};
+</script>
 
 <style>
 #app {
