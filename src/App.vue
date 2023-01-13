@@ -1,25 +1,52 @@
 <template>
   <div id="app">
-    <FormView :label="label" @on-cilck="a" />
+    <FormView :columns="3" v-model="formList" @sumbit="sumbit" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, reactive } from "vue";
 import FormView from "./components/FormView.vue";
-import { ref } from "vue";
-const label = ref("666");
-const a = (payload: number) => {
-  console.log(payload);
+import { formJsonItem } from "./components/type";
+interface userInfo {
+  name: String;
+  age: String;
+  sex: String;
+}
+const formList: formJsonItem[] = reactive([
+  {
+    prop: "name",
+    label: "姓名",
+    data: "",
+  },
+  {
+    prop: "age",
+    label: "年龄",
+    data: "",
+    type: "date",
+  },
+  {
+    prop: "sex",
+    label: "性别",
+    data: "",
+    type: "select",
+    itemContentWidth: "100%",
+    itemLabelWidth: "60px",
+    option: [
+      {
+        label: "男",
+        value: "1",
+      },
+      {
+        label: "女",
+        value: "0",
+      },
+    ],
+  },
+]);
+const sumbit = (payload: userInfo) => {
+  console.log("submit!", payload);
 };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
