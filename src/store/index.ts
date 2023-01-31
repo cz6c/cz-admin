@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 
 interface userInfo {
-  [key: string]: any;
   id: number;
   name: string;
 }
@@ -22,7 +21,7 @@ export const authStore = defineStore("auth", {
   state: () => ({ name: "", id: 0 }),
   getters: {
     newName(state) {
-      return `${state.name}--newName--`;
+      return `${state.name}-${state.name}`;
     },
   },
   actions: {

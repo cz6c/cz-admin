@@ -11,9 +11,12 @@ const pinia = createPinia();
 // global css
 import "@/assets/style/global.scss";
 
+import router from "@/router";
+
 const app = createApp(App);
-app.use(pinia);
 app.use(ElementPlus, {
   locale: zhCn,
 });
+app.use(pinia);
+app.use(router);
 app.mount("#app");

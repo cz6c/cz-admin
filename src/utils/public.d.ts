@@ -14,4 +14,12 @@ interface formJsonItem {
   rule?: any;
   disabled?: boolean;
 }
-export { formJsonItem };
+// 表格配置项
+interface tableJsonItem {
+  prop: string;
+  label: string;
+  type?: "text" | "date" | "map" | "switch";
+  map?: { value: string | number; label: string }[];
+  width?: string | number;
+}
+export { formJsonItem, tableJsonItem };

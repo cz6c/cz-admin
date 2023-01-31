@@ -1,9 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-const path = require("path");
-const resolve = (dir: string): string => {
-  return path.resolve(__dirname, dir);
-};
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,9 +9,13 @@ export default defineConfig({
   // 配置路径别名
   resolve: {
     alias: {
-      "@": resolve("src"),
-      "@asstes": resolve("src/asstes"),
-      "@coms": resolve("src/components"),
+      "@": resolve(__dirname, "src"),
+      "@asstes": resolve(__dirname, "src/asstes"),
+      "@coms": resolve(__dirname, "src/components"),
+      "@hooks": resolve(__dirname, "src/hooks"),
+      "@store": resolve(__dirname, "src/store"),
+      "@utils": resolve(__dirname, "src/utils"),
+      "@views": resolve(__dirname, "src/views"),
     },
   },
   css: {
