@@ -1,16 +1,17 @@
 import { defineStore } from "pinia";
 
 interface userInfo {
-  userName: string;
+  [key: string]: any;
   id: number;
+  name: string;
 }
 
 const getUserInfo = () => {
   return new Promise<userInfo>((resolve, reject) => {
     setTimeout(() => {
       const data = {
-        userName: "cz6",
         id: 6,
+        name: "cz6",
       };
       resolve(data);
     }, 2000);
@@ -18,16 +19,20 @@ const getUserInfo = () => {
 };
 
 export const authStore = defineStore("auth", {
-  state: () => ({ userName: "", id: 0 }),
+  state: () => ({ name: "", id: 0 }),
   getters: {
     newName(state) {
-      return `${state.userName}--newName--`;
+      return `${state.name}--newName--`;
     },
   },
   actions: {
-    async getUserInfo() {
-      const data = await getUserInfo();
-      this.$patch(data)
+    getUserInfo() {
+      return new Promise<userInfo>(async (resolve, reject) => {
+        const data = await getUserInfo();
+        const { name, id } = data;
+        this.$patch({ name, id });
+        resolve(data);
+      });
     },
   },
 });

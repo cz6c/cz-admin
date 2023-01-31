@@ -8,9 +8,10 @@ interface formJsonItem {
   itemContentWidth?: string;
   required?: boolean;
   placeholder?: string;
-  type?: "input" | "date" | "select";
-  option?: { value: string | number; label: string }[];
+  type?: "input" | "date" | "select" | "selectV2" | "switch" | "checkbox" | "radio";
+  options?: { value: string | number; label: string }[];
   elProps?: any;
   rule?: any;
+  disabled?: boolean;
 }
 export { formJsonItem };

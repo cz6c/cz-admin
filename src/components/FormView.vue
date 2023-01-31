@@ -11,28 +11,62 @@
       class="form-view-item"
       v-for="item in modelValue"
       :key="item.prop"
+      :prop="item.prop"
       :label="item.label"
       :labelWidth="item.itemLabelWidth || labelWidth"
       :required="item.required"
       :style="{ width: item.itemContentWidth || formItemWidth }"
     >
-      <!-- 时间选择器 -->
-      <el-time-picker
+      <!-- 日期选择器 -->
+      <el-date-picker
         v-if="item.type === 'date'"
         v-model="item.data"
         v-bind="item.elProps"
+        value-format="x"
         :placeholder="item.placeholder || `请选择${item.label}`"
+        :disabled="item.disabled"
       />
       <!-- 下拉选择器 -->
       <el-select
         v-else-if="item.type === 'select'"
         v-model="item.data"
         :placeholder="item.placeholder || `请选择${item.label}`"
+        :disabled="item.disabled"
       >
-        <el-option v-for="{ label, value } in item.option" :key="value" :label="label" :value="value" />
+        <el-option v-for="{ label, value } in item.options" :key="value" :label="label" :value="value" />
       </el-select>
+      <!-- 虚拟列表选择器 -->
+      <el-select-v2
+        v-else-if="item.type === 'selectV2'"
+        v-model="item.data"
+        :options="item.options"
+        :placeholder="item.placeholder || `请选择${item.label}`"
+        :disabled="item.disabled"
+      />
+      <!-- 开关切换 -->
+      <el-switch
+        v-else-if="item.type === 'switch'"
+        v-model="item.data"
+        :active-value="1"
+        :inactive-value="0"
+        :disabled="item.disabled"
+      />
+      <!-- 多选 -->
+      <el-checkbox-group v-else-if="item.type === 'checkbox'" v-model="item.data" :disabled="item.disabled">
+        <el-checkbox v-for="{ label, value } in item.options" :key="value" :label="value">{{ label }}</el-checkbox>
+      </el-checkbox-group>
+      <!-- 单选 -->
+      <el-radio-group v-else-if="item.type === 'radio'" v-model="item.data" :disabled="item.disabled">
+        <el-radio v-for="{ label, value } in item.options" :key="value" :label="value">{{ label }}</el-radio>
+      </el-radio-group>
       <!-- 输入框 -->
-      <el-input v-else v-model="item.data" :placeholder="item.placeholder || `请输入${item.label}`" />
+      <el-input
+        v-else
+        v-model="item.data"
+        v-bind="item.elProps"
+        :placeholder="item.placeholder || `请输入${item.label}`"
+        :disabled="item.disabled"
+      />
     </el-form-item>
   </el-form>
   <el-button type="primary" @click="submitForm(formRef)">保存</el-button>
@@ -51,7 +85,7 @@ const props = defineProps<{
   labelWidth?: string | number;
   labelPosition?: "left" | "right" | "top";
 }>();
-const { modelValue, columns = 0, labelWidth = 120, labelPosition = "top" } = props;
+const { modelValue, columns = 1, labelWidth = 120, labelPosition = "top" } = props;
 const emit = defineEmits(["sumbit"]);
 
 const { formData, formDataMap } = formFormat({ rawList: modelValue });
@@ -80,7 +114,6 @@ const rules = computed(() => {
   });
   return temp;
 });
-console.log(rules.value);
 
 /**
  * @description: 提交表单
@@ -93,7 +126,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
       emit("sumbit", formData.value);
     } else {
       console.log("error submit!");
-      return false;
     }
   });
 };
@@ -108,6 +140,11 @@ const initilaData = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();
 };
+
+defineExpose({
+  submitForm,
+  initilaData,
+});
 </script>
 
 <style scoped lang="scss">
@@ -117,9 +154,13 @@ const initilaData = (formEl: FormInstance | undefined) => {
   flex-wrap: wrap;
   &-item {
     padding-right: 6%;
+    box-sizing: border-box;
     :deep(.el-form-item__content) {
       > div {
-        width: 100%;
+        width: 300px;
+      }
+      .el-switch{
+        width: auto;
       }
     }
   }

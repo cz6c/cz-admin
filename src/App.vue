@@ -1,80 +1,136 @@
 <template>
   <div id="app">
-    <FormView ref="formView" :columns="3" v-model="formList" @sumbit="sumbit" />
-    <div>
-      <el-button type="primary" @click="getUserInfo">getUserInfo </el-button>
-      {{ auth.userName }}{{ auth.id }}{{ auth.newName }}
-    </div>
+    <FormView ref="formView" labelWidth="126px" labelPosition="right" v-model="formList" @sumbit="sumbit" />
+    <el-button type="primary" @click="getUserInfo">getUserInfo </el-button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import { reactive } from "vue";
 import FormView from "./components/FormView.vue";
 import { formJsonItem } from "./utils/public";
 import formFormat from "./hooks/formFormat";
 import { authStore } from "./store/index";
-interface userInfo {
-  name: String;
-  age: String;
-  sex: String;
-}
+
+const options = Array.from({ length: 10000 }).map((_, idx) => ({
+  value: `${idx + 1}`,
+  label: `${idx + 1}`,
+}));
 const formList: formJsonItem[] = reactive([
   {
     prop: "name",
-    label: "姓名",
+    label: "Activity name",
     data: "",
-    initilaData: "cz6",
+    initilaData: "Hello",
     required: true,
+    rule: [{ min: 3, max: 6, message: "Length should be 3 to 6", trigger: "blur" }],
+    disabled: true,
   },
   {
-    prop: "age",
-    label: "生日",
+    prop: "zone",
+    label: "Activity zone",
     data: "",
-    initilaData: "27",
-    required: true,
-    // type: "date",
-    // elProps: {
-    //   type: "year",
-    // },
-  },
-  {
-    prop: "sex",
-    label: "性别",
-    data: "",
-    initilaData: "1",
+    initilaData: 1,
     required: true,
     type: "select",
-    itemContentWidth: "100%",
-    itemLabelWidth: "60px",
-    option: [
+    options: [
       {
-        label: "男",
-        value: "1",
+        label: "Zone one",
+        value: 1,
       },
       {
-        label: "女",
-        value: "0",
+        label: "Zone two",
+        value: 0,
       },
     ],
+  },
+  {
+    prop: "count",
+    label: "Activity count",
+    data: "",
+    initilaData: 1,
+    required: true,
+    type: "selectV2",
+    options,
+  },
+  {
+    prop: "time",
+    label: "Activity time",
+    data: "",
+    initilaData: "",
+    required: true,
+    type: "date",
+    elProps: {
+      type: "date",
+    },
+  },
+  {
+    prop: "delivery",
+    label: "Instant delivery",
+    data: "",
+    initilaData: 0,
+    required: true,
+    type: "switch",
+  },
+  {
+    prop: "type",
+    label: "Activity type",
+    data: [],
+    initilaData: [1],
+    required: true,
+    type: "checkbox",
+    options: [
+      {
+        label: "Online activities",
+        value: 1,
+      },
+      {
+        label: "Promotion activities",
+        value: 0,
+      },
+    ],
+  },
+  {
+    prop: "resource",
+    label: "Resources",
+    data: "",
+    initilaData: 1,
+    required: true,
+    type: "radio",
+    options: [
+      {
+        label: "Sponsorship",
+        value: 1,
+      },
+      {
+        label: "Venue",
+        value: 0,
+      },
+    ],
+  },
+  {
+    prop: "desc",
+    label: "Activity form",
+    data: "",
+    initilaData: "",
+    required: true,
+    elProps: {
+      type: "textarea",
+    },
   },
 ]);
 
 const { formDataMap } = formFormat({ rawList: formList });
 
-onMounted(() => {
-  console.log(formDataMap.value.name);
-  // formDataMap.value.name.data = 1;
-});
-const sumbit = (payload: userInfo) => {
+const sumbit = (payload: any) => {
   console.log("submit!", payload);
 };
 
 const auth = authStore();
-const getUserInfo = () => {
-  auth.getUserInfo();
+const getUserInfo = async () => {
+  const data = await auth.getUserInfo();
+  formDataMap.value.name.data = data.name;
 };
-console.log(auth);
 </script>
 
 <style></style>
