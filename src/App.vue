@@ -7,7 +7,7 @@
     </div>
     <div class="router">
       <router-link to="/form">Go to form</router-link>
-      
+
       <router-link to="/table">Go to table</router-link>
       <div>-----------------------------</div>
       <router-view />

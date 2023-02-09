@@ -3,10 +3,27 @@ module.exports = {
   env: {
     node: true,
   },
+  parser: "vue-eslint-parser",
   parserOptions: {
     ecmaVersion: 2020,
+    parser: "@typescript-eslint/parser",
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
-  extends: ["plugin:vue/recommended", "eslint:recommended", "@vue/typescript/recommended"],
+  extends: [
+    // "eslint:recommended",
+    "plugin:vue/vue3-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    // eslint-config-prettier 的缩写
+    // "prettier",
+  ],
+  // parserOptions: {
+  //   ecmaVersion: 2020,
+  // },
+  // extends: ["plugin:vue/recommended", "eslint:recommended", "@vue/typescript/recommended"],
   // add your custom rules here
   // it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
