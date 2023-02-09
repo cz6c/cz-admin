@@ -21,7 +21,7 @@
       "@hooks/*": ["./hooks/*"],
       "@store/*": ["./store/*"],
       "@utils/*": ["./utils/*"],
-      "@views/*": ["./views/*"],
+      "@views/*": ["./views/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

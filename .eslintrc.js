@@ -18,12 +18,8 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     // eslint-config-prettier 的缩写
-    // "prettier",
+    "prettier",
   ],
-  // parserOptions: {
-  //   ecmaVersion: 2020,
-  // },
-  // extends: ["plugin:vue/recommended", "eslint:recommended", "@vue/typescript/recommended"],
   // add your custom rules here
   // it is base on https://github.com/vuejs/eslint-config-vue
   rules: {

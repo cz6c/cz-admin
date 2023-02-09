@@ -4,16 +4,16 @@
     class="form-view"
     :model="formData"
     :rules="rules"
-    :label-width="labelWidth"
-    :label-position="labelPosition"
+    :label-width="props.labelWidth"
+    :label-position="props.labelPosition"
   >
     <el-form-item
-      class="form-view-item"
-      v-for="item in modelValue"
+      v-for="item in props.modelValue"
       :key="item.prop"
+      class="form-view-item"
       :prop="item.prop"
       :label="item.label"
-      :labelWidth="item.itemLabelWidth || labelWidth"
+      :labelWidth="item.itemLabelWidth || props.labelWidth"
       :required="item.required"
       :style="{ width: item.itemContentWidth || formItemWidth }"
     >
@@ -74,28 +74,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, defineProps, withDefaults, defineEmits, defineExpose } from "vue";
 import { formJsonItem } from "../utils/public";
 import formFormat from "../hooks/formFormat";
 import type { FormInstance, FormRules } from "element-plus";
 const formRef = ref<FormInstance>();
-const props = defineProps<{
+
+interface Props {
   modelValue: Array<formJsonItem>;
   columns?: number;
   labelWidth?: string | number;
   labelPosition?: "left" | "right" | "top";
-}>();
-const { modelValue, columns = 1, labelWidth = 120, labelPosition = "top" } = props;
+}
+const props = withDefaults(defineProps<Props>(), {
+  columns: 1,
+  labelWidth: 120,
+  labelPosition: "top",
+});
 const emit = defineEmits(["sumbit"]);
 
-const { formData, formDataMap } = formFormat({ rawList: modelValue });
+const { formData, formDataMap } = formFormat({ rawList: props.modelValue });
 
 /**
  * @description: 计算formItem宽度
  * @return {*}
  */
 const formItemWidth = computed(() => {
-  return columns ? `${Math.floor(100 / columns)}%` : `100%`;
+  return props.columns ? `${Math.floor(100 / props.columns)}%` : `100%`;
 });
 
 /**
@@ -104,7 +109,7 @@ const formItemWidth = computed(() => {
  */
 const rules = computed(() => {
   const temp: FormRules = {};
-  modelValue.forEach(({ type = "input", label, required, rule = [], prop }) => {
+  props.modelValue.forEach(({ type = "input", label, required, rule = [], prop }) => {
     const blurArr = ["input"];
     const trigger = blurArr.includes(type) ? "blur" : "change";
     const message = blurArr.includes(type) ? `请输入${label}` : `请选择${label}`;
@@ -159,7 +164,7 @@ defineExpose({
       > div {
         width: 300px;
       }
-      .el-switch{
+      .el-switch {
         width: auto;
       }
     }

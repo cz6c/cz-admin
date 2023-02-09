@@ -1,16 +1,22 @@
 <template>
   <el-table class="table-view" :data="tableData">
-    <el-table-column v-for="item in columnList" :prop="item.prop" :label="item.label" :width="item.width">
+    <el-table-column
+      v-for="item in columnList"
+      :key="item.prop"
+      :prop="item.prop"
+      :label="item.label"
+      :width="item.width"
+    >
       <!-- <template #header="{ column, $index }">
         <div style="display: flex; align-items: center"></div>
       </template> -->
-      <template #default="{ row, column, $index }">
+      <template #default="{ row }">
         <div v-if="item.type === 'map'"></div>
         <div v-else>{{ row[item.prop] }}</div>
       </template>
     </el-table-column>
   </el-table>
-  <el-pagination
+  <!-- <el-pagination
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
     :page-sizes="[100, 200, 300, 400]"
@@ -18,19 +24,16 @@
     :total="400"
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
-  />
+  /> -->
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { defineProps } from "vue";
 import { tableJsonItem } from "../utils/public";
 const props = defineProps<{
   tableData: Array<any>;
   columnList: Array<tableJsonItem>;
 }>();
-const { tableData, columnList } = props;
-const emit = defineEmits(["sumbit"]);
-
 // defineExpose({
 //   submitForm,
 //   initilaData,

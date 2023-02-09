@@ -1,5 +1,5 @@
 <template>
-  <FormView ref="formView" labelWidth="126px" labelPosition="right" v-model="formList" @sumbit="sumbit" />
+  <FormView ref="formView" v-model="formList" labelWidth="126px" labelPosition="right" @sumbit="sumbit" />
 </template>
 
 <script setup lang="ts">
@@ -117,6 +117,7 @@ const formList: formJsonItem[] = reactive([
 ]);
 
 const { formDataMap } = formFormat({ rawList: formList });
+console.log(formDataMap);
 
 const sumbit = (payload: any) => {
   console.log("submit!", payload);
