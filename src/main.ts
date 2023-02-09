@@ -6,11 +6,10 @@ import "element-plus/dist/index.css";
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 
 // pinia
-import { createPinia } from "pinia";
-const pinia = createPinia();
+import pinia from "@store/index";
 // global css
 import "@/assets/style/global.scss";
-
+// router
 import router from "@/router";
 
 const app = createApp(App);

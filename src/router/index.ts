@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import type { RouteRecordRaw } from "vue-router";
 
-const staticRoutes = [
+const staticRoutes: RouteRecordRaw[] = [
   {
     path: "/",
     children: [

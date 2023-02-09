@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { authStore } from "./store/index";
+import { authStore } from "./store/auth";
 
 const auth = authStore();
 const getUserInfo = async () => {
