@@ -75,13 +75,13 @@
 
 <script setup lang="ts">
 import { ref, computed, defineProps, withDefaults, defineEmits, defineExpose } from "vue";
-import { formJsonItem } from "../utils/public";
+import { FormJsonItem } from "../utils/public";
 import formFormat from "../hooks/formFormat";
 import type { FormInstance, FormRules } from "element-plus";
 const formRef = ref<FormInstance>();
 
 interface Props {
-  modelValue: Array<formJsonItem>;
+  modelValue: Array<FormJsonItem>;
   columns?: number;
   labelWidth?: string | number;
   labelPosition?: "left" | "right" | "top";

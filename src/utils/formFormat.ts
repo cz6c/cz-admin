@@ -1,14 +1,14 @@
-import { formJsonItem } from "./public";
+import { FormJsonItem } from "./public";
 
 /**
  * @description: 将prop作为key  每一项作为value
- * @param {formJsonItem} rawList 表单配置
+ * @param {FormJsonItem} rawList 表单配置
  * @return {*}
  */
-const normalFormDataMap = (rawList: formJsonItem[]) => {
-  const temp: Record<string, formJsonItem> = {};
+const normalFormDataMap = (rawList: FormJsonItem[]) => {
+  const temp: Record<string, FormJsonItem> = {};
   const list = Array.prototype.concat(...rawList);
-  list.forEach((item: formJsonItem) => {
+  list.forEach((item: FormJsonItem) => {
     const { prop } = item;
     temp[prop] = item;
   });
@@ -17,13 +17,13 @@ const normalFormDataMap = (rawList: formJsonItem[]) => {
 
 /**
  * @description: 将prop作为key  每一项的值作为value
- * @param {formJsonItem} rawList
+ * @param {FormJsonItem} rawList
  * @return {*}
  */
-const extractData = (rawList: formJsonItem[]) => {
+const extractData = (rawList: FormJsonItem[]) => {
   const temp: Record<string, any> = {};
   const list = Array.prototype.concat(...rawList);
-  list.forEach((item: formJsonItem) => {
+  list.forEach((item: FormJsonItem) => {
     const { prop, data } = item;
     temp[prop] = data;
   });

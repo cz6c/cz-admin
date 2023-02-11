@@ -29,11 +29,13 @@
 
 <script setup lang="ts">
 import { defineProps } from "vue";
-import { tableJsonItem } from "../utils/public";
+import { TableJsonItem } from "../utils/public";
 const props = defineProps<{
   tableData: Array<any>;
-  columnList: Array<tableJsonItem>;
+  columnList: Array<TableJsonItem>;
 }>();
+console.log(props);
+
 // defineExpose({
 //   submitForm,
 //   initilaData,

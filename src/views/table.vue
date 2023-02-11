@@ -5,9 +5,9 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import TableView from "@coms/TableView.vue";
-import { tableJsonItem } from "@utils/public";
+import { TableJsonItem } from "@utils/public";
 
-const columnList: tableJsonItem[] = reactive([
+const columnList: TableJsonItem[] = reactive([
   {
     prop: "date",
     label: "date",

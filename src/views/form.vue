@@ -5,14 +5,14 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import FormView from "@coms/FormView.vue";
-import { formJsonItem } from "@utils/public";
+import { FormJsonItem } from "@utils/public";
 import formFormat from "@hooks/formFormat";
 
 const options = Array.from({ length: 10000 }).map((_, idx) => ({
   value: `${idx + 1}`,
   label: `${idx + 1}`,
 }));
-const formList: formJsonItem[] = reactive([
+const formList: FormJsonItem[] = reactive([
   {
     prop: "name",
     label: "Activity name",

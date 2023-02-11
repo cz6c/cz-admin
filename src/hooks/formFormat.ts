@@ -1,8 +1,8 @@
 import { computed } from "vue";
-import { formJsonItem } from "../utils/public";
+import { FormJsonItem } from "../utils/public";
 import { normalFormDataMap, extractData } from "../utils/formFormat";
 interface Options {
-  rawList: formJsonItem[];
+  rawList: FormJsonItem[];
 }
 export default function (options: Options) {
   /**

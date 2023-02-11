@@ -1,5 +1,5 @@
 // 表单配置项
-interface formJsonItem {
+interface FormJsonItem {
   prop: string;
   label: string;
   data: any;
@@ -15,11 +15,11 @@ interface formJsonItem {
   disabled?: boolean;
 }
 // 表格配置项
-interface tableJsonItem {
+interface TableJsonItem {
   prop: string;
   label: string;
   type?: "text" | "date" | "map" | "switch";
   map?: { value: string | number; label: string }[];
   width?: string | number;
 }
-export { formJsonItem, tableJsonItem };
+export { FormJsonItem, TableJsonItem };
