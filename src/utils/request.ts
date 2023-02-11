@@ -2,11 +2,10 @@ import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 import router from "@/router/index";
 import { getToken, removeToken } from "@utils/auth";
-import { baseURL } from "@/settings";
 
 // 封装axios
 const service = axios.create({
-  baseURL,
+  baseURL: import.meta.env.VITE_BASE_URL,
   withCredentials: true, // 设置跨域cookie上传
   timeout: 5000, // 请求超时
 });

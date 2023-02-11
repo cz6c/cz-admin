@@ -16,10 +16,13 @@
 
 <script setup lang="ts">
 import { authStore } from "./store/auth";
+import { login } from "@/api/public/index";
+console.log(import.meta.env);
 
 const auth = authStore();
 const getUserInfo = async () => {
   await auth.getUserInfo();
+  await login();
 };
 </script>
 

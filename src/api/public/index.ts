@@ -1,6 +1,5 @@
 import { createGet, createPost } from "@utils/request";
 import { LoginParams, UserInfo, MenuData, GetListParams, GetListResponse } from "./index.d";
-import { baseURL } from "@/settings";
 
 // 登录
 export const login = createPost<LoginParams, UserInfo>("/adminapi/login");
@@ -15,7 +14,7 @@ export const getUserList = createGet<GetListParams, GetListResponse<UserInfo>>("
 
 // 统一后台七牛云存储接口（单文件/多文件）
 export const common = {
-  imgApi: `${baseURL}/adminapi/qiNiuUpload`,
+  imgApi: `${import.meta.env.VITE_BASE_URL}/adminapi/qiNiuUpload`,
 };
 // 上传图片
 export const qiNiuUpload = createPost<never, never>("/adminapi/qiNiuUpload");
