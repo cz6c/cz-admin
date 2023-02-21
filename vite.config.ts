@@ -23,8 +23,8 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: {
         "@": resolve(__dirname, "src"),
-        "@asstes": resolve(__dirname, "src/asstes"),
-        "@coms": resolve(__dirname, "src/components"),
+        "@assets": resolve(__dirname, "src/assets"),
+        "@api": resolve(__dirname, "src/api"),
         "@hooks": resolve(__dirname, "src/hooks"),
         "@store": resolve(__dirname, "src/store"),
         "@utils": resolve(__dirname, "src/utils"),

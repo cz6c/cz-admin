@@ -16,8 +16,8 @@
     // paths基于baseUrl
     "paths": {
       "@/*": ["./*"],
-      "@asstes/*": ["./asstes/*"],
-      "@coms/*": ["./components/*"],
+      "@assets/*": ["./assets/*"],
+      "@api/*": ["./api/*"],
       "@hooks/*": ["./hooks/*"],
       "@store/*": ["./store/*"],
       "@utils/*": ["./utils/*"],

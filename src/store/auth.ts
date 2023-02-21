@@ -25,6 +25,14 @@ export const authStore = defineStore("auth", {
     },
   },
   actions: {
+    login(loginForm: any) {
+      return new Promise<userInfo>(async resolve => {
+        const data = await getUserInfo();
+        const { name, id } = data;
+        this.$patch({ name, id });
+        resolve(data);
+      });
+    },
     getUserInfo() {
       return new Promise<userInfo>(async resolve => {
         const data = await getUserInfo();
