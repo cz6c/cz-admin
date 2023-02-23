@@ -1,19 +1,35 @@
 <template>
-  <div class="common-layout">
+  <el-container class="app-container">
+    <el-aside :width="!isCollapse ? '200px' : '64px'">
+      <Sidebar :isCollapse="isCollapse" />
+    </el-aside>
     <el-container>
-      <el-aside width="200px">Aside</el-aside>
-      <el-container>
-        <el-header>Header</el-header>
-        <el-main>
-          <router-view />
-        </el-main>
-      </el-container>
+      <el-header height="50px">
+        <Navbar :isCollapse="isCollapse" @toggle-click="toggleSideBar" />
+      </el-header>
+      <el-main>
+        <AppMain />
+      </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref } from "vue";
+import AppMain from "./components/AppMain.vue";
+import Sidebar from "./components/Sidebar/index.vue";
+import Navbar from "./components/Navbar/index.vue";
+
+const isCollapse = ref(false);
+function toggleSideBar() {
+  isCollapse.value = !isCollapse.value;
+}
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.el-container) {
+  .el-header {
+    border-bottom: 1px solid #333;
+  }
+}
+</style>

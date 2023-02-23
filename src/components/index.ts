@@ -9,9 +9,11 @@ import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import FormView from "./FormView.vue";
 // 表格组件
 import TableView from "./TableView.vue";
+// svg组件
+import SvgIcon from "./SvgIcon.vue";
 
 // 组件列表
-const components = [FormView, TableView];
+const components = [FormView, TableView, SvgIcon];
 
 function install(app: App<Element>) {
   // ElementUI组件
@@ -21,7 +23,7 @@ function install(app: App<Element>) {
   // 组件循环注册
   components.forEach((component: any) => {
     // console.log(component);
-    app.component(component.__name, component);
+    app.component(component.__name || component.name, component);
   });
 }
 

@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "types": ["element-plus/global", "node"],
+    "types": ["element-plus/global", "node","vite-plugin-svg-icons/client"],
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
     // paths基于baseUrl

@@ -14,10 +14,11 @@
 import { ref, reactive } from "vue";
 import { getLoginLog } from "@api/home/index";
 import { LoginLogInfo, ParamsLoginLogList } from "@api/home/index.d";
+import { TableJsonItem } from "@utils/public";
 
 const loading = ref(false);
 const tableData: LoginLogInfo[] = reactive([]);
-const columnList = reactive([
+const columnList: TableJsonItem[] = reactive([
   {
     prop: "userName",
     label: "操作账号",
@@ -25,13 +26,13 @@ const columnList = reactive([
   {
     prop: "createTime",
     label: "日期",
-    type: "timeStamp",
+    type: "date",
     width: 170,
   },
   {
     prop: "ip",
     label: "IP",
-    width: "500",
+    width: 500,
   },
   {
     prop: "country",
@@ -65,8 +66,4 @@ async function getList() {
 getList();
 </script>
 
-<style lang="scss" scoped>
-.login-log {
-  height: 100%;
-}
-</style>
+<style lang="scss" scoped></style>
