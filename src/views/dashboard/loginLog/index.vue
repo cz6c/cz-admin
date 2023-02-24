@@ -12,9 +12,9 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { getLoginLog } from "@api/home/index";
-import { LoginLogInfo, ParamsLoginLogList } from "@api/home/index.d";
-import { TableJsonItem } from "@utils/public";
+import { getLoginLog } from "@/api/dashboard/index";
+import { LoginLogInfo, ParamsLoginLogList } from "@/api/dashboard/index.d";
+import { TableJsonItem } from "@/utils/public.d";
 
 const loading = ref(false);
 const tableData: LoginLogInfo[] = reactive([]);

@@ -1,8 +1,13 @@
 import { RouteRecordRaw } from "vue-router";
 import { isProxy, toRaw } from "vue";
 
-/** 通过path获取父级路径 */
-function getParentPaths(path: string, routes: RouteRecordRaw[]) {
+/**
+ * @description: 通过path获取父级路径
+ * @param {string} path
+ * @param {RouteRecordRaw} routes
+ * @return {*}
+ */
+function getParentPaths(path: string, routes: RouteRecordRaw[]): string[] {
   // 深度遍历查找
   function dfs(routes: RouteRecordRaw[], path: string, parents: string[]) {
     for (let i = 0; i < routes.length; i++) {
@@ -21,11 +26,15 @@ function getParentPaths(path: string, routes: RouteRecordRaw[]) {
     // 未找到时返回空数组
     return [];
   }
-
   return dfs(routes, path, []);
 }
 
-/** 查找对应path的路由信息 */
+/**
+ * @description: 查找对应path的路由信息
+ * @param {string} path
+ * @param {RouteRecordRaw} routes
+ * @return {*}
+ */
 function findRouteByPath(path: string, routes: RouteRecordRaw[]): any {
   let res = routes.find((item: { path: string }) => item.path == path);
   if (res) {

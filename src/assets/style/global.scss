@@ -1,3 +1,17 @@
+@import "./transition.scss";
+@import "./element-plus.scss";
+
+/* 自定义全局 CssVar */
+:root {
+  --pure-transition-duration: 0.016s;
+}
+
+/* 灰色模式 */
+.html-grey {
+  filter: grayscale(100%);
+}
+
+
 html {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Noto Sans",
     "Noto Sans CJK SC", "Microsoft YaHei", "微软雅黑", sans-serif;

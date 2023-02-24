@@ -1,8 +1,13 @@
 <template>
   <div class="navbar">
     <div class="navbar-left">
-      <div class="collapse navbar-hover" :title="props.isCollapse ? '点击展开' : '点击折叠'" @click="toggleClick">
-        <SvgIcon name="dashboard" icon="36" />
+      <div
+        class="collapse navbar-hover"
+        :class="{ active: props.isCollapse }"
+        :title="props.isCollapse ? '点击展开' : '点击折叠'"
+        @click="toggleClick"
+      >
+        <SvgIcon name="collapse" />
       </div>
       <Breadcrumb class="breadcrumb-container" />
     </div>
@@ -71,6 +76,9 @@ function logout() {
   &-left {
     .collapse {
       padding: 0 10px;
+      &.active {
+        transform: rotate(180deg);
+      }
     }
   }
   :deep(.el-dropdown) {
