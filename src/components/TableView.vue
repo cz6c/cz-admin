@@ -19,7 +19,7 @@
     </el-table>
     <!-- <el-pagination
     v-model:current-page="currentPage"
-    v-model:page-size="pageSize"
+    v-model:page-size="limit"
     :page-sizes="[100, 200, 300, 400]"
     layout="total, sizes, prev, pager, next, jumper"
     :total="400"

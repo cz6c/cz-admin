@@ -8,7 +8,11 @@ declare module "*.vue" {
 }
 
 interface ImportMetaEnv {
+  readonly VITE_PUBLIC_PATH: string;
   readonly VITE_BASE_URL: string;
+  readonly VITE_PROXY_URL: string;
+  readonly VITE_PORT: number;
+
   // 更多环境变量...
 }
 

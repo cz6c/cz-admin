@@ -2,12 +2,13 @@ import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 import router from "@/router/index";
 import { getToken, removeToken } from "@utils/auth";
+import { baseURL } from "@/config";
 
 // 封装axios
 const service = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL,
   withCredentials: true, // 设置跨域cookie上传
-  timeout: 5000, // 请求超时
+  timeout: 50000, // 请求超时
 });
 
 // request 拦截器 ==> 对请求参数做处理
@@ -61,7 +62,7 @@ export default service;
 // 封装 get post 方法
 interface Response<T> {
   code: number; // 接口数据状态码,不是接口状态码
-  msg: string; // 接口消息
+  message: string; // 接口消息
   data: T;
 }
 export const createGet = <P extends Record<string, any>, R>(url: string) => {

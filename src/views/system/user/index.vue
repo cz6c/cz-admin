@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import tree from "./tree.vue";
-import { getUserList } from "@/api/system/index";
+import { getUserList } from "@/api/system";
 
 const formRef = ref();
 const form = reactive({
@@ -11,14 +11,19 @@ const form = reactive({
 });
 const loading = ref(true);
 
+onMounted(() => {
+  getList();
+});
+
 const resetForm = formEl => {
   if (!formEl) return;
   formEl.resetFields();
-  onSearch();
+  getList();
 };
-async function onSearch() {
+async function getList() {
   loading.value = true;
   const { data } = await getUserList();
+  console.log(data);
   loading.value = false;
 }
 </script>
