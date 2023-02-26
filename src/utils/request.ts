@@ -1,14 +1,14 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 import router from "@/router/index";
-import { getToken, removeToken } from "@utils/auth";
+import { getToken, removeToken } from "@/utils/auth";
 import { baseURL } from "@/config";
 
 // 封装axios
 const service = axios.create({
   baseURL,
   withCredentials: true, // 设置跨域cookie上传
-  timeout: 50000, // 请求超时
+  timeout: 10000, // 请求超时
 });
 
 // request 拦截器 ==> 对请求参数做处理

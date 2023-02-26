@@ -72,13 +72,10 @@ onMounted(async () => {
       <p class="flex-1 ml-2 font-bold text-base truncate" title="部门列表">部门列表</p>
       <el-input v-model="searchValue" style="flex: 2" size="small" placeholder="请输入部门名称" clearable>
         <template #suffix>
-          <el-icon class="el-input__icon">
-            <IconifyIconOffline v-show="searchValue.length === 0" :icon="Search" />
-          </el-icon>
+          <el-icon class="el-input__icon"> </el-icon>
         </template>
       </el-input>
       <el-dropdown :hide-on-click="false">
-        <IconifyIconOffline class="w-[28px] cursor-pointer" width="18px" :icon="More2Fill" />
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>
@@ -126,7 +123,6 @@ onMounted(async () => {
             background: highlightMap[node.id]?.highlight ? 'var(--el-color-primary-light-7)' : 'transparent',
           }"
         >
-          <IconifyIconOffline :icon="data.type === 1 ? OfficeBuilding : data.type === 2 ? LocationCompany : Dept" />
           {{ node.label }}
         </span>
       </template>

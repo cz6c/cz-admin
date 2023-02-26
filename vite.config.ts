@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { viteMockServe } from "vite-plugin-mock";
+import vueSetupExtend from "vite-plugin-vue-setup-extend";
 
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfigExport => {
@@ -25,12 +26,6 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     resolve: {
       alias: {
         "@": resolve(__dirname, "src"),
-        "@assets": resolve(__dirname, "src/assets"),
-        "@api": resolve(__dirname, "src/api"),
-        "@hooks": resolve(__dirname, "src/hooks"),
-        "@store": resolve(__dirname, "src/store"),
-        "@utils": resolve(__dirname, "src/utils"),
-        "@views": resolve(__dirname, "src/views"),
       },
     },
     css: {
@@ -51,6 +46,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     // 插件
     plugins: [
       vue(),
+      vueSetupExtend(),
       // https://github.com/anncwb/vite-plugin-svg-icons
       createSvgIconsPlugin({
         // 指定需要缓存的图标文件夹

@@ -1,4 +1,4 @@
-import { createGet, createPost } from "@utils/request";
+import { createGet, createPost } from "@/utils/request";
 import { LoginParams, UserInfo, MenuData } from "./index.d";
 
 // 登录

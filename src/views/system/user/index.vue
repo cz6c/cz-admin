@@ -1,38 +1,11 @@
-<script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
-import tree from "./tree.vue";
-import { getUserList } from "@/api/system";
-
-const formRef = ref();
-const form = reactive({
-  username: "",
-  mobile: "",
-  status: "",
-});
-const loading = ref(true);
-
-onMounted(() => {
-  getList();
-});
-
-const resetForm = formEl => {
-  if (!formEl) return;
-  formEl.resetFields();
-  getList();
-};
-async function getList() {
-  loading.value = true;
-  const { data } = await getUserList();
-  console.log(data);
-  loading.value = false;
-}
-</script>
-
 <template>
   <div class="main">
-    <tree class="w-[17%] float-left" />
-    <div class="float-right w-[81%]">
-      <el-form ref="formRef" :inline="true" :model="form" class="bg-bg_color w-[99/100] pl-8 pt-4">
+    <TableView :data="list" :columnList="column">
+      <template #name> TableView> </template>
+    </TableView>
+    <tree />
+    <div>
+      <el-form ref="formRef" :inline="true" :model="form">
         <el-form-item label="用户名称：" prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名称" clearable class="!w-[160px]" />
         </el-form-item>
@@ -46,16 +19,65 @@ async function getList() {
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="loading" @click="onSearch"> 搜索 </el-button>
+          <!-- <el-button type="primary" :loading="loading" @click="onSearch"> 搜索 </el-button> -->
           <el-button @click="resetForm(formRef)"> 重置 </el-button>
         </el-form-item>
       </el-form>
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { ref, reactive, watch } from "vue";
+import tree from "./tree.vue";
+import { getUserList } from "@/api/system";
 
-<style scoped lang="scss">
-:deep(.el-dropdown-menu__item i) {
-  margin: 0;
+const formRef = ref();
+const form = reactive({
+  username: "",
+  mobile: "",
+  status: "",
+});
+const loading = ref(true);
+const list = ref([]);
+const column = reactive([
+  {
+    label: "account",
+    prop: "account",
+  },
+  {
+    label: "email",
+    prop: "email",
+  },
+  {
+    label: "nickname",
+    prop: "nickname",
+  },
+  {
+    label: "role",
+    prop: "role",
+  },
+  {
+    label: "createTime",
+    prop: "createTime",
+  },
+  {
+    label: "remark",
+    prop: "remark",
+  },
+]);
+
+getList();
+
+const resetForm = formEl => {
+  if (!formEl) return;
+  formEl.resetFields();
+  getList();
+};
+async function getList() {
+  loading.value = true;
+  const { data } = await getUserList();
+  console.log(data);
+  list.value = data;
+  loading.value = false;
 }
-</style>
+</script>

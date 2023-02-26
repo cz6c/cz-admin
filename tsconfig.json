@@ -10,18 +10,12 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "types": ["element-plus/global", "node","vite-plugin-svg-icons/client"],
+    "types": ["element-plus/global", "node", "vite-plugin-svg-icons/client"],
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
     // paths基于baseUrl
     "paths": {
-      "@/*": ["./*"],
-      "@assets/*": ["./assets/*"],
-      "@api/*": ["./api/*"],
-      "@hooks/*": ["./hooks/*"],
-      "@store/*": ["./store/*"],
-      "@utils/*": ["./utils/*"],
-      "@views/*": ["./views/*"]
+      "@/*": ["./*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

@@ -5,8 +5,8 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import FormView from "@coms/FormView.vue";
-import { FormJsonItem } from "@utils/public";
-import formFormat from "@hooks/formFormat";
+import { FormJsonItem } from "@/utils/public";
+import formFormat from "@/hooks/formFormat";
 
 const options = Array.from({ length: 10000 }).map((_, idx) => ({
   value: `${idx + 1}`,

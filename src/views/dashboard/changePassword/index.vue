@@ -37,7 +37,7 @@ import { common } from "@/api/public/index";
 import { AuthModule } from "@/store/modules/auth";
 // 获取token
 import { getToken } from "@/utils/auth";
-import { editAccount } from "@api/home/index";
+import { editAccount } from "@/api/home/index";
 // const defaultSettings = require("@/settings");
 @Component
 export default class SetPassword extends Vue {

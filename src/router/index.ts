@@ -7,11 +7,11 @@ import staticRouter from "./modules/staticRoutes";
 const routesList: RouteRecordRaw[] = [
   {
     path: "/login",
-    component: () => import("@views/public/login.vue"),
+    component: () => import("@/views/public/login.vue"),
   },
   {
     path: "/auth-redirect",
-    component: () => import("@views/public/auth-redirect.vue"),
+    component: () => import("@/views/public/auth-redirect.vue"),
   },
   {
     path: "/auth-redirect-layout",
@@ -20,13 +20,13 @@ const routesList: RouteRecordRaw[] = [
       {
         path: "/auth-redirect-layout",
         name: "重定向",
-        component: () => import("@views/public/auth-redirect.vue"),
+        component: () => import("@/views/public/auth-redirect.vue"),
       },
     ],
   },
   {
     path: "/:pathMatch(.*)*",
-    component: () => import("@views/public/404.vue"),
+    component: () => import("@/views/public/404.vue"),
   },
 ];
 
@@ -84,7 +84,7 @@ const router = createRoute([...routesList, ...staticRouter]);
 //         item.redirect = item.children[0].path;
 //       }
 //       const newName = item.component.replace(/@[\/]?views\//, "");
-//       item.component = item.component && item.component != "Layout" ? () => import(`@views/${newName}`) : Layout;
+//       item.component = item.component && item.component != "Layout" ? () => import(`@/views/${newName}`) : Layout;
 //       setRoutesData(item);
 //     });
 //   }

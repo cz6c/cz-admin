@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 import { watch, ref, reactive } from "vue";
-import { authStore } from "@store/auth";
+import { authStore } from "@/store/auth";
 import { useRoute, useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
 const formRef = ref<FormInstance>();

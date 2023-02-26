@@ -17,7 +17,7 @@ const staticRouter: RouteRecordRaw[] = [
         meta: {
           name: "登录日志",
         },
-        component: () => import("@views/dashboard/loginLog/index.vue"),
+        component: () => import("@/views/dashboard/loginLog/index.vue"),
       },
     ],
   },
@@ -36,7 +36,7 @@ const staticRouter: RouteRecordRaw[] = [
         meta: {
           name: "用户管理",
         },
-        component: () => import("@views/system/user/index.vue"),
+        component: () => import("@/views/system/user/index.vue"),
       },
       {
         path: "/system/role/index",
@@ -44,7 +44,7 @@ const staticRouter: RouteRecordRaw[] = [
         meta: {
           name: "角色管理",
         },
-        component: () => import("@views/system/role/index.vue"),
+        component: () => import("@/views/system/role/index.vue"),
       },
       {
         path: "/system/dept/index",
@@ -52,7 +52,7 @@ const staticRouter: RouteRecordRaw[] = [
         meta: {
           name: "部门管理",
         },
-        component: () => import("@views/system/dept/index.vue"),
+        component: () => import("@/views/system/dept/index.vue"),
       },
     ],
   },
