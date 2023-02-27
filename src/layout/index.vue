@@ -29,8 +29,12 @@ function toggleSideBar() {
 <style scoped lang="scss">
 :deep(.el-container) {
   .el-header {
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #d9d9d9;
     padding: 0;
+  }
+  .el-main {
+    background: #f0f2f5;
+    padding: 16px;
   }
 }
 </style>

@@ -14,7 +14,7 @@
 import { ref, reactive } from "vue";
 import { getLoginLog } from "@/api/dashboard/index";
 import { LoginLogInfo, ParamsLoginLogList } from "@/api/dashboard/index.d";
-import { TableJsonItem } from "@/utils/public.d";
+import { TableJsonItem } from "@/components/Table/index.d";
 
 const loading = ref(false);
 const tableData: LoginLogInfo[] = reactive([]);

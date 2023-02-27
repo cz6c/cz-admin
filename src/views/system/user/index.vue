@@ -1,48 +1,39 @@
 <template>
-  <div class="main">
-    <TableView :data="list" :columnList="column">
-      <template #name> TableView> </template>
-    </TableView>
-    <tree />
-    <div>
-      <el-form ref="formRef" :inline="true" :model="form">
-        <el-form-item label="用户名称：" prop="username">
-          <el-input v-model="form.username" placeholder="请输入用户名称" clearable class="!w-[160px]" />
-        </el-form-item>
-        <el-form-item label="手机号码：" prop="mobile">
-          <el-input v-model="form.mobile" placeholder="请输入手机号码" clearable class="!w-[160px]" />
-        </el-form-item>
-        <el-form-item label="状态：" prop="status">
-          <el-select v-model="form.status" placeholder="请选择" clearable class="!w-[160px]">
-            <el-option label="已开启" value="1" />
-            <el-option label="已关闭" value="0" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <!-- <el-button type="primary" :loading="loading" @click="onSearch"> 搜索 </el-button> -->
-          <el-button @click="resetForm(formRef)"> 重置 </el-button>
-        </el-form-item>
-      </el-form>
+  <div class="page">
+    <div class="left-view">
+      <tree />
+    </div>
+    <div class="right-view">
+      <div class="search-wrap">
+        <FormView
+          ref="formView"
+          v-model="formList"
+          :columns="2"
+          labelWidth="126px"
+          labelPosition="right"
+          @sumbit="sumbit"
+        />
+      </div>
+      <TableView :api="api" :columns="columns" title="用户列表" tableHeight="calc(100% - 100px)">
+        <template #column-name="{ data }"> {{ data }} </template>
+      </TableView>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+import { reactive } from "vue";
+import { TableJsonItem } from "@/components/Table/index.d";
 import tree from "./tree.vue";
 import { getUserList } from "@/api/system";
+import { FormJsonItem } from "@/utils/public";
+import formFormat from "@/hooks/formFormat";
 
-const formRef = ref();
-const form = reactive({
-  username: "",
-  mobile: "",
-  status: "",
-});
-const loading = ref(true);
-const list = ref([]);
-const column = reactive([
+const columns: TableJsonItem[] = [
   {
     label: "account",
     prop: "account",
+    type: "slot",
+    slotName: "name",
   },
   {
     label: "email",
@@ -57,27 +48,68 @@ const column = reactive([
     prop: "role",
   },
   {
+    label: "status",
+    prop: "status",
+    type: "switch",
+  },
+  {
     label: "createTime",
     prop: "createTime",
+    formatData: (data: any) => `${data}123`,
   },
   {
     label: "remark",
     prop: "remark",
   },
+];
+const api = getUserList;
+
+const formList: FormJsonItem[] = reactive([
+  {
+    prop: "name",
+    label: "Activity name",
+    data: "",
+    initilaData: "Hello",
+    rule: [{ min: 3, max: 6, message: "Length should be 3 to 6", trigger: "blur" }],
+    disabled: true,
+  },
+  {
+    prop: "time",
+    label: "Activity time",
+    data: "",
+    initilaData: "",
+    type: "date",
+    elProps: {
+      type: "date",
+    },
+  },
 ]);
 
-getList();
+const { formDataMap } = formFormat({ rawList: formList });
+console.log(formDataMap);
 
-const resetForm = formEl => {
-  if (!formEl) return;
-  formEl.resetFields();
-  getList();
+const sumbit = (payload: any) => {
+  console.log("submit!", payload);
 };
-async function getList() {
-  loading.value = true;
-  const { data } = await getUserList();
-  console.log(data);
-  list.value = data;
-  loading.value = false;
-}
 </script>
+
+<style lang="scss" scoped>
+.page {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .left-view {
+    width: 200px;
+  }
+  .right-view {
+    flex: 1;
+    height: 100%;
+    .search-wrap {
+      height: 80px;
+      background-color: #fff;
+      margin-bottom: 20px;
+    }
+  }
+}
+</style>

@@ -12,7 +12,7 @@ const userList = (() => {
       role: "@first",
       createTime: "@datetime",
       remark: "@cword(10,20)",
-      // "status|1": ["0", "1"],
+      "status|1": ["0", "1"],
     });
   }
   return result;

@@ -2,15 +2,13 @@
 export interface GetListParams {
   page?: number;
   limit?: number;
-  count?: number;
 }
 // 列表响应
 export interface GetListResponse<T> {
-  list: T[];
-  count: number;
+  list: Array<T>;
   limit: number;
   page: number;
-  pageCount: number;
+  total: number;
 }
 
 // 登录参数
