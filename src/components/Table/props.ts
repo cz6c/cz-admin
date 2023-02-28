@@ -6,15 +6,30 @@ export default {
     type: Array,
     default: () => [],
   },
+  // 表格列表数据
+  columns: {
+    type: Array<TableJsonItem>,
+    require: true,
+  },
   // 表格数据接口
   api: {
     type: Function,
     require: true,
   },
-  // 表格列表数据
-  columns: {
-    type: Array<TableJsonItem>,
-    require: true,
+  // 获取列表数据前操作 做参数处理
+  beforeFetch: {
+    type: Function,
+  },
+  // 获取列表数据后操作 做数据处理
+  afterFetch: {
+    type: Function,
+  },
+  // 列表搜索表单数据
+  otherParams: {
+    type: Object,
+    default: () => {
+      return {};
+    },
   },
   // 是否带有纵向边框
   border: {
@@ -36,6 +51,16 @@ export default {
     type: Boolean,
     default: false,
   },
+  // 列表对齐方式
+  align: {
+    type: String,
+    default: "center",
+  },
+  // 是否需要分页器
+  pagination: {
+    type: Boolean,
+    default: true,
+  },
   // 列表标题
   title: {
     type: String,
@@ -54,30 +79,10 @@ export default {
   // 是否需要多选列
   selectionColum: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   // 是否需要可展开操作
   expandColum: {
-    type: Boolean,
-    default: false,
-  },
-  // 禁用选中的判断条件字段
-  selectProp: {
-    type: Object,
-    default: () => {
-      return {
-        label: "",
-        value: "",
-      };
-    },
-  },
-  // 是否显示双击查看详情提示
-  isDclickDetails: {
-    type: Boolean,
-    default: true,
-  },
-  // 是否可以通过点击行实现切换当前行的状态，不清除其他行的状态，多选
-  isMultiple: {
     type: Boolean,
     default: false,
   },

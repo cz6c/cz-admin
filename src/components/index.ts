@@ -4,6 +4,7 @@ import type { App } from "vue";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 // 表单组件
 import FormView from "./FormView.vue";
@@ -20,6 +21,9 @@ function install(app: App<Element>) {
   app.use(ElementPlus, {
     locale: zhCn,
   });
+  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component);
+  }
   // 组件循环注册
   components.forEach((component: any) => {
     // console.log(component);

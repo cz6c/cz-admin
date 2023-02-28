@@ -7,23 +7,30 @@
       <div class="search-wrap">
         <FormView
           ref="formView"
-          v-model="formList"
+          v-model="tableSearch"
           :columns="2"
           labelWidth="126px"
           labelPosition="right"
           @sumbit="sumbit"
         />
       </div>
-      <TableView :api="api" :columns="columns" title="用户列表" tableHeight="calc(100% - 100px)">
+      <TableView
+        ref="tableRef"
+        :api="api"
+        :columns="columns"
+        :otherPerams="formData"
+        title="用户列表"
+        tableHeight="calc(100% - 100px)"
+      >
         <template #column-name="{ data }"> {{ data }} </template>
       </TableView>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
-import tree from "./tree.vue";
+import tree from "./components/Tree.vue";
 import { getUserList } from "@/api/system";
 import { FormJsonItem } from "@/utils/public";
 import formFormat from "@/hooks/formFormat";
@@ -32,7 +39,7 @@ const columns: TableJsonItem[] = [
   {
     label: "account",
     prop: "account",
-    type: "slot",
+    columnType: "slot",
     slotName: "name",
   },
   {
@@ -50,7 +57,7 @@ const columns: TableJsonItem[] = [
   {
     label: "status",
     prop: "status",
-    type: "switch",
+    columnType: "switch",
   },
   {
     label: "createTime",
@@ -63,15 +70,14 @@ const columns: TableJsonItem[] = [
   },
 ];
 const api = getUserList;
-
-const formList: FormJsonItem[] = reactive([
+const tableRef: any = ref(null);
+const tableSearch: FormJsonItem[] = reactive([
   {
     prop: "name",
     label: "Activity name",
     data: "",
     initilaData: "Hello",
     rule: [{ min: 3, max: 6, message: "Length should be 3 to 6", trigger: "blur" }],
-    disabled: true,
   },
   {
     prop: "time",
@@ -85,11 +91,9 @@ const formList: FormJsonItem[] = reactive([
   },
 ]);
 
-const { formDataMap } = formFormat({ rawList: formList });
-console.log(formDataMap);
-
-const sumbit = (payload: any) => {
-  console.log("submit!", payload);
+const { formData } = formFormat({ rawList: tableSearch });
+const sumbit = () => {
+  tableRef.value.getList();
 };
 </script>
 
@@ -100,7 +104,11 @@ const sumbit = (payload: any) => {
   align-items: center;
   justify-content: space-between;
   .left-view {
-    width: 200px;
+    flex: 0 0 260px;
+    background-color: #fff;
+    height: 100%;
+    overflow-y: auto;
+    margin-right: 16px;
   }
   .right-view {
     flex: 1;
@@ -108,7 +116,7 @@ const sumbit = (payload: any) => {
     .search-wrap {
       height: 80px;
       background-color: #fff;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
   }
 }

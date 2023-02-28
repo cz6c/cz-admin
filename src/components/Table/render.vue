@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 import { ref, unref, resolveComponent, resolveDirective, withDirectives, h, getCurrentInstance } from "vue";
 import { props, emits } from "./index";
 
@@ -267,4 +267,4 @@ export default {
 .table-wrap {
   height: 100%;
 }
-</style>
+</style> -->

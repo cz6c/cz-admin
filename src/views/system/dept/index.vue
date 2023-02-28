@@ -1,45 +1,96 @@
-<script setup lang="ts">
-import { ref, reactive } from "vue";
-// import { handleTree } from "@/utils/tree";
-import { getDeptList } from "@/api/system";
-const form = reactive({
-  user: "",
-  status: "",
-});
-const loading = ref(true);
-
-const formRef = ref();
-
-function resetForm(formEl) {
-  if (!formEl) return;
-  formEl.resetFields();
-  onSearch();
-}
-
-async function onSearch() {
-  loading.value = true;
-  const { data } = await getDeptList();
-  // dataList.value = handleTree(data);
-  loading.value = false;
-}
-</script>
-
 <template>
-  <div class="main">
-    <el-form ref="formRef" :inline="true" :model="form" class="bg-bg_color w-[99/100] pl-8 pt-4">
-      <el-form-item label="部门名称：" prop="user">
-        <el-input v-model="form.user" placeholder="请输入部门名称" clearable class="!w-[200px]" />
-      </el-form-item>
-      <el-form-item label="状态：" prop="status">
-        <el-select v-model="form.status" placeholder="请选择状态" clearable class="!w-[180px]">
-          <el-option label="开启" value="1" />
-          <el-option label="关闭" value="0" />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" :loading="loading" @click="onSearch"> 搜索 </el-button>
-        <el-button @click="resetForm(formRef)"> 重置 </el-button>
-      </el-form-item>
-    </el-form>
+  <div class="page">
+    <div class="search-wrap">
+      <FormView
+        ref="formView"
+        v-model="tableSearch"
+        :columns="2"
+        labelWidth="126px"
+        labelPosition="right"
+        @sumbit="sumbit"
+      />
+    </div>
+    <TableView
+      ref="tableRef"
+      :api="api"
+      :columns="columns"
+      :otherParams="formData"
+      title="部门列表"
+      tableHeight="calc(100% - 100px)"
+    >
+      <template #column-name="{ data }"> {{ data }} </template>
+    </TableView>
   </div>
 </template>
+<script setup lang="ts">
+import { ref, reactive } from "vue";
+import { TableJsonItem } from "@/components/Table/index.d";
+import { getDeptList } from "@/api/system";
+import { FormJsonItem } from "@/utils/public";
+import formFormat from "@/hooks/formFormat";
+
+const api = getDeptList;
+const columns: TableJsonItem[] = [
+  {
+    label: "deptName",
+    prop: "deptName",
+    columnType: "slot",
+    slotName: "name",
+  },
+  {
+    label: "orderNo",
+    prop: "orderNo",
+  },
+  {
+    label: "status",
+    prop: "status",
+    columnType: "switch",
+  },
+  {
+    label: "createTime",
+    prop: "createTime",
+    formatData: (data: any) => {
+      return data + "123";
+    },
+  },
+  {
+    label: "remark",
+    prop: "remark",
+  },
+];
+const tableRef: any = ref(null);
+const tableSearch: FormJsonItem[] = reactive([
+  {
+    prop: "name",
+    label: "Activity name",
+    data: "",
+    initilaData: "Hello",
+    rule: [{ min: 3, max: 6, message: "Length should be 3 to 6", trigger: "blur" }],
+  },
+  {
+    prop: "time",
+    label: "Activity time",
+    data: "",
+    initilaData: "",
+    type: "date",
+    elProps: {
+      type: "date",
+    },
+  },
+]);
+const { formData } = formFormat({ rawList: tableSearch });
+const sumbit = () => {
+  tableRef.value.getList();
+};
+</script>
+
+<style lang="scss" scoped>
+.page {
+  height: 100%;
+  .search-wrap {
+    height: 80px;
+    background-color: #fff;
+    margin-bottom: 20px;
+  }
+}
+</style>

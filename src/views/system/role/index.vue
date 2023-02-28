@@ -1,53 +1,102 @@
+<template>
+  <div class="page">
+    <div class="search-wrap">
+      <FormView
+        ref="formView"
+        v-model="tableSearch"
+        :columns="2"
+        labelWidth="126px"
+        labelPosition="right"
+        @sumbit="sumbit"
+      />
+    </div>
+    <TableView
+      ref="tableRef"
+      :api="api"
+      :columns="columns"
+      :otherParams="formData"
+      title="角色列表"
+      tableHeight="calc(100% - 100px)"
+    >
+      <template #column-name="{ data }"> {{ data }} </template>
+    </TableView>
+  </div>
+</template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
+import { TableJsonItem } from "@/components/Table/index.d";
 import { getRoleList } from "@/api/system";
+import { FormJsonItem } from "@/utils/public";
+import formFormat from "@/hooks/formFormat";
 
-const form = reactive({
-  name: "",
-  code: "",
-  status: "",
-});
-const loading = ref(true);
-
-const formRef = ref();
-async function onSearch() {
-  loading.value = true;
-  const { data } = await getRoleList();
-  loading.value = false;
-}
-
-const resetForm = formEl => {
-  if (!formEl) return;
-  formEl.resetFields();
-  onSearch();
+const api = getRoleList;
+const columns: TableJsonItem[] = [
+  {
+    label: "orderNo",
+    prop: "orderNo",
+    columnType: "slot",
+    slotName: "name",
+  },
+  {
+    label: "roleName",
+    prop: "roleName",
+  },
+  {
+    label: "roleValue",
+    prop: "roleValue",
+  },
+  {
+    label: "menu",
+    prop: "menu",
+  },
+  {
+    label: "status",
+    prop: "status",
+    columnType: "switch",
+  },
+  {
+    label: "createTime",
+    prop: "createTime",
+    formatData: (data: any) => `${data}123`,
+  },
+  {
+    label: "remark",
+    prop: "remark",
+  },
+];
+const tableRef: any = ref(null);
+const tableSearch: FormJsonItem[] = reactive([
+  {
+    prop: "name",
+    label: "Activity name",
+    data: "",
+    initilaData: "Hello",
+    rule: [{ min: 3, max: 6, message: "Length should be 3 to 6", trigger: "blur" }],
+  },
+  {
+    prop: "time",
+    label: "Activity time",
+    data: "",
+    initilaData: "",
+    type: "date",
+    elProps: {
+      type: "date",
+    },
+  },
+]);
+const { formData } = formFormat({ rawList: tableSearch });
+const sumbit = () => {
+  tableRef.value.getList();
 };
 </script>
 
-<template>
-  <div class="main">
-    <el-form ref="formRef" :inline="true" :model="form" class="bg-bg_color w-[99/100] pl-8 pt-4">
-      <el-form-item label="角色名称：" prop="name">
-        <el-input v-model="form.name" placeholder="请输入角色名称" clearable class="!w-[200px]" />
-      </el-form-item>
-      <el-form-item label="角色标识：" prop="code">
-        <el-input v-model="form.code" placeholder="请输入角色标识" clearable class="!w-[180px]" />
-      </el-form-item>
-      <el-form-item label="状态：" prop="status">
-        <el-select v-model="form.status" placeholder="请选择状态" clearable class="!w-[180px]">
-          <el-option label="已开启" value="1" />
-          <el-option label="已关闭" value="0" />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" :loading="loading" @click="onSearch"> 搜索 </el-button>
-        <el-button @click="resetForm(formRef)"> 重置 </el-button>
-      </el-form-item>
-    </el-form>
-  </div>
-</template>
-
-<style scoped lang="scss">
-:deep(.el-dropdown-menu__item i) {
-  margin: 0;
+<style lang="scss" scoped>
+.page {
+  height: 100%;
+  .search-wrap {
+    height: 80px;
+    background-color: #fff;
+    margin-bottom: 20px;
+  }
 }
 </style>
