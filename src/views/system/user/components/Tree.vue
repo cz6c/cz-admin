@@ -1,48 +1,3 @@
-<script setup lang="ts">
-import { getDeptList } from "@/api/system/index";
-import { ref, watch, onMounted } from "vue";
-
-const treeRef = ref();
-const treeData: any = ref([]);
-const isExpand = ref(true);
-const searchValue = ref("");
-const defaultProps = {
-  children: "children",
-  label: "deptName",
-};
-const filterNode = (value: string, data: any) => {
-  if (!value) return true;
-  return data.deptName.includes(value);
-};
-/**
- * @description: 折叠展开
- * @param {*} status
- */
-function toggleRowExpansionAll(status: boolean) {
-  isExpand.value = status;
-  const nodes = (treeRef.value as any).store._getAllNodes();
-  for (let i = 0; i < nodes.length; i++) {
-    nodes[i].expanded = status;
-  }
-}
-/**
- * @description: 重置状态（选中状态、搜索框值、树初始化）
- */
-function onReset() {
-  searchValue.value = "";
-  toggleRowExpansionAll(true);
-}
-
-watch(searchValue, val => {
-  treeRef.value!.filter(val);
-});
-
-onMounted(async () => {
-  const { data } = await getDeptList();
-  treeData.value = data;
-});
-</script>
-
 <template>
   <div class="dept-tree">
     <div class="tree-header" title="部门列表">
@@ -88,6 +43,52 @@ onMounted(async () => {
     </el-tree>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, watch, onMounted } from "vue";
+import { getDeptList } from "@/api/system/index";
+import { DeptItem } from "@/api/system/index.d";
+
+const treeRef = ref();
+const treeData = ref<DeptItem[]>([]);
+const isExpand = ref(true);
+const searchValue = ref("");
+const defaultProps = {
+  children: "children",
+  label: "deptName",
+};
+const filterNode = (value: string, data: any) => {
+  if (!value) return true;
+  return data.deptName.includes(value);
+};
+/**
+ * @description: 折叠展开
+ * @param {*} status
+ */
+function toggleRowExpansionAll(status: boolean) {
+  isExpand.value = status;
+  const nodes = (treeRef.value as any).store._getAllNodes();
+  for (let i = 0; i < nodes.length; i++) {
+    nodes[i].expanded = status;
+  }
+}
+/**
+ * @description: 重置状态（选中状态、搜索框值、树初始化）
+ */
+function onReset() {
+  searchValue.value = "";
+  toggleRowExpansionAll(true);
+}
+
+watch(searchValue, val => {
+  treeRef.value!.filter(val);
+});
+
+onMounted(async () => {
+  const { data } = await getDeptList();
+  treeData.value = data;
+});
+</script>
 
 <style lang="scss" scoped>
 .dept-tree {

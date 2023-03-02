@@ -35,8 +35,14 @@
         <el-table-column
           v-for="item in props.columns"
           :key="item.prop"
+          :prop="item.prop"
+          :label="item.label"
+          :width="item.width"
+          :minWidth="item.minWidth"
+          :fixed="item.fixed"
           :align="item.align || props.align"
-          v-bind="item"
+          :sortable="item.sortable"
+          showOverflowTooltip
         >
           <!-- <template #header="{ column, $index }">
           <div style="display: flex; align-items: center"></div>
@@ -44,10 +50,10 @@
           <template #default="{ row }">
             <!-- switch开关 -->
             <template v-if="item.columnType === 'switch'">
-              <el-switch v-model="row[item.prop]" />
+              <el-switch v-model="row[item.prop]" v-bind="item.elProps" />
             </template>
             <!-- column动态插槽 -->
-            <template v-if="item.columnType === 'slot'">
+            <template v-else-if="item.columnType === 'slot'">
               <slot :name="`column-${item.slotName}`" :data="row[item.prop]"></slot>
             </template>
             <!-- 文本显示 -->
@@ -105,7 +111,7 @@ async function getList() {
   if (beforeFetch && isFunction(beforeFetch)) {
     params = (await beforeFetch(params)) || params;
   }
-  const { data } = api && (await api(params));
+  const { data } = api && isFunction(api) && (await api(params));
   if (afterFetch && isFunction(afterFetch)) {
     data.list = (await afterFetch(data.list)) || data.list;
   }

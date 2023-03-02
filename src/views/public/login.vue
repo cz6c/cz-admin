@@ -5,9 +5,9 @@
         <h1 class="title">登录</h1>
         <p class="description">title</p>
       </div>
-      <el-form ref="FormEle" :rules="rules" label-position="top" :model="loginForm" label-width="80px">
-        <el-form-item label="账号" prop="userName">
-          <el-input v-model="loginForm.userName" tabindex="2" placeholder="请输入账号"></el-input>
+      <el-form ref="formRef" :rules="rules" label-position="top" :model="loginForm" label-width="80px">
+        <el-form-item label="账号" prop="username">
+          <el-input v-model="loginForm.username" tabindex="2" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <template #label>
@@ -15,7 +15,7 @@
           </template>
           <el-input v-model="loginForm.password" tabindex="3" type="password" placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item label="验证码" prop="code">
+        <!-- <el-form-item label="验证码" prop="code">
           <el-input
             ref="code"
             v-model="loginForm.code"
@@ -34,7 +34,7 @@
           >
             <div slot="error" class="el-image__error">点击刷新</div>
           </el-image>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <el-button type="primary" class="login-btn" :loading="loading" tabindex="5" @click="handleLogin(formRef)"
         >登 录</el-button
@@ -55,9 +55,10 @@
 
 <script setup lang="ts">
 import { watch, ref, reactive } from "vue";
-import { authStore } from "@/store/auth";
+import { useAuthStore } from "@/store/modules/auth";
 import { useRoute, useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
+import {message} from '@/utils/message'
 const formRef = ref<FormInstance>();
 const route = useRoute();
 const router = useRouter();
@@ -76,16 +77,16 @@ watch(
 );
 
 const loginForm = reactive({
-  code: "",
+  // code: "",
   password: "",
-  userName: "",
+  username: "",
 });
 const rules: FormRules = {
-  code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+  // code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-  userName: [{ required: true, message: "请输入账号", trigger: "blur" }],
+  username: [{ required: true, message: "请输入账号", trigger: "blur" }],
 };
-const auth = authStore();
+const authStore = useAuthStore();
 const loading = ref(false);
 const isLoginTimeOut = true;
 /**
@@ -97,12 +98,13 @@ function handleLogin(formEl: FormInstance | undefined) {
     if (valid) {
       try {
         loading.value = true;
-        await auth.login(loginForm);
+        await authStore.login(loginForm);
         router.push({
           path: redirect.value || "/",
         });
         loading.value = false;
-      } catch (error) {
+      } catch (error:any) {
+        message(error.message)
         flushCode();
         loading.value = false;
       }

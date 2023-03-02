@@ -42,12 +42,12 @@ service.interceptors.response.use(
     const res = response.data;
     // 当请求不为200时，报错
     if (res.code !== 200) {
-      if (res.code === -406 || res.code === -407) {
+      if (res.code === -401 || res.code === -403) {
         removeToken();
         router.push(`/login?redirect=${(router.currentRoute as any).fullPath}`);
         return;
       }
-      return Promise.reject(new Error(res.msg || "Error"));
+      return Promise.reject(new Error(res.message || "Error"));
     } else {
       return res;
     }

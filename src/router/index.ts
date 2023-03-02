@@ -1,44 +1,104 @@
-import { createRouter, createWebHashHistory, Router } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
-import Layout from "@/layout/index.vue";
+import Layout from "@/Layout/index.vue";
 import staticRouter from "./modules/staticRoutes";
+
+export enum PageEnum {
+  // basic home path
+  BASE_HOME = "/dashboard",
+}
 
 // 公共菜单
 const routesList: RouteRecordRaw[] = [
+  // 根路由
+  {
+    path: "/",
+    name: "Root",
+    redirect: PageEnum.BASE_HOME,
+    meta: {
+      title: "root",
+    },
+  },
+  // 登录路由
   {
     path: "/login",
+    name: "Login",
     component: () => import("@/views/public/login.vue"),
+    meta: {
+      title: "login",
+    },
   },
   {
     path: "/auth-redirect",
     component: () => import("@/views/public/auth-redirect.vue"),
   },
   {
-    path: "/auth-redirect-layout",
+    path: "/auth-redirect-Layout",
     component: Layout,
     children: [
       {
-        path: "/auth-redirect-layout",
+        path: "/auth-redirect-Layout",
         name: "重定向",
         component: () => import("@/views/public/auth-redirect.vue"),
       },
     ],
   },
-  {
-    path: "/:pathMatch(.*)*",
-    component: () => import("@/views/public/404.vue"),
-  },
 ];
 
-function createRoute(routes: RouteRecordRaw[]): Router {
-  return createRouter({
-    history: createWebHashHistory(),
-    scrollBehavior: () => ({ left: 0, right: 0 }),
-    routes: routes,
-  });
-}
+// 404
+export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
+  path: "/:path(.*)*",
+  name: "PAGE_NOT_FOUND_NAME",
+  component: Layout,
+  meta: {
+    title: "ErrorPage",
+    hideBreadcrumb: true,
+    hideMenu: true,
+  },
+  children: [
+    {
+      path: "/:path(.*)*",
+      name: "PAGE_NOT_FOUND_NAME",
+      component: () => import("@/views/public/404.vue"),
+      meta: {
+        title: "ErrorPage",
+        hideBreadcrumb: true,
+        hideMenu: true,
+      },
+    },
+  ],
+};
+// redirect
+export const REDIRECT_ROUTE: RouteRecordRaw = {
+  path: "/redirect",
+  component: Layout,
+  name: "RedirectTo",
+  meta: {
+    title: "REDIRECT_NAME",
+    hideBreadcrumb: true,
+    hideMenu: true,
+  },
+  children: [
+    {
+      path: "/redirect/:path(.*)",
+      name: "REDIRECT_NAME",
+      component: () => import("@/views/public/auth-redirect.vue"),
+      meta: {
+        title: "REDIRECT_NAME",
+        hideBreadcrumb: true,
+      },
+    },
+  ],
+};
 
-const router = createRoute([...routesList, ...staticRouter]);
+const routes = [...routesList, ...staticRouter, PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE];
+
+// app router
+export const router = createRouter({
+  history: createWebHashHistory(),
+  scrollBehavior: () => ({ left: 0, right: 0 }),
+  routes,
+});
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 // function resetRouter(routes: RouteRecordRaw[]) {

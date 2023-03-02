@@ -2,7 +2,7 @@ import { createGet, createPost } from "@/utils/request";
 import { LoginParams, UserInfo, MenuData } from "./index.d";
 
 // 登录
-export const login = createPost<LoginParams, UserInfo>("/adminapi/login");
+export const login = createPost<LoginParams, {token:string}>("/adminapi/login");
 // 获取用户信息
 export const getLoginUserInfo = createGet<never, UserInfo>("/adminapi/getUserInfo");
 // 获取当前用户菜单

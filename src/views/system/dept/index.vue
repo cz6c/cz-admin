@@ -26,8 +26,9 @@
 import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
 import { getDeptList } from "@/api/system";
-import { FormJsonItem } from "@/utils/public";
-import formFormat from "@/hooks/formFormat";
+import { FormJsonItem } from "@/components/Form/index.d";
+import { useForm } from "@/components/Form/hooks/useForm";
+import dayjs from "dayjs";
 
 const api = getDeptList;
 const columns: TableJsonItem[] = [
@@ -45,13 +46,15 @@ const columns: TableJsonItem[] = [
     label: "status",
     prop: "status",
     columnType: "switch",
+    elProps: {
+      activeText: "已启用",
+      inactiveText: "已禁用",
+    },
   },
   {
     label: "createTime",
     prop: "createTime",
-    formatData: (data: any) => {
-      return data + "123";
-    },
+    formatData: (data: number) => dayjs(data).format("YYYY-MM-DD HH:mm:ss"),
   },
   {
     label: "remark",
@@ -61,15 +64,14 @@ const columns: TableJsonItem[] = [
 const tableRef: any = ref(null);
 const tableSearch: FormJsonItem[] = reactive([
   {
-    prop: "name",
-    label: "Activity name",
+    prop: "deptName",
+    label: "deptName",
     data: "",
-    initilaData: "Hello",
-    rule: [{ min: 3, max: 6, message: "Length should be 3 to 6", trigger: "blur" }],
+    initilaData: "",
   },
   {
-    prop: "time",
-    label: "Activity time",
+    prop: "createTime",
+    label: "createTime",
     data: "",
     initilaData: "",
     type: "date",
@@ -78,7 +80,7 @@ const tableSearch: FormJsonItem[] = reactive([
     },
   },
 ]);
-const { formData } = formFormat({ rawList: tableSearch });
+const { formData } = useForm({ rawList: tableSearch });
 const sumbit = () => {
   tableRef.value.getList();
 };

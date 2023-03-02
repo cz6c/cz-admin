@@ -13,19 +13,18 @@ export interface GetListResponse<T> {
 
 // 登录参数
 export interface LoginParams {
-  userName: string;
+  username: string;
   password: string;
-  code: string;
 }
 
 // 用户信息
 export interface UserInfo {
-  id: string;
-  token: string;
-  userName: string;
-  avatar: string;
-  phone: string;
-  name: string;
+  userId: number,
+  username: string,
+  realName: string,
+  avatar: string,
+  desc: string,
+  roles: any[],
 }
 
 // 菜单数据

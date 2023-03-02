@@ -4,9 +4,8 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import FormView from "@coms/FormView.vue";
-import { FormJsonItem } from "@/utils/public";
-import formFormat from "@/hooks/formFormat";
+import { FormJsonItem } from "@/components/Form/index.d";
+import { useForm } from "@/components/Form/hooks/useForm";
 
 const options = Array.from({ length: 10000 }).map((_, idx) => ({
   value: `${idx + 1}`,
@@ -116,7 +115,7 @@ const formList: FormJsonItem[] = reactive([
   },
 ]);
 
-const { formDataMap } = formFormat({ rawList: formList });
+const { formDataMap } = useForm({ rawList: formList });
 console.log(formDataMap);
 
 const sumbit = (payload: any) => {

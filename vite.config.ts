@@ -46,6 +46,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     // 插件
     plugins: [
       vue(),
+      // setup script标签上定义组件name
       vueSetupExtend(),
       // https://github.com/anncwb/vite-plugin-svg-icons
       createSvgIconsPlugin({

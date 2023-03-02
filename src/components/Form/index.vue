@@ -73,10 +73,10 @@
   <el-button @click="initilaData(formRef)">重置</el-button>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="FormView">
 import { ref, computed, defineProps, withDefaults, defineEmits, defineExpose } from "vue";
-import { FormJsonItem } from "../utils/public";
-import formFormat from "../hooks/formFormat";
+import { FormJsonItem } from "./index.d";
+import { useForm } from "./hooks/useForm";
 import type { FormInstance, FormRules } from "element-plus";
 const formRef = ref<FormInstance>();
 
@@ -93,7 +93,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const emit = defineEmits(["sumbit"]);
 
-const { formData, formDataMap } = formFormat({ rawList: props.modelValue });
+const { formData, formDataMap } = useForm({ rawList: props.modelValue });
 
 /**
  * @description: 计算formItem宽度

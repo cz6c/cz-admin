@@ -1,17 +1,47 @@
 import { GetListParams, GetListResponse } from "@/api/public/index.d";
-// 登录日志
-export interface LoginLogInfo {
-  country: string; //  ip下的城市信息
-  id: number; // id
-  ip: string; // ip地址
-  createTime: number; // 登录时间
-  name: string; // 浏览器名称
-  platform: string; // 操作系统
-  userId: number; // 所属用户ID
-  userName: string; // 账号
-  useragent: string; // 浏览器agent信息
+// 用户信息
+export interface UserItem {
+  id: number;
+  account: string;
+  email: string;
+  nickname: string;
+  role: string;
+  createTime: number;
+  remark: string;
+  status: number;
 }
-export type ResponseLoginLogList = GetListResponse<LoginLogInfo>;
-export interface ParamsLoginLogList extends GetListParams {
+export type ResponseUserList = GetListResponse<UserItem>;
+export interface ParamsUserList extends GetListParams {
+  account?: string;
+  createTime?: number;
+}
+// 角色信息
+export interface RoleItem {
+  id: string;
+  orderNo: number;
+  roleName: string;
+  roleValue: string;
+  createTime: number;
+  remark: string;
+  menu: string[];
+  status: number;
+}
+export type ResponseRoleList = GetListResponse<RoleItem>;
+export interface ParamsRoleList extends GetListParams {
+  createTime?: number;
+}
+// 部门信息
+export interface DeptItem {
+  id: number;
+  deptName: string;
+  orderNo: number;
+  createTime: number;
+  remark: string;
+  status: number;
+  parentDept?: number;
+  children: DeptItem[];
+}
+export type ResponseDeptList = GetListResponse<DeptItem>;
+export interface ParamsDeptList extends GetListParams {
   createTime?: number;
 }

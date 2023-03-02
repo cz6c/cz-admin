@@ -7,7 +7,7 @@ import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 // 表单组件
-import FormView from "./FormView.vue";
+import FormView from "./Form/index.vue";
 // 表格组件
 import TableView from "./Table/index.vue";
 // svg组件
