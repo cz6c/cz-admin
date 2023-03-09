@@ -2,7 +2,7 @@
   <el-breadcrumb separator="/">
     <el-breadcrumb-item v-for="item in matched" :key="item.path">
       <a @click.prevent="handleLink(item)">
-        {{ item.meta.name }}
+        {{ item.meta.title }}
       </a>
     </el-breadcrumb-item>
   </el-breadcrumb>

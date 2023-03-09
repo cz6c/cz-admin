@@ -3,43 +3,21 @@
     <div class="content-wrapper">
       <div class="title-wrapper">
         <h1 class="title">登录</h1>
-        <p class="description">title</p>
+        <p class="description">{{ BASE_TITLE }}</p>
       </div>
       <el-form ref="formRef" :rules="rules" label-position="top" :model="loginForm" label-width="80px">
         <el-form-item label="账号" prop="username">
-          <el-input v-model="loginForm.username" tabindex="2" placeholder="请输入账号"></el-input>
+          <el-input v-model="loginForm.username" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <template #label>
             <span>密码</span>
           </template>
-          <el-input v-model="loginForm.password" tabindex="3" type="password" placeholder="请输入密码"></el-input>
+          <el-input v-model="loginForm.password" type="password" placeholder="请输入密码"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="验证码" prop="code">
-          <el-input
-            ref="code"
-            v-model="loginForm.code"
-            tabindex="4"
-            placeholder="验证码"
-            name="code"
-            type="text"
-            autocomplete="on"
-            @keyup.enter.native="handleLogin(formRef)"
-          />
-          <el-image
-            :key="codeKey"
-            :src="`${baseURL}/adminapi/code?uuid=${codeKey}`"
-            class="code-view"
-            @click.native="flushCode"
-          >
-            <div slot="error" class="el-image__error">点击刷新</div>
-          </el-image>
-        </el-form-item> -->
       </el-form>
-      <el-button type="primary" class="login-btn" :loading="loading" tabindex="5" @click="handleLogin(formRef)"
-        >登 录</el-button
-      >
-      <el-alert
+      <el-button type="primary" class="login-btn" :loading="loading" @click="handleLogin(formRef)">登 录</el-button>
+      <!-- <el-alert
         v-if="isLoginTimeOut"
         title="由于登录时间超时，您已被注销登录！"
         type="warning"
@@ -47,7 +25,7 @@
         :closable="false"
         class="login-timeout"
       >
-      </el-alert>
+      </el-alert> -->
     </div>
     <div class="version-tips">版权信息 | cz6</div>
   </div>
@@ -58,12 +36,24 @@ import { watch, ref, reactive } from "vue";
 import { useAuthStore } from "@/store/modules/auth";
 import { useRoute, useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
-import {message} from '@/utils/message'
+import { $message } from "@/utils/message";
+import { BASE_TITLE } from "@/config";
+
 const formRef = ref<FormInstance>();
 const route = useRoute();
 const router = useRouter();
-
+const { login } = useAuthStore();
+const loading = ref(false);
 let redirect = ref("");
+const loginForm = reactive({
+  password: "123456",
+  username: "admin",
+});
+const rules: FormRules = {
+  password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+  username: [{ required: true, message: "请输入账号", trigger: "blur" }],
+};
+
 watch(
   () => route,
   (newValue, oldValue) => {
@@ -75,20 +65,6 @@ watch(
   },
   { immediate: true },
 );
-
-const loginForm = reactive({
-  // code: "",
-  password: "",
-  username: "",
-});
-const rules: FormRules = {
-  // code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
-  password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-  username: [{ required: true, message: "请输入账号", trigger: "blur" }],
-};
-const authStore = useAuthStore();
-const loading = ref(false);
-const isLoginTimeOut = true;
 /**
  * @description: 登录
  */
@@ -98,27 +74,17 @@ function handleLogin(formEl: FormInstance | undefined) {
     if (valid) {
       try {
         loading.value = true;
-        await authStore.login(loginForm);
+        await login(loginForm);
         router.push({
           path: redirect.value || "/",
         });
         loading.value = false;
-      } catch (error:any) {
-        message(error.message)
-        flushCode();
+      } catch (error: any) {
+        $message.warning(error.message);
         loading.value = false;
       }
     }
   });
-}
-
-const baseURL = import.meta.env.VITE_BASE_URL;
-let codeKey = ref(+new Date());
-/**
- * @description: 刷新验证码
- */
-function flushCode() {
-  codeKey.value = +new Date();
 }
 </script>
 

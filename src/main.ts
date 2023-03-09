@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 
 // pinia
-import pinia from "@/store/index";
+import store from "@/store";
 // css
 import "normalize.css";
 import "@/assets/style/global.scss";
@@ -12,9 +12,11 @@ import router from "@/router";
 import publicComs from "./components/index";
 // 注册svg
 import "virtual:svg-icons-register";
+// 路由权限
+import "./permission";
 
 const app = createApp(App);
-app.use(pinia);
+app.use(store);
 app.use(router);
 app.use(publicComs);
 app.mount("#app");

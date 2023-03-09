@@ -3,6 +3,7 @@ import { MockMethod } from "vite-plugin-mock";
 
 const dashboardRoute = {
   path: "/dashboard",
+  name: "Dashboard",
   component: "Layout",
   meta: {
     title: "Dashboard",
@@ -23,6 +24,7 @@ const dashboardRoute = {
 
 const systemRouter = {
   path: "/system",
+  name: "System",
   component: "Layout",
   meta: {
     title: "组织架构",
@@ -60,7 +62,6 @@ const systemRouter = {
 export default [
   {
     url: "/adminapi/getMenuList",
-
     method: "get",
     response: (request: requestParams) => {
       const token = getRequestToken(request);

@@ -14,23 +14,23 @@
         <template v-if="isSubmenu(item)">
           <el-sub-menu :index="item.path">
             <template #title>
-              <SvgIcon :name="item.meta?.icon" size="18" />
-              <span class="menu-text">{{ item.meta?.name }}</span>
+              <SvgIcon v-if="item.meta?.icon" :name="item.meta?.icon" size="18" />
+              <span class="menu-text">{{ item.meta?.title }}</span>
             </template>
             <template v-for="childItem in item.children" :key="childItem.path">
               <template v-if="isSubmenu(childItem)">
                 <el-sub-menu :index="childItem.path">
                   <template #title>
-                    <span class="menu-text">{{ childItem.meta?.name }}</span>
+                    <span class="menu-text">{{ childItem.meta?.title }}</span>
                   </template>
                   <el-menu-item v-for="it in childItem.children" :key="it.path" :index="it.path">
-                    <span class="menu-text">{{ it.meta?.name }}</span>
+                    <span class="menu-text">{{ it.meta?.title }}</span>
                   </el-menu-item>
                 </el-sub-menu>
               </template>
               <template v-else>
                 <el-menu-item :index="childItem.path">
-                  <span class="menu-text">{{ childItem.meta?.name }}</span>
+                  <span class="menu-text">{{ childItem.meta?.title }}</span>
                 </el-menu-item>
               </template>
             </template>
@@ -38,8 +38,8 @@
         </template>
         <template v-else>
           <el-menu-item :index="item.path">
-            <SvgIcon :name="item.meta?.icon" size="18" />
-            <span class="menu-text">{{ item.meta?.name }}</span>
+            <SvgIcon v-if="item.meta?.icon" :name="item.meta?.icon" size="18" />
+            <span class="menu-text">{{ item.meta?.title }}</span>
           </el-menu-item>
         </template>
       </template>
@@ -50,9 +50,8 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import { useRoute } from "vue-router";
-import { getParentPaths } from "@/utils/router";
 import type { RouteRecordRaw } from "vue-router";
-import staticRouter from "@/router/modules/staticRoutes";
+import { useAuthStore } from "@/store/modules/auth";
 
 const props = defineProps({
   isCollapse: {
@@ -62,8 +61,8 @@ const props = defineProps({
 });
 
 const route = useRoute();
-
-const menuData = staticRouter;
+const { dynamicMenu: menuData } = useAuthStore();
+console.log(menuData);
 
 /**
  * @description: 判断路由是否有可显示的子集菜单
@@ -81,8 +80,6 @@ function isSubmenu(item: RouteRecordRaw): boolean {
  */
 function handleSelect(path: string) {
   console.log(path);
-  const paths = getParentPaths(path, menuData);
-  console.log(paths);
 }
 </script>
 

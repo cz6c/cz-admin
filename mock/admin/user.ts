@@ -5,9 +5,9 @@ export function createFakeUserList() {
   return [
     {
       userId: 1,
-      username: "vben",
-      realName: "Vben Admin",
-      avatar: "",
+      username: "admin",
+      realName: "czadmin",
+      avatar: "https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg",
       desc: "manager",
       password: "123456",
       token: "fakeToken1",
@@ -22,8 +22,8 @@ export function createFakeUserList() {
       userId: 2,
       username: "test",
       password: "123456",
-      realName: "test user",
-      avatar: "",
+      realName: "testuser",
+      avatar: "https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg",
       desc: "tester",
       token: "fakeToken2",
       roles: [

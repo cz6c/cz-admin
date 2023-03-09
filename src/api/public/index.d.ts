@@ -26,8 +26,3 @@ export interface UserInfo {
   desc: string,
   roles: any[],
 }
-
-// 菜单数据
-export interface MenuData {
-  menu: [];
-}

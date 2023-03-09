@@ -1,14 +1,14 @@
 import { createGet, createPost } from "@/utils/request";
-import { LoginParams, UserInfo, MenuData } from "./index.d";
+import { LoginParams, UserInfo } from "./index.d";
 
 // 登录
-export const login = createPost<LoginParams, {token:string}>("/adminapi/login");
+export const login = createPost<LoginParams, { token: string }>("/adminapi/login");
 // 获取用户信息
 export const getLoginUserInfo = createGet<never, UserInfo>("/adminapi/getUserInfo");
 // 获取当前用户菜单
-export const getLoginUserMenu = createGet<never, MenuData>("/adminapi/getLoginUserMenu");
+export const getMenuList = createGet<never, any>("/adminapi/getMenuList");
 // 获取城市地区
-export const getAreaList = createGet<never, never>("/adminapi/getAreaList");
+export const getAreaList = createGet<never, any>("/adminapi/getAreaList");
 
 // 统一后台七牛云存储接口（单文件/多文件）
 export const common = {
