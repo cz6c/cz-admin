@@ -6,7 +6,10 @@ import { cloneDeep, omit } from "lodash-es";
 const modulesRoutes = (import.meta as any).glob("/src/views/**/*.{vue,tsx}");
 const modulesRoutesKeys = Object.keys(modulesRoutes);
 
-// 动态菜单转路由
+/**
+ * @description: 动态菜单转路由
+ * @param {any} routeList
+ */
 export function transformRoute(routeList: any) {
   routeList.forEach((item: any) => {
     const { path, component, children } = item;
@@ -24,7 +27,9 @@ export function transformRoute(routeList: any) {
 }
 
 /**
- * 将多级路由转换为 2 级路由
+ * @description: 将多级路由转换为 2 级路由
+ * @param {RouteRecordRaw} routeModules
+ * @return {*}
  */
 export function flatMultiLevelRoutes(routeModules: RouteRecordRaw[]): RouteRecordRaw[] {
   const modules: RouteRecordRaw[] = cloneDeep(routeModules);
@@ -41,7 +46,10 @@ export function flatMultiLevelRoutes(routeModules: RouteRecordRaw[]): RouteRecor
   return modules;
 }
 
-// 路由等级提升
+/**
+ * @description: 路由等级提升
+ * @param {RouteRecordRaw} routeModule
+ */
 function promoteRouteLevel(routeModule: RouteRecordRaw) {
   // 使用vue-router拼接菜单
   // createRouter 创建一个可以被 Vue 应用程序使用的路由实例
@@ -58,7 +66,12 @@ function promoteRouteLevel(routeModule: RouteRecordRaw) {
   routeModule.children = routeModule.children?.map(item => omit(item, "children")) as RouteRecordRaw[];
 }
 
-// 将所有子路由添加到二级路由
+/**
+ * @description: 将所有子路由添加到二级路由
+ * @param {RouteRecordNormalized} routes
+ * @param {RouteRecordRaw} children
+ * @param {RouteRecordRaw} routeModule
+ */
 function addToChildren(routes: RouteRecordNormalized[], children: RouteRecordRaw[], routeModule: RouteRecordRaw) {
   for (let index = 0; index < children.length; index++) {
     const child = children[index];
@@ -76,8 +89,12 @@ function addToChildren(routes: RouteRecordNormalized[], children: RouteRecordRaw
   }
 }
 
-// 判断级别是否超过2级
-function isMultipleRoute(routeModule: RouteRecordRaw) {
+/**
+ * @description: 判断级别是否超过2级
+ * @param {RouteRecordRaw} routeModule
+ * @return {*}
+ */
+function isMultipleRoute(routeModule: RouteRecordRaw): boolean {
   // Reflect.has 与 in 操作符 相同, 用于检查一个对象(包括它原型链上)是否拥有某个属性
   if (!routeModule || !Reflect.has(routeModule, "children") || !routeModule.children?.length) {
     return false;
@@ -92,4 +109,28 @@ function isMultipleRoute(routeModule: RouteRecordRaw) {
     }
   }
   return flag;
+}
+
+/**
+ * @description: 查找对应path的路由信息
+ * @param {string} path
+ * @param {RouteRecordRaw} routes
+ * @return {*}
+ */
+export function findRouteByPath(path: string, routes: RouteRecordRaw[]): RouteRecordRaw | undefined {
+  let res = routes.find((item: { path: string }) => item.path == path);
+  if (res) {
+    return res;
+  } else {
+    for (let i = 0; i < routes.length; i++) {
+      const children: RouteRecordRaw[] = routes[i].children || [];
+      if (children.length > 0) {
+        res = findRouteByPath(path, children);
+        if (res) {
+          return res;
+        }
+      }
+    }
+    return undefined;
+  }
 }

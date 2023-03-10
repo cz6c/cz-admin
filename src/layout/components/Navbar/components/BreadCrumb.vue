@@ -7,7 +7,7 @@
     </el-breadcrumb-item>
   </el-breadcrumb>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="BreadCrumb">
 import { computed } from "vue";
 import { useRoute, useRouter, RouteLocationMatched } from "vue-router";
 

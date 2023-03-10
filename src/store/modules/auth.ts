@@ -66,7 +66,7 @@ export const authStore = defineStore("auth", {
         transformRoute(routeList);
         // 多级路由转换为 2 级路由
         routeList = flatMultiLevelRoutes(routeList);
-        console.log("addRoute", router);
+        // console.log("addRoute", router);
         routeList.forEach((route: any) => {
           router.addRoute(route as RouteRecordRaw);
         });

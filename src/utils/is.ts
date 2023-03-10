@@ -88,10 +88,6 @@ export function isMap(val: unknown): val is Map<any, any> {
   return is(val, "Map");
 }
 
-export const isServer = typeof window === "undefined";
-
-export const isClient = !isServer;
-
 export function isUrl(path: string): boolean {
   const reg = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
   return reg.test(path);

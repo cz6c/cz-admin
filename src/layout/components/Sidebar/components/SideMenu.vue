@@ -4,7 +4,7 @@
       router
       unique-opened
       mode="vertical"
-      :default-active="route.path"
+      :default-active="$route.path"
       :collapse-transition="false"
       :class="{ on: props.isCollapse }"
       :collapse="props.isCollapse"
@@ -47,11 +47,12 @@
   </el-scrollbar>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="SideMenu">
 import { defineProps } from "vue";
-import { useRoute } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/store/modules/auth";
+import { useMultiTagsStore } from "@/store/modules/multiTags";
+import { findRouteByPath } from "@/utils/router";
 
 const props = defineProps({
   isCollapse: {
@@ -60,9 +61,8 @@ const props = defineProps({
   },
 });
 
-const route = useRoute();
 const { dynamicMenu: menuData } = useAuthStore();
-console.log(menuData);
+const { addTag } = useMultiTagsStore();
 
 /**
  * @description: 判断路由是否有可显示的子集菜单
@@ -79,7 +79,11 @@ function isSubmenu(item: RouteRecordRaw): boolean {
  * @param {*} path 当前路由路径
  */
 function handleSelect(path: string) {
-  console.log(path);
+  const route = findRouteByPath(path, menuData);
+  if (route) {
+    const { meta } = route;
+    addTag({ path, title: meta?.title as string });
+  }
 }
 </script>
 

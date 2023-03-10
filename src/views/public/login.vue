@@ -56,9 +56,8 @@ const rules: FormRules = {
 
 watch(
   () => route,
-  (newValue, oldValue) => {
-    console.log(newValue, oldValue);
-    const query = route.query;
+  (newValue) => {
+    const query = newValue.query;
     if (query.redirect) {
       redirect.value = String(query.redirect);
     }

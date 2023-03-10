@@ -6,7 +6,7 @@
     </router-link>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="Logo">
 import { defineProps } from "vue";
 const props = defineProps({
   isCollapse: {

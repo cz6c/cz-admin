@@ -28,9 +28,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Navbar">
 import { defineProps, defineEmits } from "vue";
-import Breadcrumb from "./BreadCrumb.vue";
+import Breadcrumb from "./components/BreadCrumb.vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/modules/auth";
 
@@ -57,9 +57,10 @@ async function logout() {
 
 <style scoped lang="scss">
 .navbar {
-  height: 100%;
+  height: 50px;
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #d9d9d9;
   &-left,
   &-right {
     height: 100%;
