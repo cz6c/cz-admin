@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Tree">
 import { ref, watch, onMounted } from "vue";
 import { getDeptList } from "@/api/system/index";
 import { DeptItem } from "@/api/system/index.d";

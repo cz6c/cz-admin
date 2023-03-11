@@ -22,7 +22,7 @@
     </TableView>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="Dept">
 import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
 import { getDeptList } from "@/api/system";

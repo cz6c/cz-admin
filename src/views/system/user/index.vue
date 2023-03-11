@@ -27,7 +27,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="User">
 import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
 import tree from "./components/Tree.vue";

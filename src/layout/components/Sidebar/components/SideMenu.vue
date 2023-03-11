@@ -51,8 +51,7 @@
 import { defineProps } from "vue";
 import type { RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/store/modules/auth";
-import { useMultiTagsStore } from "@/store/modules/multiTags";
-import { findRouteByPath } from "@/utils/router";
+// import { findRouteByPath } from "@/utils/router";
 
 const props = defineProps({
   isCollapse: {
@@ -62,7 +61,6 @@ const props = defineProps({
 });
 
 const { dynamicMenu: menuData } = useAuthStore();
-const { addTag } = useMultiTagsStore();
 
 /**
  * @description: 判断路由是否有可显示的子集菜单
@@ -79,11 +77,8 @@ function isSubmenu(item: RouteRecordRaw): boolean {
  * @param {*} path 当前路由路径
  */
 function handleSelect(path: string) {
-  const route = findRouteByPath(path, menuData);
-  if (route) {
-    const { meta } = route;
-    addTag({ path, title: meta?.title as string });
-  }
+  // const route = findRouteByPath(path, menuData);
+  console.log(path);
 }
 </script>
 

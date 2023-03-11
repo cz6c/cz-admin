@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts" name="PAGE_NOT_FOUND_NAME"></script>
 
 <style lang="scss" scoped>
 .wscn-http404-container {

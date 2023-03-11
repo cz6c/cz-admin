@@ -1,51 +1,64 @@
 import { defineStore } from "pinia";
 import store from "@/store";
+import type { RouteLocationNormalizedLoaded, RouteRecordName } from "vue-router";
 
-export interface tagItem {
-  path: string;
-  title: string;
+export interface TagsViewState {
+  multiTags: RouteLocationNormalizedLoaded[];
+  cachedViews: RouteRecordName[];
 }
 
 export const multiTagsStore = defineStore("multiTags", {
-  state: (): { multiTags: tagItem[] } => ({
-    // 存储标签页信息
+  state: (): TagsViewState => ({
+    // 标签页
     multiTags: [],
+    // 缓存页
+    cachedViews: [],
   }),
   getters: {
-    getCaches(): string[] {
-      return this.multiTags.map(tag => tag.path);
+    getCaches(): RouteRecordName[] {
+      return this.cachedViews;
     },
   },
   actions: {
-    addTag(value: tagItem) {
+    addTag(view: RouteLocationNormalizedLoaded) {
+      // 如果存在就retuen
+      if (this.multiTags.some(v => v.path === view.path)) return;
       // 如果title为空拒绝添加空信息到标签页
-      if (value.title.length === 0) return;
-      const tagPath = value.path;
-      // 替换已存在路由标签
-      const index = this.multiTags.findIndex(item => item?.path === tagPath);
-      if (index !== -1) {
-        this.multiTags.splice(index, 1, value);
-      } else {
-        this.multiTags.push(value);
+      if ((view.meta.title as string).length === 0) return;
+      this.multiTags.push(view);
+    },
+    addCache(view: RouteLocationNormalizedLoaded) {
+      if (!view.name) return;
+      if (this.cachedViews.includes(view.name)) return;
+      if (view.meta && !view.meta.noCache) {
+        this.cachedViews.push(view.name);
       }
     },
-    deleteTag(type: "now" | "other" | "all", value?: string) {
+    addView(view: RouteLocationNormalizedLoaded) {
+      this.addTag(view);
+      this.addCache(view);
+    },
+    deleteTag(type: "now" | "other" | "all", view?: RouteLocationNormalizedLoaded) {
       switch (type) {
         case "now":
-          if (!value) return;
-          const index = this.multiTags.findIndex(x => x.path === value);
-          if (index === -1) return;
-          this.multiTags.splice(index, 1);
+          const index = this.multiTags.findIndex(x => x.path === view?.path);
+          index > -1 && this.multiTags.splice(index, 1);
+          if (!view?.name) return;
+          const i = this.cachedViews.indexOf(view?.name);
+          i > -1 && this.cachedViews.splice(i, 1);
           break;
         case "other":
-          if (!value) return;
-          const oindex = this.multiTags.findIndex(x => x.path === value);
+          const oindex = this.multiTags.findIndex(x => x.path === view?.path);
           if (oindex === -1) return;
-          this.multiTags.splice(0, oindex);
-          this.multiTags.splice(oindex + 1, this.multiTags.length - 1);
+          this.multiTags = this.multiTags.filter(x => x.path === view?.path);
+          // this.multiTags.splice(0, oindex);
+          // this.multiTags.splice(oindex + 1, this.multiTags.length - 1);
+          if (!view?.name) return;
+          this.cachedViews = this.cachedViews.filter(x => x === view?.name);
           break;
         case "all":
           this.multiTags = [];
+          this.cachedViews = [];
           break;
       }
     },

@@ -38,6 +38,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     },
     //  https://cn.vitejs.dev/config/server-options.html#server-proxy
     server: {
+      hmr: true,
       host: "0.0.0.0",
       port: Number(VITE_PORT),
       open: false,

@@ -28,7 +28,7 @@ const routesList: RouteRecordRaw[] = [
 // Layout  404
 export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
   path: "/:path(.*)*",
-  name: "PAGE_NOT_FOUND_NAME",
+  name: "PAGE_NOT_FOUND",
   component: Layout,
   meta: {
     title: "ErrorPage",

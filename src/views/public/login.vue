@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Login">
 import { watch, ref, reactive } from "vue";
 import { useAuthStore } from "@/store/modules/auth";
 import { useRoute, useRouter } from "vue-router";
@@ -56,7 +56,7 @@ const rules: FormRules = {
 
 watch(
   () => route,
-  (newValue) => {
+  newValue => {
     const query = newValue.query;
     if (query.redirect) {
       redirect.value = String(query.redirect);
