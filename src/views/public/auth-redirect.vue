@@ -1,7 +1,7 @@
 <template>
   <div></div>
 </template>
-<script lang="ts" setup name="REDIRECT_NAME">
+<script lang="ts" setup name="Redirect">
 import { unref } from "vue";
 import { useRouter } from "vue-router";
 

@@ -7,7 +7,6 @@
   </div>
 </template>
 <script setup lang="ts" name="Logo">
-import { defineProps } from "vue";
 const props = defineProps({
   isCollapse: {
     type: Boolean,

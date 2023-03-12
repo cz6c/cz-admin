@@ -3,9 +3,9 @@
     <use :xlink:href="symbolId" />
   </svg>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="SvgIcon">
 import type { CSSProperties } from "vue";
-import { defineProps, computed } from "vue";
+import { computed } from "vue";
 
 const props = defineProps({
   prefix: {

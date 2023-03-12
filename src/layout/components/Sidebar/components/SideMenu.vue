@@ -10,7 +10,7 @@
       :collapse="props.isCollapse"
       @select="handleSelect"
     >
-      <template v-for="item in menuData" :key="item.path">
+      <template v-for="item in useAuthStore().dynamicMenu" :key="item.path">
         <template v-if="isSubmenu(item)">
           <el-sub-menu :index="item.path">
             <template #title>
@@ -48,10 +48,8 @@
 </template>
 
 <script setup lang="ts" name="SideMenu">
-import { defineProps } from "vue";
 import type { RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/store/modules/auth";
-// import { findRouteByPath } from "@/utils/router";
 
 const props = defineProps({
   isCollapse: {
@@ -59,8 +57,6 @@ const props = defineProps({
     default: false,
   },
 });
-
-const { dynamicMenu: menuData } = useAuthStore();
 
 /**
  * @description: 判断路由是否有可显示的子集菜单
@@ -77,7 +73,6 @@ function isSubmenu(item: RouteRecordRaw): boolean {
  * @param {*} path 当前路由路径
  */
 function handleSelect(path: string) {
-  // const route = findRouteByPath(path, menuData);
   console.log(path);
 }
 </script>

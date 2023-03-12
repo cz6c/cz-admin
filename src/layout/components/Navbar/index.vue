@@ -15,8 +15,8 @@
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
         <span class="user-info navbar-hover">
-          <el-avatar :size="36" fit="cover" :src="avatar" />
-          <p v-if="username" class="name">{{ username }}</p>
+          <el-avatar :size="36" fit="cover" :src="useAuthStore().avatar" />
+          <p v-if="useAuthStore().username" class="name">{{ useAuthStore().username }}</p>
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
@@ -29,7 +29,6 @@
 </template>
 
 <script setup lang="ts" name="Navbar">
-import { defineProps, defineEmits } from "vue";
 import Breadcrumb from "./components/BreadCrumb.vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/modules/auth";
@@ -41,7 +40,7 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["toggleClick"]);
-const { username, avatar, webLogout } = useAuthStore();
+const { webLogout } = useAuthStore();
 const router = useRouter();
 const toggleClick = () => {
   emit("toggleClick");

@@ -1,7 +1,14 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 
-export const Layout = () => import("@/Layout/index.vue");
+export const Layout = () => import("@/layout/index.vue");
+
+export enum RouterEnum {
+  // basic home path
+  BASE_HOME_PATH = "/dashboard",
+  // redirect name
+  REDIRECT_NAME = "Redirect",
+}
 
 // 公共菜单
 const routesList: RouteRecordRaw[] = [
@@ -9,7 +16,7 @@ const routesList: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Root",
-    redirect: "/dashboard",
+    redirect: RouterEnum.BASE_HOME_PATH,
     meta: {
       title: "root",
     },
@@ -28,44 +35,49 @@ const routesList: RouteRecordRaw[] = [
 // Layout  404
 export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
   path: "/:path(.*)*",
-  name: "PAGE_NOT_FOUND",
-  component: Layout,
+  name: "PAGE_NOT_FOUND_NAME",
+  // component: Layout,
+  component: () => import("@/views/public/404.vue"),
   meta: {
     title: "ErrorPage",
     hideBreadcrumb: true,
     hideMenu: true,
+    hideTag: true,
   },
-  children: [
-    {
-      path: "/:path(.*)*",
-      name: "PAGE_NOT_FOUND_NAME",
-      component: () => import("@/views/public/404.vue"),
-      meta: {
-        title: "ErrorPage",
-        hideBreadcrumb: true,
-        hideMenu: true,
-      },
-    },
-  ],
+  // children: [
+  //   {
+  //     path: "/:path(.*)*",
+  //     name: "PAGE_NOT_FOUND_NAME",
+  //     component: () => import("@/views/public/404.vue"),
+  //     meta: {
+  //       title: "ErrorPage",
+  //       hideBreadcrumb: true,
+  //       hideMenu: true,
+  //     },
+  //   },
+  // ],
 };
 // Layout redirect
 export const REDIRECT_ROUTE: RouteRecordRaw = {
   path: "/redirect",
   component: Layout,
-  name: "Redirect",
+  name: RouterEnum.REDIRECT_NAME,
   meta: {
     title: "REDIRECT_NAME",
     hideBreadcrumb: true,
     hideMenu: true,
+    hideTag: true,
   },
   children: [
     {
       path: "/redirect/:path(.*)",
-      name: "REDIRECT_NAME",
+      name: RouterEnum.REDIRECT_NAME,
       component: () => import("@/views/public/auth-redirect.vue"),
       meta: {
         title: "REDIRECT_NAME",
         hideBreadcrumb: true,
+        hideMenu: true,
+        hideTag: true,
       },
     },
   ],

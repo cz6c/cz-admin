@@ -5,7 +5,7 @@ interface FormJsonItem {
   data: any;
   initilaData: any;
   itemLabelWidth?: string | number;
-  itemContentWidth?: string;
+  span: number;
   required?: boolean;
   placeholder?: string;
   type?: "input" | "date" | "select" | "selectV2" | "switch" | "checkbox" | "radio";

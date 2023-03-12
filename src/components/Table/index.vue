@@ -85,14 +85,14 @@
 </template>
 
 <script setup lang="ts" name="TableView">
-import { defineProps, defineEmits, defineExpose, reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import tableProps from "./props";
 import { isFunction } from "@/utils/is";
 
 const props = defineProps(tableProps);
-console.log(props);
-const emits = defineEmits(["selectionChange", "sortChange", "rowDblclick", "currentChange"]);
-console.log(emits);
+// console.log(props);
+// const emits = defineEmits(["selectionChange", "sortChange", "rowDblclick", "currentChange"]);
+// console.log(emits);
 
 const loading = ref(true);
 const apiData = ref([]);

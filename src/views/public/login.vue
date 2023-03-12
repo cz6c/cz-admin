@@ -42,7 +42,6 @@ import { BASE_TITLE } from "@/config";
 const formRef = ref<FormInstance>();
 const route = useRoute();
 const router = useRouter();
-const { login } = useAuthStore();
 const loading = ref(false);
 let redirect = ref("");
 const loginForm = reactive({
@@ -73,7 +72,7 @@ function handleLogin(formEl: FormInstance | undefined) {
     if (valid) {
       try {
         loading.value = true;
-        await login(loginForm);
+        await useAuthStore().login(loginForm);
         router.push({
           path: redirect.value || "/",
         });

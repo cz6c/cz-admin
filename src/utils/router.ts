@@ -1,4 +1,4 @@
-import type { Router, RouteRecordNormalized, RouteRecordRaw } from "vue-router";
+import type { Router, RouteRecordNormalized, RouteRecordRaw, RouteLocationNormalized } from "vue-router";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { Layout } from "@/router/index";
 import { cloneDeep, omit } from "lodash-es";
@@ -12,14 +12,15 @@ const modulesRoutesKeys = Object.keys(modulesRoutes);
  */
 export function transformRoute(routeList: any) {
   routeList.forEach((item: any) => {
-    const { path, component, children } = item;
+    const { component, children } = item;
     if (component === "Layout") {
       item.component = Layout;
       if (children.length) {
         item.redirect = children[0].path;
       }
     } else {
-      const index = modulesRoutesKeys.findIndex(x => x.includes(path));
+      const index = modulesRoutesKeys.findIndex(x => x.includes((component as string).replace(/@[\/]?views\//, "")));
+      console.log(index);
       item.component = modulesRoutes[modulesRoutesKeys[index]];
     }
     children && transformRoute(children);

@@ -27,7 +27,7 @@ function install(app: App<Element>) {
   // 组件循环注册
   components.forEach((component: any) => {
     // console.log(component);
-    app.component(component.__name || component.name, component);
+    app.component(component.name, component);
   });
 }
 

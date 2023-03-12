@@ -9,13 +9,15 @@ const dashboardRoute = {
     title: "Dashboard",
     icon: "dashboard",
   },
-  redirect: "/dashboard/loginLog/index",
+  redirect: "/dashboard/workbench",
   children: [
     {
-      path: "/dashboard/loginLog/index",
-      name: "LoginLog",
+      path: "/dashboard/workbench",
+      name: "Workbench",
+      component: "@/views/dashboard/workbench/index",
       meta: {
-        title: "登录日志",
+        title: "工作台",
+        affix: true,
         roles: ["admin"],
       },
     },
@@ -30,27 +32,30 @@ const systemRouter = {
     title: "组织架构",
     icon: "tree",
   },
-  redirect: "/system/user/index",
+  redirect: "/system/user",
   children: [
     {
-      path: "/system/user/index",
+      path: "/system/user",
       name: "User",
+      component: "@/views/system/user/index",
       meta: {
         title: "用户管理",
         roles: ["admin"],
       },
     },
     {
-      path: "/system/role/index",
+      path: "/system/role",
       name: "Role",
+      component: `@/views/system/role/index`,
       meta: {
         title: "角色管理",
         roles: ["admin"],
       },
     },
     {
-      path: "/system/dept/index",
+      path: "/system/dept",
       name: "Dept",
+      component: "@/views/system/dept/index",
       meta: {
         title: "部门管理",
         roles: ["admin"],

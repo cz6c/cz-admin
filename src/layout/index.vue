@@ -1,11 +1,11 @@
 <template>
   <el-container class="app-container">
-    <el-aside :width="!isCollapse ? '200px' : '64px'">
+    <el-aside v-show="layoutStore.getShowSidebar" :width="!isCollapse ? '200px' : '64px'">
       <Sidebar :isCollapse="isCollapse" />
     </el-aside>
     <el-container>
       <el-header :height="isShowTags ? '88px' : '50px'">
-        <Navbar :isCollapse="isCollapse" @toggle-click="toggleSideBar" />
+        <Navbar :isCollapse="isCollapse" @toggle-click="toggleSideBar" v-show="layoutStore.getShowNavbar" />
         <MultiplTags v-if="isShowTags" />
       </el-header>
       <el-main>
@@ -24,6 +24,9 @@ import Sidebar from "./components/Sidebar/index.vue";
 import Navbar from "./components/Navbar/index.vue";
 import MultiplTags from "./components/MultiplTags/index.vue";
 import { isShowTags } from "@/config";
+import { useLayoutStore } from "@/store/modules/layout";
+
+const layoutStore = useLayoutStore();
 
 const isCollapse = ref(false);
 function toggleSideBar() {

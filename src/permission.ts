@@ -1,23 +1,23 @@
-import router, { PAGE_NOT_FOUND_ROUTE } from "./router";
+import router, { PAGE_NOT_FOUND_ROUTE } from "@/router";
 import { useAuthStore } from "@/store/modules/auth";
 import { getToken } from "@/utils/auth";
 
 const whitePathList: string[] = ["/login"];
 router.beforeEach(async (to, from, next) => {
   const token = getToken();
-  const { id, getLoginUserInfo, webLogout } = useAuthStore();
+  const authStore = useAuthStore();
   // 验证是否有token
   if (token) {
     if (to.path === "/login") {
       next((to.query?.redirect as string) || "/");
     } else {
-      // console.log(id, to, from);
+      console.log(to, from);
       // 验证是否有用户信息
-      if (id) {
+      if (authStore.id) {
         next();
       } else {
         try {
-          await getLoginUserInfo();
+          await authStore.getLoginUserInfo();
           if (to.name === PAGE_NOT_FOUND_ROUTE.name) {
             // 动态添加路由后，此处应当重定向到fullPath，否则会加载404页面内容
             next({ path: to.fullPath, replace: true, query: to.query });
@@ -26,7 +26,7 @@ router.beforeEach(async (to, from, next) => {
           }
         } catch (error) {
           // 前端登出
-          await webLogout();
+          await authStore.webLogout();
           next({
             path: "/login",
             query: {
@@ -41,7 +41,7 @@ router.beforeEach(async (to, from, next) => {
     if (whitePathList.includes(to.path) || to.meta.ignoreAuth) {
       next();
     } else {
-      await webLogout();
+      await authStore.webLogout();
       next({
         path: "/login",
         query: {

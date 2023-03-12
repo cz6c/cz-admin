@@ -17,7 +17,11 @@ interface authStoreState {
 
 export const authStore = defineStore("auth", {
   state: (): authStoreState => ({ id: 0, username: "", avatar: "", dynamicMenu: [] }),
-  getters: {},
+  getters: {
+    getDynamicMenu(): RouteRecordRaw[] {
+      return this.dynamicMenu;
+    },
+  },
   actions: {
     /**
      * @description: 登录
@@ -71,6 +75,7 @@ export const authStore = defineStore("auth", {
           router.addRoute(route as RouteRecordRaw);
         });
         this.dynamicMenu = routeList;
+        console.log(this.dynamicMenu);
         return routeList;
       } catch (error) {
         return Promise.reject(error);
