@@ -6,13 +6,13 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "eslint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
-    "prettier": "prettier --write . '!**/*.{js,jsx,vue}'"
+    "eslint": "eslint --cache --max-warnings 0  \"{src,mock}/**/*.{vue,ts}\" --fix",
+    "prettier": "prettier --write  \"src/**/*.{ts,json,scss,vue,html,md}\""
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "npm run eslint",
-      "npm run prettier"
+      "eslint --fix",
+      "prettier --write"
     ]
   },
   "dependencies": {

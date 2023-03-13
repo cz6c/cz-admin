@@ -21,7 +21,7 @@
       :visible="visible"
       :menuTop="menuTop"
       :menuLeft="menuLeft"
-      :selectedTag="selectedTag"
+      :selectedTag="selectedTag!"
     />
     <!-- 右侧功能 -->
     <div class="right-tool">
@@ -46,7 +46,7 @@ const affixTextList = initAffixTags();
 useTagsDrag(affixTextList);
 const multiTagsStore = useMultiTagsStore();
 
-const selectedTag = ref<MultiTagsItem>({});
+const selectedTag = ref<MultiTagsItem>();
 const rightDropdownRef = ref();
 const visible = ref<boolean>(false);
 const menuTop = ref<number>(0);
