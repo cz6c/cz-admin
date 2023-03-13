@@ -6,14 +6,38 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "eslint": "eslint --cache --max-warnings 0  \"{src,mock}/**/*.{vue,ts}\" --fix",
-    "prettier": "prettier --write  \"src/**/*.{ts,json,scss,vue,html,md}\""
+    "lint:eslint": "eslint --cache --max-warnings 0  \"{src,mock}/**/*.{vue,ts}\" --fix",
+    "lint:prettier": "prettier --write  \"src/**/*.{ts,json,scss,vue,html,md}\"",
+    "lint:stylelint": "stylelint --cache --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
+    "lint:lint-staged": "lint-staged",
+    "prepare": "husky install",
+    "cz": "czg"
   },
   "lint-staged": {
     "*.{js,ts}": [
       "eslint --fix",
       "prettier --write"
+    ],
+    "package.json": [
+      "prettier --write"
+    ],
+    "*.vue": [
+      "eslint --fix",
+      "prettier --write",
+      "stylelint --fix"
+    ],
+    "*.{scss,less,styl,html}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.10",
@@ -37,6 +61,8 @@
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
     "@vitejs/plugin-vue": "^2.2.0",
+    "cz-git": "^1.6.0",
+    "czg": "^1.6.0",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -44,8 +70,16 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.1.1",
     "mockjs": "^1.1.0",
+    "postcss": "^8.4.21",
+    "postcss-html": "^1.5.0",
+    "postcss-scss": "^4.0.6",
     "prettier": "^2.8.4",
     "sass": "^1.57.1",
+    "stylelint": "^15.2.0",
+    "stylelint-config-prettier": "^9.0.5",
+    "stylelint-config-recommended": "^10.0.1",
+    "stylelint-config-standard": "^30.0.1",
+    "stylelint-order": "^6.0.3",
     "typescript": "^4.5.4",
     "vite": "^2.8.0",
     "vite-plugin-mock": "^2.9.6",
