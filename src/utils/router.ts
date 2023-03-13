@@ -1,10 +1,15 @@
-import type { Router, RouteRecordNormalized, RouteRecordRaw, RouteLocationNormalized } from "vue-router";
+import type { Router, RouteRecordNormalized, RouteRecordRaw } from "vue-router";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { Layout } from "@/router/index";
 import { cloneDeep, omit } from "lodash-es";
 
 const modulesRoutes = (import.meta as any).glob("/src/views/**/*.{vue,tsx}");
 const modulesRoutesKeys = Object.keys(modulesRoutes);
+
+export function menuToRoute(routeList: any): RouteRecordRaw[] {
+  transformRoute(routeList);
+  return flatMultiLevelRoutes(routeList as RouteRecordRaw[]);
+}
 
 /**
  * @description: 动态菜单转路由
@@ -20,7 +25,6 @@ export function transformRoute(routeList: any) {
       }
     } else {
       const index = modulesRoutesKeys.findIndex(x => x.includes((component as string).replace(/@[\/]?views\//, "")));
-      console.log(index);
       item.component = modulesRoutes[modulesRoutesKeys[index]];
     }
     children && transformRoute(children);

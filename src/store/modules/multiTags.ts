@@ -9,6 +9,7 @@ export type MultiTagsItem = {
   name: string;
   path: string;
   meta: RouteMeta;
+  fullPath: string;
 };
 
 interface TagsState {
@@ -29,7 +30,7 @@ export const multiTagsStore = defineStore("multiTags", {
      * @return {*}
      */
     getMultiTags(): MultiTagsItem[] {
-      return this.multiTags;
+      return this.multiTags.filter(tag => !tag.meta?.hideMenu);
     },
     /**
      * @description: 获取页面缓存数组
@@ -73,12 +74,12 @@ export const multiTagsStore = defineStore("multiTags", {
      * @description: 新增标签页
      * @param {MultiTagsItem} tag
      */
-    async addView(tag: MultiTagsItem) {
-      const { path } = tag;
+    async addTag(tag: MultiTagsItem) {
+      const { path, fullPath } = tag;
       let updateIndex = -1;
       const hasExits = this.multiTags.some((tag, index) => {
         updateIndex = index;
-        return tag.path === path;
+        return (tag.fullPath || tag.path) === (fullPath || path);
       });
       // 如果已经存在，则执行更新操作
       if (hasExits) {
@@ -86,6 +87,7 @@ export const multiTagsStore = defineStore("multiTags", {
         if (!currentTag) {
           return;
         }
+        // currentTag.fullPath = fullPath || currentTag.fullPath;
         this.multiTags.splice(updateIndex, 1, currentTag);
       } else {
         // add tag
@@ -101,21 +103,21 @@ export const multiTagsStore = defineStore("multiTags", {
      * @param {Router} router
      */
     async closeTag(tag: MultiTagsItem, router: Router) {
-      const close = (path: string) => {
-        const index = this.multiTags.findIndex(item => item.path === path);
+      const close = (fullPath: string) => {
+        const index = this.multiTags.findIndex(item => item.fullPath === fullPath);
         index !== -1 && this.multiTags.splice(index, 1);
       };
       const { currentRoute, replace } = router;
-      const { path } = unref(currentRoute);
+      const { fullPath } = unref(currentRoute);
       // 关闭 不是当前活跃标签页
-      if (path !== tag.path) {
-        close(tag.path);
+      if (fullPath !== tag.fullPath) {
+        close(tag.fullPath!);
         this.updateCache();
         return;
       }
       // 关闭 当前活跃标签页
       let toPath = "";
-      const index = this.multiTags.findIndex(item => item.path === path);
+      const index = this.multiTags.findIndex(item => item.fullPath === fullPath);
       // 如果当前是最左边的tag
       if (index === 0) {
         // 只有一个tag，则跳转到首页，否则跳转到右边tag
@@ -123,11 +125,11 @@ export const multiTagsStore = defineStore("multiTags", {
           toPath = RouterEnum.BASE_HOME_PATH;
         } else {
           const page = this.multiTags[index + 1];
-          toPath = page.path;
+          toPath = page.fullPath;
         }
       } else {
         const page = this.multiTags[index - 1];
-        toPath = page.path;
+        toPath = page.fullPath;
       }
       close(unref(currentRoute).fullPath);
       await replace(toPath);
@@ -144,10 +146,7 @@ export const multiTagsStore = defineStore("multiTags", {
       let toPath: string = RouterEnum.BASE_HOME_PATH;
       if (len > 0) {
         const page = this.multiTags[0];
-        const p = page.path;
-        if (p) {
-          toPath = p;
-        }
+        toPath = page.fullPath;
       }
       path !== toPath && router.replace(toPath);
     },
@@ -156,21 +155,22 @@ export const multiTagsStore = defineStore("multiTags", {
      * @param {MultiTagsItem} tag
      */
     async closeOtherTags(tag: MultiTagsItem) {
-      const closePathList = this.multiTags.map(item => item.path);
-      const pathList: string[] = [];
-      for (const path of closePathList) {
-        if (path !== tag.path) {
-          const closeItem = this.multiTags.find(item => item.path === path);
+      const fullPathList = this.multiTags.map(item => item.fullPath);
+      const closePathList: string[] = [];
+      const currentPath = tag.fullPath || tag.path;
+      for (const fullPath of fullPathList) {
+        if (fullPath !== currentPath) {
+          const closeItem = this.multiTags.find(item => item.fullPath === fullPath);
           if (!closeItem) {
             continue;
           }
           const affix = closeItem?.meta?.affix ?? false;
           if (!affix) {
-            pathList.push(closeItem.path);
+            closePathList.push(closeItem.fullPath);
           }
         }
       }
-      this.multiTags = this.multiTags.filter(item => !pathList.includes(item.path));
+      this.multiTags = this.multiTags.filter(item => !closePathList.includes(item.fullPath));
       this.updateCache();
     },
     /**

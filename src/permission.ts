@@ -11,7 +11,7 @@ router.beforeEach(async (to, from, next) => {
     if (to.path === "/login") {
       next((to.query?.redirect as string) || "/");
     } else {
-      console.log(to, from);
+      // console.log(to, from);
       // 验证是否有用户信息
       if (authStore.id) {
         next();

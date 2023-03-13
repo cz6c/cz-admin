@@ -36,7 +36,6 @@ const routesList: RouteRecordRaw[] = [
 export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
   path: "/:path(.*)*",
   name: "PAGE_NOT_FOUND_NAME",
-  // component: Layout,
   component: () => import("@/views/public/404.vue"),
   meta: {
     title: "ErrorPage",
@@ -44,24 +43,12 @@ export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
     hideMenu: true,
     hideTag: true,
   },
-  // children: [
-  //   {
-  //     path: "/:path(.*)*",
-  //     name: "PAGE_NOT_FOUND_NAME",
-  //     component: () => import("@/views/public/404.vue"),
-  //     meta: {
-  //       title: "ErrorPage",
-  //       hideBreadcrumb: true,
-  //       hideMenu: true,
-  //     },
-  //   },
-  // ],
 };
 // Layout redirect
 export const REDIRECT_ROUTE: RouteRecordRaw = {
   path: "/redirect",
   component: Layout,
-  name: RouterEnum.REDIRECT_NAME,
+  name: "RouterEnum.REDIRECT_NAME",
   meta: {
     title: "REDIRECT_NAME",
     hideBreadcrumb: true,

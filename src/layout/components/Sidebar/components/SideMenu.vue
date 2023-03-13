@@ -4,13 +4,13 @@
       router
       unique-opened
       mode="vertical"
-      :default-active="$route.path"
+      :default-active="getActiveRoutePath"
       :collapse-transition="false"
-      :class="{ on: props.isCollapse }"
-      :collapse="props.isCollapse"
+      :class="{ on: layoutStore.getIsCollapse }"
+      :collapse="layoutStore.getIsCollapse"
       @select="handleSelect"
     >
-      <template v-for="item in useAuthStore().dynamicMenu" :key="item.path">
+      <template v-for="item in authStore.getDynamicMenu" :key="item.path">
         <template v-if="isSubmenu(item)">
           <el-sub-menu :index="item.path">
             <template #title>
@@ -48,14 +48,21 @@
 </template>
 
 <script setup lang="ts" name="SideMenu">
-import type { RouteRecordRaw } from "vue-router";
+import { useRoute, RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/store/modules/auth";
+import { computed } from "vue";
+import { useLayoutStore } from "@/store/modules/layout";
 
-const props = defineProps({
-  isCollapse: {
-    type: Boolean,
-    default: false,
-  },
+const layoutStore = useLayoutStore();
+const authStore = useAuthStore();
+const route = useRoute();
+
+const getActiveRoutePath = computed((): string => {
+  let path = route.path;
+  if (route.meta && route.meta.activeMenu) {
+    path = route.meta.activeMenu as string;
+  }
+  return path;
 });
 
 /**

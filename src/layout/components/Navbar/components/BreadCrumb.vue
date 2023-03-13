@@ -13,10 +13,9 @@ import { useRoute, useRouter, RouteLocationMatched } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-// console.log(route.matched);
 
 const matched = computed(() => {
-  return route.matched;
+  return route.matched.filter(item => !item.meta?.hideBreadcrumb);
 });
 
 const handleLink = (item: RouteLocationMatched): void => {

@@ -30,10 +30,11 @@ export function initAffixTags(): string[] {
     const affixTags = filterAffixTags(router.getRoutes() as unknown as RouteLocationNormalized[]);
     affixList.value = affixTags;
     for (const tag of affixTags) {
-      multiTagsStore.addView({
+      multiTagsStore.addTag({
         name: tag.name as string,
         path: tag.path,
         meta: tag.meta,
+        fullPath: tag.fullPath || tag.path,
       });
     }
   }

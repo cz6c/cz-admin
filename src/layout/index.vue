@@ -1,11 +1,11 @@
 <template>
   <el-container class="app-container">
-    <el-aside v-show="layoutStore.getShowSidebar" :width="!isCollapse ? '200px' : '64px'">
-      <Sidebar :isCollapse="isCollapse" />
+    <el-aside v-show="layoutStore.getShowSidebar" :width="!layoutStore.getIsCollapse ? '200px' : '64px'">
+      <Sidebar />
     </el-aside>
     <el-container>
       <el-header :height="isShowTags ? '88px' : '50px'">
-        <Navbar :isCollapse="isCollapse" @toggle-click="toggleSideBar" v-show="layoutStore.getShowNavbar" />
+        <Navbar @toggle-click="toggleSideBar" v-show="layoutStore.getShowNavbar" />
         <MultiplTags v-if="isShowTags" />
       </el-header>
       <el-main>

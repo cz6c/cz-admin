@@ -1,11 +1,11 @@
 <template>
   <transition name="el-zoom-in-top">
-    <ul v-show="visible" :key="Math.random()" :style="menuStyle" class="contextmenu">
+    <ul v-show="visible" :key="Math.random()" :style="getContextMenuStyle" class="contextmenu">
       <li
         v-for="(item, index) in tagMenu"
         :key="index"
-        :class="`${item.disabled ? 'disabled' : ''}`"
-        @click="!item.disabled && handleClickDrop(index, props.selectedTag)"
+        :class="`${props.selectedTag && isDisabled(index) ? 'disabled' : ''}`"
+        @click="props.selectedTag && !isDisabled(index) && handleClickDrop(index, props.selectedTag)"
       >
         <SvgIcon :name="item.icon" />
         <span> {{ item.text }}</span>
@@ -15,54 +15,68 @@
 </template>
 
 <script setup lang="ts" name="RightDropdown">
-import { unref, reactive, CSSProperties } from "vue";
+import { unref, computed, CSSProperties } from "vue";
 import { useMultiTagsStore, MultiTagsItem } from "@/store/modules/multiTags";
 import { useRouter } from "vue-router";
 
-interface Props {
+const props = defineProps<{
   visible: boolean;
-  menuStyle: CSSProperties;
-  selectedTag: MultiTagsItem | undefined;
-}
-
-interface TagMenuItem {
-  icon: string;
-  text: string;
-  disabled: boolean;
-}
-
-const props = defineProps<Props>();
+  menuTop: number;
+  menuLeft: number;
+  selectedTag: MultiTagsItem;
+}>();
 
 const multiTagsStore = useMultiTagsStore();
 const router = useRouter();
 
-const tagMenu = reactive<Array<TagMenuItem>>([
+const tagMenu = [
   {
     icon: "back_top",
     text: "重新加载",
-    disabled: false,
   },
   {
     icon: "back_top",
     text: "关闭标签页",
-    disabled: false,
   },
   {
     icon: "back_top",
     text: "关闭其他标签页",
-    disabled: false,
   },
   {
     icon: "back_top",
     text: "关闭全部标签页",
-    disabled: false,
   },
-]);
+];
 
-function getCurrentTag() {
-  const { currentRoute } = router;
-  const route = unref(currentRoute);
-  return multiTagsStore.getMultiTags.find(item => item.path === route.path)!;
+const getContextMenuStyle = computed((): CSSProperties => {
+  return { left: props.menuLeft + "px", top: props.menuTop + "px" };
+});
+
+/**
+ * @description: 计算各菜单的禁用情况
+ * @param {*} index
+ * @return {*}
+ */
+function isDisabled(index: number): boolean {
+  let disabled = false;
+  const filterTags = multiTagsStore.getMultiTags.filter(x => !x.meta?.affix);
+  const route = unref(router.currentRoute);
+  const tag = unref(props.selectedTag)!;
+  switch (index) {
+    case 0:
+      disabled = route.path !== tag.path && route.name !== tag.name;
+      break;
+    case 1:
+      disabled = !!tag.meta?.affix;
+      break;
+    case 2:
+      disabled = tag.meta?.affix ? filterTags.length < 1 : filterTags.length < 2;
+      break;
+    case 3:
+      disabled = filterTags.length < 1;
+      break;
+  }
+  return disabled;
 }
 
 /**
@@ -70,19 +84,18 @@ function getCurrentTag() {
  * @param {*} index
  * @param {*} tag
  */
-async function handleClickDrop(index: number, tag?: MultiTagsItem) {
-  const currentTag = getCurrentTag();
+async function handleClickDrop(index: number, tag: MultiTagsItem) {
   switch (index) {
     case 0:
       await multiTagsStore.refreshPage(router);
       break;
 
     case 1:
-      await multiTagsStore.closeTag(tag || currentTag, router);
+      await multiTagsStore.closeTag(tag, router);
       break;
 
     case 2:
-      await multiTagsStore.closeOtherTags(currentTag);
+      await multiTagsStore.closeOtherTags(tag);
       break;
 
     case 3:

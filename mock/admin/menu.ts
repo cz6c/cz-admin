@@ -18,7 +18,6 @@ const dashboardRoute = {
       meta: {
         title: "工作台",
         affix: true,
-        roles: ["admin"],
       },
     },
   ],
@@ -40,7 +39,6 @@ const systemRouter = {
       component: "@/views/system/user/index",
       meta: {
         title: "用户管理",
-        roles: ["admin"],
       },
     },
     {
@@ -49,7 +47,6 @@ const systemRouter = {
       component: `@/views/system/role/index`,
       meta: {
         title: "角色管理",
-        roles: ["admin"],
       },
     },
     {
@@ -58,7 +55,6 @@ const systemRouter = {
       component: "@/views/system/dept/index",
       meta: {
         title: "部门管理",
-        roles: ["admin"],
       },
     },
   ],

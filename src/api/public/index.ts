@@ -1,12 +1,12 @@
 import { createGet, createPost } from "@/utils/request";
-import { LoginParams, UserInfo } from "./index.d";
+import { LoginParams, UserInfo, RouteRow } from "./index.d";
 
 // 登录
 export const login = createPost<LoginParams, { token: string }>("/adminapi/login");
 // 获取用户信息
 export const getLoginUserInfo = createGet<never, UserInfo>("/adminapi/getUserInfo");
 // 获取当前用户菜单
-export const getMenuList = createGet<never, any>("/adminapi/getMenuList");
+export const getMenuList = createGet<never, RouteRow[]>("/adminapi/getMenuList");
 // 获取城市地区
 export const getAreaList = createGet<never, any>("/adminapi/getAreaList");
 

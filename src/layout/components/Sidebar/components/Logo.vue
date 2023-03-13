@@ -1,19 +1,16 @@
 <template>
   <div class="logo-container">
-    <router-link key="props.collapse" :title="title" class="logo-link" to="/">
+    <router-link key="props.collapse" :title="BASE_TITLE" class="logo-link" to="/">
       <SvgIcon name="logo" size="36" />
-      <div v-if="!props.isCollapse" class="logo-title">{{ title }}</div>
+      <div v-if="!layoutStore.getIsCollapse" class="logo-title">{{ BASE_TITLE }}</div>
     </router-link>
   </div>
 </template>
 <script setup lang="ts" name="Logo">
-const props = defineProps({
-  isCollapse: {
-    type: Boolean,
-    default: false,
-  },
-});
-const title = "czadmin";
+import { BASE_TITLE } from "@/config";
+import { useLayoutStore } from "@/store/modules/layout";
+
+const layoutStore = useLayoutStore();
 </script>
 
 <style lang="scss" scoped>
@@ -21,6 +18,9 @@ const title = "czadmin";
   position: relative;
   height: 48px;
   overflow: hidden;
+  a {
+    text-decoration: none;
+  }
   .logo-link {
     height: 100%;
     display: flex;

@@ -3,8 +3,8 @@
     <div class="navbar-left">
       <div
         class="collapse navbar-hover"
-        :class="{ active: props.isCollapse }"
-        :title="props.isCollapse ? '点击展开' : '点击折叠'"
+        :class="{ active: layoutStore.getIsCollapse }"
+        :title="layoutStore.getIsCollapse ? '点击展开' : '点击折叠'"
         @click="toggleClick"
       >
         <SvgIcon name="collapse" />
@@ -32,19 +32,17 @@
 import Breadcrumb from "./components/BreadCrumb.vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/modules/auth";
+import { useLayoutStore } from "@/store/modules/layout";
 
-const props = defineProps({
-  isCollapse: {
-    type: Boolean,
-    default: false,
-  },
-});
-const emit = defineEmits(["toggleClick"]);
 const { webLogout } = useAuthStore();
+const layoutStore = useLayoutStore();
+
 const router = useRouter();
-const toggleClick = () => {
-  emit("toggleClick");
-};
+
+function toggleClick() {
+  layoutStore.setIsCollapse(!layoutStore.getIsCollapse);
+}
+
 /**
  * @description: 登出
  */

@@ -5,21 +5,34 @@ import { login, getLoginUserInfo, getMenuList } from "@/api/public";
 import { LoginParams, UserInfo } from "@/api/public/index.d";
 import { isDynamicAddedRoute } from "@/config";
 import router, { resetRouter } from "@/router";
-import { transformRoute, flatMultiLevelRoutes } from "@/utils/router";
+import { menuToRoute } from "@/utils/router";
 import type { RouteRecordRaw } from "vue-router";
+import { useMultiTagsStore } from "./multiTags";
+import { filter } from "@/utils/tree";
 
 interface authStoreState {
   id: number;
   username: string;
   avatar: string;
-  dynamicMenu: RouteRecordRaw[];
+  dynamicRoutes: RouteRecordRaw[];
 }
 
 export const authStore = defineStore("auth", {
-  state: (): authStoreState => ({ id: 0, username: "", avatar: "", dynamicMenu: [] }),
+  state: (): authStoreState => ({
+    // 用户id
+    id: 0,
+    // 用户昵称
+    username: "",
+    // 用户头像
+    avatar: "",
+    // 动态路由
+    dynamicRoutes: [],
+  }),
   getters: {
     getDynamicMenu(): RouteRecordRaw[] {
-      return this.dynamicMenu;
+      return filter(this.dynamicRoutes, route => {
+        return !route.meta?.hideMenu;
+      });
     },
   },
   actions: {
@@ -63,19 +76,15 @@ export const authStore = defineStore("auth", {
      */
     async getMenuList(): Promise<RouteRecordRaw[] | unknown> {
       try {
-        let { data: routeList } = await getMenuList();
+        const { data } = await getMenuList();
         // 重置动态路由
         resetRouter();
-        // 接口数据转路由
-        transformRoute(routeList);
-        // 多级路由转换为 2 级路由
-        routeList = flatMultiLevelRoutes(routeList);
+        const routeList = menuToRoute(data);
         // console.log("addRoute", router);
         routeList.forEach((route: any) => {
           router.addRoute(route as RouteRecordRaw);
         });
-        this.dynamicMenu = routeList;
-        console.log(this.dynamicMenu);
+        this.dynamicRoutes = routeList;
         return routeList;
       } catch (error) {
         return Promise.reject(error);
@@ -88,6 +97,8 @@ export const authStore = defineStore("auth", {
       this.$reset();
       removeToken();
       resetRouter();
+      const { resetState } = useMultiTagsStore();
+      resetState();
     },
   },
 });

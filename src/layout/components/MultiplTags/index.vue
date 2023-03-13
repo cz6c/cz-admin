@@ -5,17 +5,13 @@
         <div
           v-for="(tag, index) in multiTagsStore.getMultiTags"
           :key="index"
-          :class="['tag', $route.path === tag.path ? 'active' : '']"
+          :class="['tag', isActive(tag) ? 'active' : '']"
           @contextmenu.prevent="openMenu(tag, $event)"
-          @mouseenter.prevent="activeIndex = index"
-          @mouseleave.prevent="activeIndex = -1"
         >
-          <router-link :to="tag.path">
+          <router-link :to="tag.fullPath || tag.path">
             <span>{{ tag.meta.title }}</span>
           </router-link>
-          <el-icon v-show="index === activeIndex && index !== 0" @click.prevent.stop="handleClose(1, tag)"
-            ><Close
-          /></el-icon>
+          <el-icon v-show="!tag.meta?.affix" @click.prevent.stop="handleClose(1, tag)"><Close /></el-icon>
         </div>
       </div>
     </el-scrollbar>
@@ -23,7 +19,8 @@
     <RightDropdown
       ref="rightDropdownRef"
       :visible="visible"
-      :menuStyle="getContextMenuStyle"
+      :menuTop="menuTop"
+      :menuLeft="menuLeft"
       :selectedTag="selectedTag"
     />
     <!-- 右侧功能 -->
@@ -34,9 +31,9 @@
   </div>
 </template>
 <script setup lang="ts" name="MultiplTags">
-import { ref, computed, watch, CSSProperties, unref } from "vue";
+import { ref, watch, unref } from "vue";
 import { useMultiTagsStore, MultiTagsItem } from "@/store/modules/multiTags";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { useEventListener } from "@vueuse/core";
 import { RouterEnum } from "@/router";
 import { initAffixTags, useTagsDrag } from "./useMultipleTags";
@@ -45,52 +42,51 @@ import FoldButton from "./components/FoldButton.vue";
 import RightDropdown from "./components/RightDropdown.vue";
 
 const route = useRoute();
-const router = useRouter();
 const affixTextList = initAffixTags();
 useTagsDrag(affixTextList);
 const multiTagsStore = useMultiTagsStore();
 
-const activeIndex = ref<number>(-1);
-const selectedTag = ref<MultiTagsItem>();
+const selectedTag = ref<MultiTagsItem>({});
 const rightDropdownRef = ref();
 const visible = ref<boolean>(false);
 const menuTop = ref<number>(0);
 const menuLeft = ref<number>(0);
-const getContextMenuStyle = computed((): CSSProperties => {
-  return { left: menuLeft.value + "px", top: menuTop.value + "px" };
-});
+
+function isActive(tag: MultiTagsItem) {
+  return unref(route.fullPath) === tag.fullPath;
+}
 
 watch(
   () => route,
   value => {
-    console.log(value);
-    const name = value.name as string;
+    const { name } = unref(value);
     // 不需要新增的到标签页的情况在这里处理
     if (name === RouterEnum.REDIRECT_NAME || !value) {
       return;
     }
-    const { path, meta = {} } = value;
-    const { activeMenu, hideTag } = meta;
-    const isHide = !hideTag ? null : activeMenu;
-    // const p = isHide || fullPath || path;
-    // if (activeKeyRef.value !== p) {
-    //   activeKeyRef.value = p as string;
+    const { path, fullPath, meta = {} } = value;
+    // const { activeMenu, hideTag } = meta;
+    // const isHide = !hideTag ? null : activeMenu;
+    // if (isHide) {
+    //   const findParentRoute = router.getRoutes().find(item => item.path === activeMenu);
+    //   findParentRoute &&
+    //     multiTagsStore.addTag({
+    //       name: findParentRoute.name as string,
+    //       path: findParentRoute.path,
+    //       meta: findParentRoute.meta,
+    //     });
+    // } else {
+    multiTagsStore.addTag({ name: name as string, path, meta, fullPath });
     // }
-    if (isHide) {
-      const findParentRoute = router.getRoutes().find(item => item.path === activeMenu);
-      findParentRoute &&
-        multiTagsStore.addView({
-          name: findParentRoute.name as string,
-          path: findParentRoute.path,
-          meta: findParentRoute.meta,
-        });
-    } else {
-      multiTagsStore.addView({ name, path, meta });
-    }
   },
   { immediate: true, deep: true },
 );
 
+/**
+ * @description: 关闭标签页
+ * @param {*} index
+ * @param {*} tag
+ */
 function handleClose(index: number, tag: MultiTagsItem) {
   unref(rightDropdownRef).handleClickDrop(index, tag);
 }
@@ -101,29 +97,15 @@ function handleClose(index: number, tag: MultiTagsItem) {
  * @param {*} e
  */
 function openMenu(tag: MultiTagsItem, e: MouseEvent) {
-  console.log(tag, e);
-  // if (tag.name === "LoginLog") {
-  //   // 右键菜单为首页
-  //   tagMenu[0].disabled = false;
-  //   tagMenu[1].disabled = true;
-  //   tagMenu[2].disabled = !(multiTags.value.length > 1);
-  //   tagMenu[3].disabled = true;
-  // } else {
-  //   // 右键菜单不匹配当前路由，禁用刷新
-  //   tagMenu[0].disabled = route.path !== tag.path && route.name !== tag.name;
-  //   tagMenu[1].disabled = !(multiTags.value.length > 1);
-  //   tagMenu[2].disabled = !(multiTags.value.length > 2);
-  //   tagMenu[3].disabled = !(multiTags.value.length > 1);
-  // }
+  // console.log(tag, e);
   menuLeft.value = e.clientX;
   menuTop.value = e.clientY;
-  visible.value = true;
   selectedTag.value = tag;
+  visible.value = true;
 }
 
 /**
  * @description: 关闭右键菜单
- * @return {*}
  */
 function closeMenu() {
   visible.value = false;
