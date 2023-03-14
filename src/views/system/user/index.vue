@@ -103,17 +103,17 @@ const sumbit = () => {
 
 <style lang="scss" scoped>
 .page {
-  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  height: 100%;
 
   .left-view {
-    width: 260px;
-    background-color: #fff;
-    height: 100%;
     overflow-y: auto;
     margin-right: 16px;
+    width: 260px;
+    height: 100%;
+    background-color: #fff;
   }
 
   .right-view {
@@ -121,9 +121,9 @@ const sumbit = () => {
     height: 100%;
 
     .search-wrap {
+      margin-bottom: 16px;
       height: 80px;
       background-color: #fff;
-      margin-bottom: 16px;
     }
   }
 }

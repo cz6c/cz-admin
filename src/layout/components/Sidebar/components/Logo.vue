@@ -16,17 +16,17 @@ const layoutStore = useLayoutStore();
 <style lang="scss" scoped>
 .logo-container {
   position: relative;
-  height: 48px;
   overflow: hidden;
+  height: 48px;
 
   a {
     text-decoration: none;
   }
 
   .logo-link {
-    height: 100%;
     display: flex;
     align-items: center;
+    height: 100%;
 
     :deep(.svg-icon) {
       margin: 0 14px;
@@ -35,9 +35,9 @@ const layoutStore = useLayoutStore();
     .logo-title {
       display: block;
       width: 136px;
-      color: #1890ff;
-      font-weight: 600;
       font-size: 20px;
+      font-weight: 600;
+      color: #1890ff;
     }
   }
 }

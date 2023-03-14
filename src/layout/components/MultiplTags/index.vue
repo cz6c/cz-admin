@@ -120,15 +120,15 @@ watch(
 </script>
 <style lang="scss" scoped>
 .tags-view {
-  height: 38px;
+  position: relative;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
+  height: 38px;
   font-size: 14px;
   color: #616a88;
   background: #fff;
-  position: relative;
   box-shadow: 0 0 1px #888;
 
   :deep(.el-scrollbar) {
@@ -138,20 +138,20 @@ watch(
       padding: 5px;
 
       a {
+        padding: 0 8px;
         text-decoration: none;
         color: #616a88;
-        padding: 0 8px;
       }
 
       .tag {
         position: relative;
         display: inline-block;
-        padding: 0 6px;
-        border-radius: 3px 3px 0 0;
-        box-shadow: 0 0 1px #888;
-        height: 28px;
-        line-height: 28px;
         margin-right: 6px;
+        border-radius: 3px 3px 0 0;
+        padding: 0 6px;
+        height: 28px;
+        box-shadow: 0 0 1px #888;
+        line-height: 28px;
         cursor: pointer;
 
         &.active {
@@ -176,9 +176,9 @@ watch(
 
           &:hover {
             border-radius: 50%;
+            font-size: 12px;
             color: #fff;
             background: #b4bccc;
-            font-size: 12px;
           }
         }
       }
@@ -188,12 +188,12 @@ watch(
   .right-tool {
     span {
       display: inline-block;
+      border-left: 1px solid #d9d9d9;
       width: 38px;
       height: 38px;
-      line-height: 38px;
       text-align: center;
+      line-height: 38px;
       cursor: pointer;
-      border-left: 1px solid #d9d9d9;
       box-sizing: border-box;
     }
   }

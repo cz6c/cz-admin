@@ -41,8 +41,8 @@ function toggleSideBar() {
   }
 
   .el-main {
-    background: #f0f2f5;
     padding: 16px;
+    background: #f0f2f5;
 
     .el-scrollbar__view {
       height: 100%;

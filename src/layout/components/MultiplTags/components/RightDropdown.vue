@@ -111,21 +111,21 @@ defineExpose({
 
 <style scoped lang="scss">
 .contextmenu {
-  margin: 0;
-  background: #fff;
-  z-index: 6666;
   position: fixed;
-  list-style-type: none;
-  padding: 5px 0;
+  z-index: 6666;
+  margin: 0;
   border-radius: 2px;
+  padding: 5px 0;
   font-size: 12px;
+  background: #fff;
   box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  list-style-type: none;
 
   li {
-    margin: 0;
-    padding: 6px 12px;
     display: flex;
     align-items: center;
+    margin: 0;
+    padding: 6px 12px;
     cursor: pointer;
 
     &:hover {

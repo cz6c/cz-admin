@@ -99,9 +99,9 @@ const sumbit = () => {
   height: 100%;
 
   .search-wrap {
+    margin-bottom: 20px;
     height: 80px;
     background-color: #fff;
-    margin-bottom: 20px;
   }
 }
 </style>

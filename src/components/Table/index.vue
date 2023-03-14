@@ -145,15 +145,15 @@ defineExpose({
 
 <style scoped lang="scss">
 .table-view {
-  background-color: #fff;
   padding: 0 8px;
+  background-color: #fff;
 
   .header-wrap {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    height: 50px;
+    align-items: center;
     padding: 0 8px;
+    height: 50px;
 
     .header-title {
       font-size: 18px;
@@ -172,10 +172,10 @@ defineExpose({
   }
 
   .pagination-wrap {
-    height: 50px;
     display: flex;
-    align-items: center;
     justify-content: flex-end;
+    align-items: center;
+    height: 50px;
   }
 }
 </style>

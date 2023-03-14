@@ -173,8 +173,8 @@ export default class SetPassword extends Vue {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 100px;
     margin-bottom: 20px;
+    margin-left: 100px;
 
     .avatar {
       border-radius: 75px;
@@ -204,8 +204,8 @@ export default class SetPassword extends Vue {
   }
 
   /deep/.submit-btn {
-    padding: 4px 30px;
     border-radius: 4px;
+    padding: 4px 30px;
   }
 }
 </style>

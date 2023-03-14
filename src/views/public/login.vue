@@ -89,10 +89,10 @@ function handleLogin(formEl: FormInstance | undefined) {
 <style scoped lang="scss">
 .login {
   position: relative;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
 
   .content-wrapper {
     width: 418px;
@@ -125,13 +125,13 @@ function handleLogin(formEl: FormInstance | undefined) {
         margin-bottom: 24px;
 
         .el-form-item__label {
+          padding-bottom: 8px;
           width: 56px;
           height: 32px;
-          line-height: 32px !important;
           text-align: justify;
-          vertical-align: top;
           color: #333;
-          padding-bottom: 8px;
+          line-height: 32px !important;
+          vertical-align: top;
 
           &::after {
             display: inline-block;
@@ -152,23 +152,23 @@ function handleLogin(formEl: FormInstance | undefined) {
 
         .code-view {
           position: absolute;
-          right: 1px;
           top: 1px;
-          height: 38px;
-          width: 120px;
-          cursor: pointer;
+          right: 1px;
           z-index: 2;
           border-radius: 4px;
+          width: 120px;
+          height: 38px;
+          cursor: pointer;
           user-select: none;
         }
       }
     }
 
     :deep(.login-btn) {
+      margin-bottom: 16px;
       width: 100%;
       height: 40px;
       line-height: 40px;
-      margin-bottom: 16px;
     }
 
     .login-timeout {

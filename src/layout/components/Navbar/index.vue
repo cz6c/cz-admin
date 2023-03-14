@@ -54,22 +54,22 @@ async function logout() {
 
 <style scoped lang="scss">
 .navbar {
-  height: 50px;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #d9d9d9;
+  height: 50px;
 
   &-left,
   &-right {
-    height: 100%;
     display: flex;
     align-items: center;
+    height: 100%;
   }
 
   &-hover {
-    height: 100%;
     display: flex;
     align-items: center;
+    height: 100%;
 
     &:hover {
       cursor: pointer;
