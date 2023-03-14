@@ -48,6 +48,8 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
     "@types/lodash-es": "^4.17.6",
     "@types/mockjs": "^1.0.7",
     "@types/node": "^18.11.18",
