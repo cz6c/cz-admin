@@ -163,38 +163,46 @@ export default class SetPassword extends Vue {
 .content {
   display: flex;
   justify-content: center;
+
   .form-wrap {
     padding-top: 100px;
     width: 400px;
   }
+
   .avatar-uploader {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-left: 100px;
     margin-bottom: 20px;
+
     .avatar {
       border-radius: 75px;
       width: 80px;
       height: 80px;
     }
+
     .el-icon-plus {
       border-radius: 75px;
       width: 80px;
       height: 80px;
     }
+
     .tips {
       font-size: 12px;
       color: #ccc;
       line-height: 30px;
     }
   }
+
   /deep/.el-form-item:last-of-type {
     margin-top: 50px;
+
     .el-form-item__content {
       justify-content: center;
     }
   }
+
   /deep/.submit-btn {
     padding: 4px 30px;
     border-radius: 4px;

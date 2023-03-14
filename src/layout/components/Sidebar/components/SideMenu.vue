@@ -91,6 +91,7 @@ function handleSelect(path: string) {
       padding-right: 0;
     }
   }
+
   .menu-text {
     margin-left: 8px;
   }

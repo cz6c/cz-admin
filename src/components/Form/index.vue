@@ -149,10 +149,12 @@ defineExpose({
 .form-view {
   &-item {
     box-sizing: border-box;
+
     :deep(.el-form-item__content) {
       > div {
         width: 300px;
       }
+
       .el-switch {
         width: auto;
       }

@@ -58,33 +58,41 @@ async function logout() {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #d9d9d9;
+
   &-left,
   &-right {
     height: 100%;
     display: flex;
     align-items: center;
   }
+
   &-hover {
     height: 100%;
     display: flex;
     align-items: center;
+
     &:hover {
       cursor: pointer;
       background-color: #f6f6f6;
     }
   }
+
   &-left {
     .collapse {
       padding: 0 10px;
+
       &.active {
         transform: rotate(180deg);
       }
     }
   }
+
   :deep(.el-dropdown) {
     height: 100%;
+
     .user-info {
       padding: 0 8px;
+
       .name {
         padding-left: 6px;
       }

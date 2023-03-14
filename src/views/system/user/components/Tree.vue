@@ -93,18 +93,22 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .dept-tree {
   background-color: #fff;
+
   .tree-header {
     display: flex;
     align-items: center;
     padding: 10px;
+
     .title {
       flex: 0 0 80px;
       font-size: 18px;
       font-weight: 600;
     }
+
     :deep(.el-input) {
       padding: 0 10px;
     }
+
     .icon {
       flex: 0 0 24px;
     }

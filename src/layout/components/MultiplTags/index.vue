@@ -133,13 +133,16 @@ watch(
 
   :deep(.el-scrollbar) {
     flex: 1;
+
     .multiple-tags {
       padding: 5px;
+
       a {
         text-decoration: none;
         color: #616a88;
         padding: 0 8px;
       }
+
       .tag {
         position: relative;
         display: inline-block;
@@ -150,15 +153,19 @@ watch(
         line-height: 28px;
         margin-right: 6px;
         cursor: pointer;
+
         &.active {
           color: #409eff;
+
           a {
             color: #409eff;
           }
+
           .el-icon {
             color: #409eff;
           }
         }
+
         .el-icon {
           position: absolute;
           top: 50%;
@@ -177,6 +184,7 @@ watch(
       }
     }
   }
+
   .right-tool {
     span {
       display: inline-block;

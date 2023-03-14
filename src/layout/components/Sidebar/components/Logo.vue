@@ -18,16 +18,20 @@ const layoutStore = useLayoutStore();
   position: relative;
   height: 48px;
   overflow: hidden;
+
   a {
     text-decoration: none;
   }
+
   .logo-link {
     height: 100%;
     display: flex;
     align-items: center;
+
     :deep(.svg-icon) {
       margin: 0 14px;
     }
+
     .logo-title {
       display: block;
       width: 136px;

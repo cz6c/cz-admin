@@ -107,6 +107,7 @@ const sumbit = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   .left-view {
     width: 260px;
     background-color: #fff;
@@ -114,9 +115,11 @@ const sumbit = () => {
     overflow-y: auto;
     margin-right: 16px;
   }
+
   .right-view {
     width: calc(100% - 260px);
     height: 100%;
+
     .search-wrap {
       height: 80px;
       background-color: #fff;

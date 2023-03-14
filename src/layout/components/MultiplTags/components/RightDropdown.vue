@@ -127,16 +127,20 @@ defineExpose({
     display: flex;
     align-items: center;
     cursor: pointer;
+
     &:hover {
       background: #eee;
     }
+
     &.disabled {
       cursor: no-drop;
       opacity: 0.6;
+
       &:hover {
         background: none;
       }
     }
+
     span {
       padding-left: 4px;
     }

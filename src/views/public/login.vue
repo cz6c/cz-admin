@@ -93,53 +93,63 @@ function handleLogin(formEl: FormInstance | undefined) {
   display: flex;
   justify-content: center;
   align-items: center;
+
   .content-wrapper {
     width: 418px;
+
     .title-wrapper {
       display: flex;
       align-items: baseline;
+
       .title {
         font-size: 32px;
         font-weight: bold;
-        color: #333333;
+        color: #333;
       }
+
       .description {
         margin-left: 16px;
         font-size: 16px;
         font-weight: 400;
-        color: #999999;
+        color: #999;
         line-height: 22px;
       }
     }
+
     :deep(.el-form) {
       margin: 40px 0;
       margin-top: 10px;
+
       .el-form-item {
         position: relative;
         margin-bottom: 24px;
+
         .el-form-item__label {
           width: 56px;
           height: 32px;
           line-height: 32px !important;
           text-align: justify;
           vertical-align: top;
-          color: #333333;
+          color: #333;
           padding-bottom: 8px;
-          line-height: 1;
+
           &::after {
             display: inline-block;
             width: 100%;
             content: "";
             height: 0;
           }
+
           &::before {
             display: none;
           }
         }
+
         .el-input__inner {
           height: 40px;
           line-height: 40px;
         }
+
         .code-view {
           position: absolute;
           right: 1px;
@@ -153,22 +163,25 @@ function handleLogin(formEl: FormInstance | undefined) {
         }
       }
     }
+
     :deep(.login-btn) {
       width: 100%;
       height: 40px;
       line-height: 40px;
       margin-bottom: 16px;
     }
+
     .login-timeout {
       margin-top: 20px;
     }
   }
+
   .version-tips {
     position: absolute;
     bottom: 8px;
     font-size: 12px;
     font-weight: 400;
-    color: #999999;
+    color: #999;
     line-height: 18px;
   }
 }

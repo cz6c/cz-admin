@@ -147,25 +147,30 @@ defineExpose({
 .table-view {
   background-color: #fff;
   padding: 0 8px;
+
   .header-wrap {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 50px;
     padding: 0 8px;
+
     .header-title {
       font-size: 18px;
       font-weight: 600;
     }
+
     .icon-wrap {
       padding: 0 10px;
       font-size: 18px;
       cursor: pointer;
     }
   }
+
   .table-wrap {
     height: calc(100% - 100px);
   }
+
   .pagination-wrap {
     height: 50px;
     display: flex;

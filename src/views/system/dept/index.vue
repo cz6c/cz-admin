@@ -89,6 +89,7 @@ const sumbit = () => {
 <style lang="scss" scoped>
 .page {
   height: 100%;
+
   .search-wrap {
     height: 80px;
     background-color: #fff;
