@@ -1,9 +1,12 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
+import type { App } from "vue";
 
 export const Layout = () => import("@/layout/index.vue");
 
 export enum RouterEnum {
+  // login path
+  BASE_LOGIN_PATH = "/login",
   // basic home path
   BASE_HOME_PATH = "/dashboard",
   // redirect name
@@ -101,3 +104,8 @@ export function resetRouter() {
 }
 
 export default router;
+
+// 配置路由器
+export function setupRouter(app: App<Element>) {
+  app.use(router);
+}

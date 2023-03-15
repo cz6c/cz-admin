@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import store from "@/store";
 import { setToken, removeToken } from "@/utils/auth";
-import { login, getLoginUserInfo, getMenuList } from "@/api/public";
+import { login, getLoginUserInfo, getMenuList, getPermCodeList } from "@/api/public";
 import { LoginParams, UserInfo } from "@/api/public/index.d";
-import { isDynamicAddedRoute } from "@/config";
+import { isDynamicAddedRoute, isPermCode } from "@/config";
 import router, { resetRouter } from "@/router";
 import { menuToRoute } from "@/utils/router";
 import type { RouteRecordRaw } from "vue-router";
@@ -15,6 +15,7 @@ interface authStoreState {
   username: string;
   avatar: string;
   dynamicRoutes: RouteRecordRaw[];
+  permCodeList: string[];
 }
 
 export const authStore = defineStore("auth", {
@@ -27,12 +28,17 @@ export const authStore = defineStore("auth", {
     avatar: "",
     // 动态路由
     dynamicRoutes: [],
+    // 按钮级权限
+    permCodeList: [],
   }),
   getters: {
     getDynamicMenu(): RouteRecordRaw[] {
       return filter(this.dynamicRoutes, route => {
         return !route.meta?.hideMenu;
       });
+    },
+    getPermCodeList(): string[] {
+      return this.permCodeList;
     },
   },
   actions: {
@@ -45,7 +51,7 @@ export const authStore = defineStore("auth", {
       try {
         const { data } = await login(loginParams);
         setToken(data.token);
-        await this.getLoginUserInfo();
+        await this.getLoginUserInfoAction();
         return data.token;
       } catch (error) {
         return Promise.reject(error);
@@ -55,7 +61,7 @@ export const authStore = defineStore("auth", {
      * @description: 获取用户信息
      * @return {*}
      */
-    async getLoginUserInfo(): Promise<UserInfo | unknown> {
+    async getLoginUserInfoAction(): Promise<UserInfo | unknown> {
       try {
         const { data } = await getLoginUserInfo();
         const { userId, username, avatar } = data;
@@ -63,7 +69,10 @@ export const authStore = defineStore("auth", {
         this.username = username;
         this.avatar = avatar;
         if (isDynamicAddedRoute) {
-          await this.getMenuList();
+          await this.getMenuListAction();
+        }
+        if (isPermCode) {
+          await this.getPermCodeListAction();
         }
         return data;
       } catch (error) {
@@ -74,7 +83,7 @@ export const authStore = defineStore("auth", {
      * @description: 获取菜单
      * @return {*}
      */
-    async getMenuList(): Promise<RouteRecordRaw[] | unknown> {
+    async getMenuListAction(): Promise<RouteRecordRaw[] | unknown> {
       try {
         const { data } = await getMenuList();
         // 重置动态路由
@@ -86,6 +95,19 @@ export const authStore = defineStore("auth", {
         });
         this.dynamicRoutes = routeList;
         return routeList;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    /**
+     * @description: 获取按钮权限
+     * @return {*}
+     */
+    async getPermCodeListAction(): Promise<string[] | unknown> {
+      try {
+        const { data } = await getPermCodeList();
+        this.permCodeList = data;
+        return data;
       } catch (error) {
         return Promise.reject(error);
       }

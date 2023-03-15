@@ -73,4 +73,16 @@ export default [
       return resultSuccess(menu);
     },
   },
+  {
+    url: "/adminapi/getPermCodeList",
+    method: "get",
+    response: (request: requestParams) => {
+      const token = getRequestToken(request);
+      if (!token) {
+        return resultError({ message: "Invalid token!", code: 401 });
+      }
+      const permCode = [1, 2, 3, 4, 5, 6];
+      return resultSuccess(permCode);
+    },
+  },
 ] as MockMethod[];

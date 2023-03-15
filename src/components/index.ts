@@ -1,5 +1,4 @@
 import type { App } from "vue";
-
 // elementui
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
@@ -31,4 +30,6 @@ function install(app: App<Element>) {
   });
 }
 
-export default { install };
+export function registerGlobComp(app: App) {
+  app.use({ install });
+}

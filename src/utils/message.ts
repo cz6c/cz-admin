@@ -44,5 +44,5 @@ export const $message = {
   info: handleMessage("info", "diy-message"),
   warning: handleMessage("warning", "diy-message"),
   error: handleMessage("error", "diy-message"),
-  closeAll: ElMessage.closeAll(),
+  closeAll: ElMessage.closeAll,
 };
