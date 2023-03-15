@@ -5,6 +5,7 @@ import { login, getLoginUserInfo, getMenuList, getPermCodeList } from "@/api/pub
 import { LoginParams, UserInfo } from "@/api/public/index.d";
 import { isDynamicAddedRoute, isPermCode } from "@/config";
 import router, { resetRouter } from "@/router";
+import staticRouter from "@/router/modules/staticRoutes";
 import { menuToRoute } from "@/utils/router";
 import type { RouteRecordRaw } from "vue-router";
 import { useMultiTagsStore } from "./multiTags";
@@ -68,9 +69,7 @@ export const authStore = defineStore("auth", {
         this.id = userId;
         this.username = username;
         this.avatar = avatar;
-        if (isDynamicAddedRoute) {
-          await this.getMenuListAction();
-        }
+        await this.getMenuListAction();
         if (isPermCode) {
           await this.getPermCodeListAction();
         }
@@ -85,11 +84,15 @@ export const authStore = defineStore("auth", {
      */
     async getMenuListAction(): Promise<RouteRecordRaw[] | unknown> {
       try {
-        const { data } = await getMenuList();
-        // 重置动态路由
+        let routeList: RouteRecordRaw[] = [];
+        if (isDynamicAddedRoute) {
+          const { data } = await getMenuList();
+          routeList = menuToRoute(data);
+        } else {
+          routeList = staticRouter;
+        }
+        // 重置路由
         resetRouter();
-        const routeList = menuToRoute(data);
-        // console.log("addRoute", router);
         routeList.forEach((route: any) => {
           router.addRoute(route as RouteRecordRaw);
         });

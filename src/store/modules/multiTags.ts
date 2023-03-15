@@ -30,7 +30,7 @@ export const multiTagsStore = defineStore("multiTags", {
      * @return {*}
      */
     getMultiTags(): MultiTagsItem[] {
-      return this.multiTags.filter(tag => !tag.meta?.hideMenu);
+      return this.multiTags;
     },
     /**
      * @description: 获取页面缓存数组
@@ -75,7 +75,8 @@ export const multiTagsStore = defineStore("multiTags", {
      * @param {MultiTagsItem} tag
      */
     async addTag(tag: MultiTagsItem) {
-      const { path, fullPath } = tag;
+      const { path, fullPath, meta } = tag;
+      if (meta.hideTag) return;
       let updateIndex = -1;
       const hasExits = this.multiTags.some((tag, index) => {
         updateIndex = index;

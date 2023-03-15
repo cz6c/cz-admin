@@ -1,6 +1,6 @@
 import type { Router, RouteRecordNormalized, RouteRecordRaw } from "vue-router";
 import { createRouter, createWebHashHistory } from "vue-router";
-import { Layout } from "@/router/index";
+import { Layout } from "@/router";
 import { cloneDeep, omit } from "lodash-es";
 
 const modulesRoutes = (import.meta as any).glob("/src/views/**/*.{vue,tsx}");

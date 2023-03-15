@@ -37,14 +37,14 @@ export interface RouteMeta {
   affix?: boolean;
   // 图标，也是菜单图标
   icon?: string;
-  // 隐藏该路由在面包屑上面的显示
-  hideBreadcrumb?: boolean;
-  // 当前激活的菜单。用于配置详情页时左侧激活的菜单路径
-  activeMenu?: string;
-  // 当前路由不再标签页显示
-  hideTag?: boolean;
   // 当前路由不再菜单显示
   hideMenu?: boolean;
+  // 当前激活的菜单。用于配置hideMenu true时左侧激活的菜单路径
+  activeMenu?: string;
+  // 隐藏该路由在面包屑上面的显示
+  hideBreadcrumb?: boolean;
+  // 当前路由不再标签页显示
+  hideTag?: boolean;
 }
 
 // 路由元信息

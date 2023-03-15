@@ -40,6 +40,18 @@ const systemRouter = {
       meta: {
         title: "用户管理",
       },
+      children: [
+        {
+          path: "/system/user/addUser",
+          name: "AddUser",
+          component: "@/views/system/user/addUser",
+          meta: {
+            title: "新增用户",
+            hideMenu: true,
+            activeMenu: "/system/user",
+          },
+        },
+      ],
     },
     {
       path: "/system/role",

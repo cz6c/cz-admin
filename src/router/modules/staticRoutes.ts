@@ -1,58 +1,73 @@
 import type { RouteRecordRaw } from "vue-router";
-const Layout = () => import("@/layout/index.vue");
+import { Layout } from "@/router";
 
 const staticRouter: RouteRecordRaw[] = [
   {
     path: "/dashboard",
+    name: "Dashboard",
     component: Layout,
     meta: {
-      name: "Dashboard",
+      title: "Dashboard",
       icon: "dashboard",
     },
-    redirect: "/dashboard/loginLog",
+    redirect: "/dashboard/workbench",
     children: [
       {
-        path: "/dashboard/loginLog",
-        name: "LoginLog",
+        path: "/dashboard/workbench",
+        name: "Workbench",
+        component: () => import("@/views/dashboard/workbench/index.vue"),
         meta: {
-          name: "登录日志",
+          title: "工作台",
+          affix: true,
         },
-        component: () => import("@/views/dashboard/loginLog/index.vue"),
       },
     ],
   },
   {
     path: "/system",
+    name: "System",
     component: Layout,
     meta: {
-      name: "组织架构",
+      title: "组织架构",
       icon: "tree",
     },
-    redirect: "/system/user/index",
+    redirect: "/system/user",
     children: [
       {
-        path: "/system/user/index",
+        path: "/system/user",
         name: "User",
-        meta: {
-          name: "用户管理",
-        },
         component: () => import("@/views/system/user/index.vue"),
+        meta: {
+          title: "用户管理",
+        },
+        children: [
+          {
+            path: "/system/user/addUser",
+            name: "AddUser",
+            component: () => import("@/views/system/user/addUser.vue"),
+            meta: {
+              title: "新增用户",
+              hideMenu: true,
+              activeMenu: "/system/user",
+            },
+          },
+        ],
       },
       {
-        path: "/system/role/index",
+        path: "/system/role",
         name: "Role",
+        component: () => import(`@/views/system/role/index.vue`),
         meta: {
-          name: "角色管理",
+          title: "角色管理",
         },
-        component: () => import("@/views/system/role/index.vue"),
       },
       {
-        path: "/system/dept/index",
+        path: "/system/dept",
         name: "Dept",
-        meta: {
-          name: "部门管理",
-        },
         component: () => import("@/views/system/dept/index.vue"),
+        meta: {
+          title: "部门管理",
+        },
       },
     ],
   },
