@@ -1,15 +1,16 @@
 import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
-import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
+import vue from "@vitejs/plugin-vue";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { viteMockServe } from "vite-plugin-mock";
 import vueSetupExtend from "vite-plugin-vue-setup-extend";
+import { createHtmlPlugin } from "vite-plugin-html";
 
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfigExport => {
   // 根据当前工作目录中的 `mode` 加载 .env 文件
   // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
-  const { VITE_PUBLIC_PATH, VITE_PORT, VITE_BASE_URL, VITE_PROXY_URL } = loadEnv(mode, process.cwd());
+  const { VITE_PUBLIC_PATH, VITE_PORT, VITE_BASE_URL, VITE_PROXY_URL, VITE_APP_TITLE } = loadEnv(mode, process.cwd());
   // 开发模式自动设置代理
   const proxy = {};
   if (command === "serve") {
@@ -22,7 +23,6 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
   return {
     base: VITE_PUBLIC_PATH,
     root: process.cwd(),
-    // 配置路径别名
     resolve: {
       alias: {
         "@": resolve(__dirname, "src"),
@@ -36,7 +36,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         },
       },
     },
-    //  https://cn.vitejs.dev/config/server-options.html#server-proxy
+    /*  https://cn.vitejs.dev/config/server-options.html#server-proxy */
     server: {
       hmr: true,
       host: "0.0.0.0",
@@ -44,19 +44,18 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       open: false,
       proxy: proxy,
     },
-    // 插件
     plugins: [
       vue(),
-      // setup script标签上定义组件name
+      /* setup script标签上定义组件name */
       vueSetupExtend(),
-      // https://github.com/anncwb/vite-plugin-svg-icons
+      /* https://github.com/anncwb/vite-plugin-svg-icons */
       createSvgIconsPlugin({
         // 指定需要缓存的图标文件夹
         iconDirs: [resolve(process.cwd(), "src/assets/svg")],
         // 指定symbolId格式
         symbolId: "icon-[dir]-[name]",
       }),
-      // https://github.com/anncwb/vite-plugin-mock
+      /* https://github.com/anncwb/vite-plugin-mock */
       viteMockServe({
         ignore: /^\_/, // 忽略读取指定格式的文件
         mockPath: "mock", // 设置模拟.ts 文件的存储文件夹
@@ -67,6 +66,17 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
               import { setupProdMockServer } from '../mock/_createProductionServer';
               setupProdMockServer();
               `,
+      }),
+      /* https://github.com/vbenjs/vite-plugin-html/blob/main/README.zh_CN.md */
+      createHtmlPlugin({
+        // 是否压缩html
+        minify: true,
+        // 需要注入 index.html ejs 模版的数据
+        inject: {
+          data: {
+            title: VITE_APP_TITLE,
+          },
+        },
       }),
     ],
   };
