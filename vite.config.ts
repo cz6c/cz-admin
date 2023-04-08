@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
 import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";

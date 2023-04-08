@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // .commitlintrc.js
 const { execSync } = require("child_process");
 const fs = require("fs");
