@@ -1,11 +1,5 @@
 @import "./transition";
 @import "./element-plus";
-@import "./dark";
-
-/* 自定义全局 CssVar */
-:root {
-  --pure-transition-duration: 0.016s;
-}
 
 /* 灰色模式 */
 .html-grey {

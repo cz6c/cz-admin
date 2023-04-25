@@ -6,6 +6,9 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { viteMockServe } from "vite-plugin-mock";
 import vueSetupExtend from "vite-plugin-vue-setup-extend";
 import { createHtmlPlugin } from "vite-plugin-html";
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfigExport => {
@@ -33,7 +36,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       preprocessorOptions: {
         // 配置全局scss文件
         scss: {
-          additionalData: '@import "@/assets/style/variables.scss";',
+          additionalData: '@use "@/assets/style/variables.scss" as *;',
         },
       },
     },
@@ -47,6 +50,12 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     },
     plugins: [
       vue(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+      }),
+      Components({
+        resolvers: [ElementPlusResolver({ importStyle: "sass" })],
+      }),
       /* setup script标签上定义组件name */
       vueSetupExtend(),
       /* https://github.com/anncwb/vite-plugin-svg-icons */
