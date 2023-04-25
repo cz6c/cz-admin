@@ -1,4 +1,4 @@
-module.exports =  {
+module.exports = {
   // 一行最多 120 字符
   printWidth: 120,
   // 使用 2 个空格缩进
@@ -34,4 +34,5 @@ module.exports =  {
   htmlWhitespaceSensitivity: "css",
   // vue 文件中的 script 和 style 内不用缩进
   // vueIndentScriptAndStyle: 'false',
+  endOfLine: "auto",
 };
