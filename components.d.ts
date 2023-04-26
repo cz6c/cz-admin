@@ -42,6 +42,7 @@ declare module "@vue/runtime-core" {
     ElSwitch: typeof import("element-plus/es")["ElSwitch"];
     ElTable: typeof import("element-plus/es")["ElTable"];
     ElTableColumn: typeof import("element-plus/es")["ElTableColumn"];
+    ElTree: typeof import("element-plus/es")["ElTree"];
     Form: typeof import("./src/components/Form/index.vue")["default"];
     Render: typeof import("./src/components/Table/render.vue")["default"];
     RouterLink: typeof import("vue-router")["RouterLink"];
