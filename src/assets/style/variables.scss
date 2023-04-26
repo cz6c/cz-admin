@@ -1,9 +1,8 @@
-/* stylelint-disable scss/dollar-variable-pattern */
 /* stylelint-disable-next-line at-rule-no-unknown */
 @forward "element-plus/theme-chalk/src/common/var.scss" with (
   $colors: (
     "white": #ffffff,
-    "black": #000000,
+    "black": #111,
     "primary": (
       "base": #292ae4,
     ),
@@ -24,3 +23,13 @@
     ),
   )
 );
+
+// var(--el-color-primary)
+
+:root {
+  --el-menu-bg-color: #fff;
+  --el-menu-text-color: #666f80;
+  --el-menu-item-height: 44px;
+  --el-menu-hover-bg-color: #f2f2f2;
+  --el-menu-active-color: #111;
+}

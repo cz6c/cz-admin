@@ -1,15 +1,17 @@
 <template>
-  <el-container class="app-container">
+  <el-container class="app-container" direction="horizontal">
     <el-aside v-show="layoutStore.getShowSidebar" :width="!layoutStore.getIsCollapse ? '200px' : '64px'">
       <Sidebar />
     </el-aside>
     <el-container>
-      <el-header :height="isShowTags ? '88px' : '50px'">
+      <el-header height="50px">
         <Navbar @toggle-click="toggleSideBar" v-show="layoutStore.getShowNavbar" />
-        <MultiplTags v-if="isShowTags" />
       </el-header>
       <el-main>
-        <el-scrollbar>
+        <div class="multipl-tags" v-if="!isShowTags">
+          <MultiplTags />
+        </div>
+        <el-scrollbar :style="{ height: !isShowTags ? 'calc(100% - 54px)' : '100%' }">
           <AppMain />
         </el-scrollbar>
       </el-main>
@@ -35,18 +37,28 @@ function toggleSideBar() {
 </script>
 
 <style scoped lang="scss">
-:deep(.el-container) {
-  .el-header {
-    padding: 0;
+:deep(.el-aside) {
+  border-right: 1px solid #f2f2f2;
+  background: var(--el-menu-bg-color);
+}
+
+:deep(.el-header) {
+  border-right: 1px solid #f2f2f2;
+  background: var(--el-menu-bg-color);
+}
+
+:deep(.el-main) {
+  padding: 16px;
+  background: #f7f7fb;
+
+  .multipl-tags {
+    padding-bottom: 16px;
+    height: 54px;
+    box-sizing: border-box;
   }
 
-  .el-main {
-    padding: 16px;
-    background: #f0f2f5;
-
-    .el-scrollbar__view {
-      height: 100%;
-    }
+  .el-scrollbar__view {
+    height: 100%;
   }
 }
 </style>

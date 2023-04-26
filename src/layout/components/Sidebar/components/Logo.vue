@@ -1,7 +1,7 @@
 <template>
   <div class="logo-container">
     <router-link key="props.collapse" :title="BASE_TITLE" class="logo-link" to="/">
-      <SvgIcon name="logo" size="36" />
+      <SvgIcon name="logo" size="32" />
       <div v-if="!layoutStore.getIsCollapse" class="logo-title">{{ BASE_TITLE }}</div>
     </router-link>
   </div>
@@ -17,7 +17,7 @@ const layoutStore = useLayoutStore();
 .logo-container {
   position: relative;
   overflow: hidden;
-  height: 48px;
+  height: 100%;
 
   a {
     text-decoration: none;
@@ -37,7 +37,7 @@ const layoutStore = useLayoutStore();
       width: 136px;
       font-size: 20px;
       font-weight: 600;
-      color: #1890ff;
+      color: var(--el-color-primary);
     }
   }
 }
