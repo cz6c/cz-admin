@@ -7,9 +7,9 @@
     "build:test": "vite build --mode test",
     "build:production": "vite build --mode production",
     "preview": "vite preview",
-    "lint:eslint": "eslint --cache --max-warnings 0  \"{src,mock}/**/*.{vue,ts}\" --fix",
+    "lint:eslint": "eslint --fix",
     "lint:prettier": "prettier --write  \"src/**/*.{ts,json,scss,vue,html,md}\"",
-    "lint:stylelint": "stylelint --cache --fix \"**/*.{vue,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
+    "lint:stylelint": "stylelint --fix \"src/**/*.{vue,scss}\"",
     "lint:lint-staged": "lint-staged",
     "prepare": "husky install",
     "cz": "czg"
@@ -24,7 +24,7 @@
       "prettier --write",
       "stylelint --fix"
     ],
-    "*.{scss,styl,html}": [
+    "*.{scss}": [
       "stylelint --fix",
       "prettier --write"
     ]
