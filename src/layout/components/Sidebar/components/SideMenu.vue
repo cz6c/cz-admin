@@ -86,6 +86,31 @@ function handleSelect(path: string) {
 
 <style lang="scss" scoped>
 :deep(.scrollbar-wrapper) {
+  .el-menu {
+    border: none;
+  }
+
+  .el-menu-item {
+    margin: 0 6px;
+    border-radius: 8px;
+
+    &.is-active {
+      background: #ededfa;
+
+      &::before {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        border-radius: 0 2px 2px 0;
+        width: 3px;
+        height: 40%;
+        transform: translateY(-50%);
+        background: var(--el-color-primary);
+        content: "";
+      }
+    }
+  }
+
   .on {
     .el-sub-menu__title {
       padding-right: 0;

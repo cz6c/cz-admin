@@ -46,6 +46,7 @@
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.29",
+    "sortablejs": "^1.15.0",
     "vue": "^3.2.25",
     "vue-router": "^4.1.6"
   },
@@ -82,7 +83,9 @@
     "stylelint-config-standard-scss": "^7.0.1",
     "stylelint-order": "^6.0.3",
     "typescript": "^4.5.4",
-    "vite": "^2.8.0",
+    "unplugin-auto-import": "^0.15.3",
+    "unplugin-vue-components": "^0.24.1",
+    "vite": "^4.3.2",
     "vite-plugin-html": "^3.2.0",
     "vite-plugin-mock": "^2.9.6",
     "vite-plugin-svg-icons": "^2.0.1",
