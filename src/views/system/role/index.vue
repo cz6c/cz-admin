@@ -20,7 +20,7 @@
       :columns="columns"
       :otherParams="tableSearch"
       title="角色列表"
-      tableHeight="calc(100% - 100px)"
+      tableHeight="calc(100% - 76px)"
       pagination
       selectionColum
       @selection-change="selectionChange"

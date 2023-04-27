@@ -6,9 +6,6 @@
     <div class="navbar-right">
       <!-- 右侧功能 -->
       <div class="tool navbar-hover">
-        <TagRedo />
-      </div>
-      <div class="tool navbar-hover">
         <FoldButton />
       </div>
       <!-- 退出登录 -->
@@ -29,7 +26,6 @@
 
 <script setup lang="ts" name="Navbar">
 import Breadcrumb from "./components/BreadCrumb.vue";
-import TagRedo from "./components/TagRedo.vue";
 import FoldButton from "./components/FoldButton.vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/modules/auth";
