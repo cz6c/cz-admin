@@ -1,17 +1,17 @@
 <template>
   <el-container class="app-container" direction="horizontal">
-    <el-aside v-show="layoutStore.getShowSidebar" :width="!layoutStore.getIsCollapse ? '200px' : '64px'">
+    <el-aside :width="!layoutStore.getIsCollapse ? '200px' : '64px'">
       <Sidebar />
     </el-aside>
     <el-container>
       <el-header height="50px">
-        <Navbar @toggle-click="toggleSideBar" v-show="layoutStore.getShowNavbar" />
+        <Navbar @toggle-click="toggleSideBar" />
       </el-header>
       <el-main>
-        <div class="multipl-tags" v-if="!isShowTags">
+        <div class="multipl-tags" v-if="isShowTags">
           <MultiplTags />
         </div>
-        <el-scrollbar :style="{ height: !isShowTags ? 'calc(100% - 54px)' : '100%' }">
+        <el-scrollbar :style="{ height: isShowTags ? 'calc(100% - 50px)' : '100%' }">
           <AppMain />
         </el-scrollbar>
       </el-main>
@@ -48,12 +48,14 @@ function toggleSideBar() {
 }
 
 :deep(.el-main) {
-  padding: 16px;
+  padding: 0 16px;
+  padding-bottom: 12px;
   background: #f7f7fb;
 
   .multipl-tags {
-    padding-bottom: 16px;
-    height: 54px;
+    display: flex;
+    align-items: center;
+    height: 50px;
     box-sizing: border-box;
   }
 

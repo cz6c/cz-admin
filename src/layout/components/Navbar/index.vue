@@ -4,12 +4,19 @@
       <Breadcrumb class="breadcrumb-container" />
     </div>
     <div class="navbar-right">
+      <!-- 右侧功能 -->
+      <div class="tool navbar-hover">
+        <TagRedo />
+      </div>
+      <div class="tool navbar-hover">
+        <FoldButton />
+      </div>
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
-        <span class="user-info navbar-hover">
-          <el-avatar :size="36" fit="cover" :src="useAuthStore().avatar" />
+        <div class="tool navbar-hover">
+          <el-avatar :size="32" fit="cover" :src="useAuthStore().avatar" />
           <p v-if="useAuthStore().username" class="name">{{ useAuthStore().username }}</p>
-        </span>
+        </div>
         <template #dropdown>
           <el-dropdown-menu class="logout">
             <el-dropdown-item @click="logout"> 退出系统 </el-dropdown-item>
@@ -22,6 +29,8 @@
 
 <script setup lang="ts" name="Navbar">
 import Breadcrumb from "./components/BreadCrumb.vue";
+import TagRedo from "./components/TagRedo.vue";
+import FoldButton from "./components/FoldButton.vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/modules/auth";
 
@@ -51,6 +60,18 @@ async function logout() {
     height: 100%;
   }
 
+  &-right {
+    .tool {
+      > div {
+        width: 38px;
+        height: 38px;
+        text-align: center;
+        line-height: 38px;
+        box-sizing: border-box;
+      }
+    }
+  }
+
   &-hover {
     display: flex;
     align-items: center;
@@ -65,7 +86,7 @@ async function logout() {
   :deep(.el-dropdown) {
     height: 100%;
 
-    .user-info {
+    .tool {
       padding: 0 8px;
 
       .name {

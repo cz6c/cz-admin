@@ -27,9 +27,19 @@
 // var(--el-color-primary)
 
 :root {
-  --el-menu-bg-color: #fff;
+  // menu
+  --el-menu-bg-color: var(--el-white);
   --el-menu-text-color: #666f80;
   --el-menu-item-height: 44px;
   --el-menu-hover-bg-color: #f2f2f2;
-  --el-menu-active-color: #111;
+  --el-menu-active-color: var(--el-black);
+}
+
+// table
+.el-table {
+  --el-table-text-color: var(--el-black);
+  --el-table-header-text-color: var(--el-black);
+  --el-table-row-hover-bg-color: var(--el-fill-color-light);
+  --el-table-current-row-bg-color: var(--el-color-primary-light-9);
+  --el-table-header-bg-color: #f7f7fb;
 }

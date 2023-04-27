@@ -1,5 +1,5 @@
 <template>
-  <router-view class="router-view">
+  <router-view>
     <template #default="{ Component, route }">
       <transition name="fade-slide" mode="out-in" appear>
         <keep-alive v-if="isShowTags" :include="multiTagsStore.getcachedPages">
@@ -16,9 +16,3 @@ import { useMultiTagsStore } from "@/store/modules/multiTags";
 import { isShowTags } from "@/config";
 const multiTagsStore = useMultiTagsStore();
 </script>
-
-<style>
-.router-view {
-  min-height: 100%;
-}
-</style>

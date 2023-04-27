@@ -1,22 +1,29 @@
 <template>
   <div class="page">
-    <div class="search-wrap">
-      <FormView
-        ref="formView"
-        v-model="tableSearch"
-        :columns="2"
-        labelWidth="126px"
-        labelPosition="right"
-        @sumbit="sumbit"
-      />
+    <div class="search-wrap cz-card">
+      <el-form :model="tableSearch">
+        <el-form-item>
+          <el-input v-model="tableSearch.roleName" placeholder="nickname" />
+        </el-form-item>
+        <el-form-item>
+          <el-date-picker v-model="tableSearch.createTime" type="date" placeholder="createTime" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="sumbit">搜索</el-button>
+          <el-button @click="reset">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
     <TableView
       ref="tableRef"
       :api="api"
       :columns="columns"
-      :otherParams="formData"
+      :otherParams="tableSearch"
       title="角色列表"
       tableHeight="calc(100% - 100px)"
+      pagination
+      selectionColum
+      @selection-change="selectionChange"
     >
       <template #column-name="{ data }"> {{ data }} </template>
     </TableView>
@@ -26,8 +33,6 @@
 import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
 import { getRoleList } from "@/api/system";
-import { FormJsonItem } from "@/components/Form/index.d";
-import { useForm } from "@/components/Form/hooks/useForm";
 import dayjs from "dayjs";
 
 const api = getRoleList;
@@ -70,27 +75,22 @@ const columns: TableJsonItem[] = [
   },
 ];
 const tableRef: any = ref(null);
-const tableSearch: FormJsonItem[] = reactive([
-  {
-    prop: "roleName",
-    label: "roleName",
-    data: "",
-    initilaData: "",
-  },
-  {
-    prop: "createTime",
-    label: "createTime",
-    data: "",
-    initilaData: "",
-    type: "date",
-    elProps: {
-      type: "date",
-    },
-  },
-]);
-const { formData } = useForm({ rawList: tableSearch });
+let selectList = [];
+let tableSearch = reactive({
+  roleName: "",
+  createTime: "",
+});
+
 const sumbit = () => {
   tableRef.value.getList();
+};
+const reset = () => {
+  tableSearch.roleName = "";
+  tableSearch.createTime = "";
+  tableRef.value.getList();
+};
+const selectionChange = (selection: any[]) => {
+  selectList = selection || [];
 };
 </script>
 
@@ -99,9 +99,23 @@ const sumbit = () => {
   height: 100%;
 
   .search-wrap {
-    margin-bottom: 20px;
-    height: 80px;
-    background-color: #fff;
+    margin-bottom: 16px;
+    padding: 0 16px;
+    height: 60px;
+
+    :deep(.el-form) {
+      display: flex;
+      align-items: center;
+      height: 100%;
+
+      .el-form-item {
+        margin-bottom: 0;
+      }
+
+      .el-form-item + .el-form-item {
+        margin-left: 10px;
+      }
+    }
   }
 }
 </style>

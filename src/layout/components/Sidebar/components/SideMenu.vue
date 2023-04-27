@@ -2,7 +2,6 @@
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <el-menu
       router
-      unique-opened
       mode="vertical"
       :default-active="getActiveRoutePath"
       :collapse-transition="false"

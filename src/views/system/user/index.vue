@@ -1,26 +1,33 @@
 <template>
   <div class="page">
-    <div class="left-view">
+    <div class="left-view cz-card">
       <tree />
     </div>
     <div class="right-view">
-      <div class="search-wrap">
-        <FormView
-          ref="formView"
-          v-model="tableSearch"
-          :columns="3"
-          labelWidth="126px"
-          labelPosition="right"
-          @sumbit="sumbit"
-        />
+      <div class="search-wrap cz-card">
+        <el-form :model="tableSearch">
+          <el-form-item>
+            <el-input v-model="tableSearch.nickname" placeholder="nickname" />
+          </el-form-item>
+          <el-form-item>
+            <el-date-picker v-model="tableSearch.createTime" type="date" placeholder="createTime" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="sumbit">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
+          </el-form-item>
+        </el-form>
       </div>
       <TableView
         ref="tableRef"
         :api="api"
         :columns="columns"
-        :otherPerams="formData"
+        :otherParams="tableSearch"
         title="用户列表"
-        tableHeight="calc(100% - 100px)"
+        tableHeight="calc(100% - 76px)"
+        pagination
+        selectionColum
+        @selection-change="selectionChange"
       >
         <template #column-name="{ data }"> {{ data }} </template>
       </TableView>
@@ -32,8 +39,6 @@ import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
 import tree from "./components/Tree.vue";
 import { getUserList } from "@/api/system";
-import { FormJsonItem } from "@/components/Form/index.d";
-import { useForm } from "@/components/Form/hooks/useForm";
 import dayjs from "dayjs";
 
 const columns: TableJsonItem[] = [
@@ -76,28 +81,22 @@ const columns: TableJsonItem[] = [
 ];
 const api = getUserList;
 const tableRef: any = ref(null);
-const tableSearch: FormJsonItem[] = reactive([
-  {
-    prop: "nickname",
-    label: "nickname",
-    data: "",
-    initilaData: "",
-  },
-  {
-    prop: "createTime",
-    label: "createTime",
-    data: "",
-    initilaData: "",
-    type: "date",
-    elProps: {
-      type: "date",
-    },
-  },
-]);
+let selectList = [];
+let tableSearch = reactive({
+  nickname: "",
+  createTime: "",
+});
 
-const { formData } = useForm({ rawList: tableSearch });
 const sumbit = () => {
   tableRef.value.getList();
+};
+const reset = () => {
+  tableSearch.nickname = "";
+  tableSearch.createTime = "";
+  tableRef.value.getList();
+};
+const selectionChange = (selection: any[]) => {
+  selectList = selection || [];
 };
 </script>
 
@@ -111,19 +110,32 @@ const sumbit = () => {
   .left-view {
     overflow-y: auto;
     margin-right: 16px;
-    width: 260px;
+    width: 240px;
     height: 100%;
-    background-color: #fff;
   }
 
   .right-view {
-    width: calc(100% - 260px);
+    width: calc(100% - 256px);
     height: 100%;
 
     .search-wrap {
       margin-bottom: 16px;
-      height: 80px;
-      background-color: #fff;
+      padding: 0 16px;
+      height: 60px;
+
+      :deep(.el-form) {
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        .el-form-item {
+          margin-bottom: 0;
+        }
+
+        .el-form-item + .el-form-item {
+          margin-left: 10px;
+        }
+      }
     }
   }
 }

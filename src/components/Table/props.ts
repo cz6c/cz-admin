@@ -1,11 +1,6 @@
 import { TableJsonItem } from "./index.d";
 
 export default {
-  // 表格接口数据
-  data: {
-    type: Array,
-    default: () => [],
-  },
   // 表格列表数据
   columns: {
     type: Array<TableJsonItem>,
@@ -31,23 +26,8 @@ export default {
       return {};
     },
   },
-  // 是否带有纵向边框
-  border: {
-    type: Boolean,
-    default: true,
-  },
-  // 是否为斑马纹 table
-  stripe: {
-    type: Boolean,
-    default: false,
-  },
-  // 可点击行高亮
-  highlightCurrentRow: {
-    type: Boolean,
-    default: true,
-  },
-  // 是否默认展开所有行，当 Table 包含展开行存在或者为树形表格时有效
-  defaultExpandAll: {
+  // 是否需要分页器
+  pagination: {
     type: Boolean,
     default: false,
   },
@@ -55,11 +35,6 @@ export default {
   align: {
     type: String,
     default: "center",
-  },
-  // 是否需要分页器
-  pagination: {
-    type: Boolean,
-    default: true,
   },
   // 列表标题
   title: {
@@ -74,12 +49,12 @@ export default {
   // 是否需要序号列
   indexColum: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   // 是否需要多选列
   selectionColum: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   // 是否需要可展开操作
   expandColum: {

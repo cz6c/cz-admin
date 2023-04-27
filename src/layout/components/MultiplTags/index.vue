@@ -1,17 +1,19 @@
 <template>
   <div class="tags-view">
     <el-scrollbar>
-      <div class="multiple-tags">
-        <div
-          v-for="(tag, index) in multiTagsStore.getMultiTags"
-          :key="index"
-          :class="['tag', isActive(tag) ? 'active' : '']"
-          @contextmenu.prevent="openMenu(tag, $event)"
-        >
-          <router-link :to="tag.fullPath || tag.path">
-            <span>{{ tag.meta.title }}</span>
-          </router-link>
-          <el-icon v-show="!tag.meta?.affix" @click.prevent.stop="handleClose(1, tag)"><Close /></el-icon>
+      <div class="tags">
+        <div class="tag" v-for="(tag, index) in multiTagsStore.getMultiTags" :key="index">
+          <el-tag
+            :closable="!tag.meta?.affix"
+            size="large"
+            :effect="isActive(tag) ? 'dark' : 'light'"
+            round
+            @contextmenu.prevent="openMenu(tag, $event)"
+            @close="handleClose(1, tag)"
+            @click="$router.push(tag.fullPath || tag.path)"
+          >
+            {{ tag.meta.title }}
+          </el-tag>
         </div>
       </div>
     </el-scrollbar>
@@ -23,11 +25,6 @@
       :menuLeft="menuLeft"
       :selectedTag="selectedTag!"
     />
-    <!-- 右侧功能 -->
-    <div class="right-tool">
-      <TagRedo />
-      <FoldButton />
-    </div>
   </div>
 </template>
 <script setup lang="ts" name="MultiplTags">
@@ -37,8 +34,6 @@ import { useRoute } from "vue-router";
 import { useEventListener } from "@vueuse/core";
 import { RouterEnum } from "@/router";
 import { initAffixTags, useTagsDrag } from "./useMultipleTags";
-import TagRedo from "./components/TagRedo.vue";
-import FoldButton from "./components/FoldButton.vue";
 import RightDropdown from "./components/RightDropdown.vue";
 
 const route = useRoute();
@@ -125,76 +120,21 @@ watch(
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 38px;
-  font-size: 14px;
-  color: #616a88;
-  background: #fff;
-  box-shadow: 0 0 1px #888;
 
   :deep(.el-scrollbar) {
     flex: 1;
 
-    .multiple-tags {
-      padding: 5px;
-
-      a {
-        padding: 0 8px;
-        text-decoration: none;
-        color: #616a88;
-      }
+    .tags {
+      display: flex;
+      align-items: center;
 
       .tag {
-        position: relative;
-        display: inline-block;
-        margin-right: 6px;
-        border-radius: 3px 3px 0 0;
-        padding: 0 6px;
-        height: 28px;
-        box-shadow: 0 0 1px #888;
-        line-height: 28px;
         cursor: pointer;
-
-        &.active {
-          color: #409eff;
-
-          a {
-            color: #409eff;
-          }
-
-          .el-icon {
-            color: #409eff;
-          }
-        }
-
-        .el-icon {
-          position: absolute;
-          top: 50%;
-          transform: translate(-60%, -50%);
-          font-size: 10px;
-          color: #616a88;
-          cursor: pointer;
-
-          &:hover {
-            border-radius: 50%;
-            font-size: 12px;
-            color: #fff;
-            background: #b4bccc;
-          }
-        }
       }
-    }
-  }
 
-  .right-tool {
-    span {
-      display: inline-block;
-      border-left: 1px solid #d9d9d9;
-      width: 38px;
-      height: 38px;
-      text-align: center;
-      line-height: 38px;
-      cursor: pointer;
-      box-sizing: border-box;
+      .tag + .tag {
+        margin-left: 8px;
+      }
     }
   }
 }

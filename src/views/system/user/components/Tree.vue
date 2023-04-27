@@ -101,8 +101,8 @@ onMounted(async () => {
 
     .title {
       flex: 0 0 80px;
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 700;
     }
 
     :deep(.el-input) {
@@ -111,6 +111,7 @@ onMounted(async () => {
 
     .icon {
       flex: 0 0 24px;
+      cursor: pointer;
     }
   }
 }

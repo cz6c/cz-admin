@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 import type { App } from "vue";
 
@@ -77,7 +77,7 @@ const routes = [...routesList, PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE];
 
 // app router
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   scrollBehavior: () => ({ left: 0, right: 0 }),
   routes,
 });

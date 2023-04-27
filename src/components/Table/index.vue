@@ -1,5 +1,5 @@
 <template>
-  <div class="table-view" :style="{ height: props.tableHeight }">
+  <div class="table-view cz-card" :style="{ height: props.tableHeight }">
     <div class="header-wrap">
       <div class="header-title">{{ props.title }}</div>
       <div class="header-operate">
@@ -22,7 +22,14 @@
       </div>
     </div>
     <div class="table-wrap">
-      <el-table v-loading="loading" v-bind="props" :data="apiData" height="100%" row-key="id">
+      <el-table
+        v-loading="loading"
+        v-bind="props"
+        :data="apiData"
+        height="100%"
+        row-key="id"
+        @selection-change="selectionChange"
+      >
         <template v-if="props.selectionColum">
           <el-table-column type="selection" :align="props.align" />
         </template>
@@ -77,6 +84,7 @@
         :page-sizes="[50, 100, 150, 200]"
         layout="total, sizes, prev, pager, next, jumper"
         :total="listTotal"
+        small
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -88,11 +96,14 @@
 import { reactive, ref, onMounted } from "vue";
 import tableProps from "./props";
 import { isFunction } from "@/utils/is";
+import { $message } from "@/utils/message";
 
 const props = defineProps(tableProps);
-// console.log(props);
-// const emits = defineEmits(["selectionChange", "sortChange", "rowDblclick", "currentChange"]);
-// console.log(emits);
+const emits = defineEmits(["selectionChange"]);
+
+const selectionChange = (selection: any[]) => {
+  emits("selectionChange", selection);
+};
 
 const loading = ref(true);
 const apiData = ref([]);
@@ -105,19 +116,28 @@ const listTotal = ref(0);
  * @description: 获取接口数据
  */
 async function getList() {
-  const { api, beforeFetch, afterFetch, pagination } = props;
-  loading.value = true;
-  let params = pagination ? { ...pageQuery, ...props.otherParams } : props.otherParams;
-  if (beforeFetch && isFunction(beforeFetch)) {
-    params = (await beforeFetch(params)) || params;
+  try {
+    const { api, beforeFetch, afterFetch, pagination } = props;
+    loading.value = true;
+    let params = pagination ? { ...pageQuery, ...props.otherParams } : props.otherParams;
+    console.log(params);
+
+    if (beforeFetch && isFunction(beforeFetch)) {
+      params = (await beforeFetch(params)) || params;
+    }
+    const { data } = api && isFunction(api) && (await api(params));
+    if (afterFetch && isFunction(afterFetch)) {
+      data.list = (await afterFetch(data.list)) || data.list;
+    }
+    apiData.value = data.list || [];
+    listTotal.value = data.total;
+    setTimeout(() => {
+      loading.value = false;
+    }, 600);
+  } catch (error: any) {
+    loading.value = false;
+    $message.warning(error.message);
   }
-  const { data } = api && isFunction(api) && (await api(params));
-  if (afterFetch && isFunction(afterFetch)) {
-    data.list = (await afterFetch(data.list)) || data.list;
-  }
-  apiData.value = data.list || [];
-  listTotal.value = data.total;
-  loading.value = false;
 }
 onMounted(() => {
   getList();
@@ -146,7 +166,6 @@ defineExpose({
 <style scoped lang="scss">
 .table-view {
   padding: 0 8px;
-  background-color: #fff;
 
   .header-wrap {
     display: flex;
@@ -160,22 +179,28 @@ defineExpose({
       font-weight: 600;
     }
 
+    .header-operate {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
     .icon-wrap {
-      padding: 0 10px;
+      padding: 0 8px;
       font-size: 18px;
       cursor: pointer;
     }
   }
 
   .table-wrap {
-    height: calc(100% - 100px);
+    height: calc(100% - 90px);
   }
 
   .pagination-wrap {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    height: 50px;
+    height: 40px;
   }
 }
 </style>
