@@ -40,18 +40,6 @@ const staticRouter: RouteRecordRaw[] = [
         meta: {
           title: "用户管理",
         },
-        children: [
-          {
-            path: "/system/user/addUser",
-            name: "AddUser",
-            component: () => import("@/views/system/user/addUser.vue"),
-            meta: {
-              title: "新增用户",
-              hideMenu: true,
-              activeMenu: "/system/user",
-            },
-          },
-        ],
       },
       {
         path: "/system/role",
