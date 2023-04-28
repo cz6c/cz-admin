@@ -1,7 +1,6 @@
 // 表格配置项
 interface TableJsonItem {
   columnType?: "text" | "switch" | "slot";
-  slotName?: string; // 当列的type 为 slot 时, 列动态插槽的name
   prop: string; // 字段名称 对应列内容的字段名， 也可以使用 property属性
   label: string; // 列标题
   width?: string | number; // 列宽

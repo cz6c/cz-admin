@@ -25,8 +25,12 @@
       selectionColum
       @selection-change="selectionChange"
     >
-      <template #column-name="{ data }"> {{ data }} </template>
+      <template #tools>
+        <el-button type="primary" @click="isEdit = true">新增部门</el-button>
+      </template>
+      <template #column-deptName="{ data }"> {{ data }} </template>
     </TableView>
+    <DeptDrawerEdit v-model="isEdit" />
   </div>
 </template>
 <script setup lang="ts" name="Dept">
@@ -34,18 +38,15 @@ import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
 import { getDeptList } from "@/api/system";
 import dayjs from "dayjs";
+import DeptDrawerEdit from "./components/DeptDrawerEdit.vue";
 
+const isEdit = ref(false);
 const api = getDeptList;
 const columns: TableJsonItem[] = [
   {
     label: "deptName",
     prop: "deptName",
     columnType: "slot",
-    slotName: "name",
-  },
-  {
-    label: "orderNo",
-    prop: "orderNo",
   },
   {
     label: "status",

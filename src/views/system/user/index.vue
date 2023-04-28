@@ -29,8 +29,12 @@
         selectionColum
         @selection-change="selectionChange"
       >
-        <template #column-name="{ data }"> {{ data }} </template>
+        <template #tools>
+          <el-button type="primary" @click="isEdit = true">新增用户</el-button>
+        </template>
+        <template #column-account="{ data }"> {{ data }} </template>
       </TableView>
+      <UserDrawerEdit v-model="isEdit" />
     </div>
   </div>
 </template>
@@ -40,13 +44,14 @@ import { TableJsonItem } from "@/components/Table/index.d";
 import tree from "./components/Tree.vue";
 import { getUserList } from "@/api/system";
 import dayjs from "dayjs";
+import UserDrawerEdit from "./components/UserDrawerEdit.vue";
 
+const isEdit = ref(false);
 const columns: TableJsonItem[] = [
   {
     label: "account",
     prop: "account",
     columnType: "slot",
-    slotName: "name",
   },
   {
     label: "email",

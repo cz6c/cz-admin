@@ -3,22 +3,24 @@
     <div class="header-wrap">
       <div class="header-title">{{ props.title }}</div>
       <div class="header-operate">
-        <slot name="operate"> </slot>
-        <span class="icon-wrap" @click="getList">
-          <el-icon><Refresh /></el-icon>
-        </span>
-        <el-dropdown trigger="click">
-          <span class="icon-wrap">
-            <el-icon><Setting /></el-icon>
+        <slot name="tools"> </slot>
+        <div class="icons">
+          <span class="icon-wrap" @click="getList">
+            <el-icon><Refresh /></el-icon>
           </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item>Action 1</el-dropdown-item>
-              <el-dropdown-item> Action 2 </el-dropdown-item>
-              <el-dropdown-item>Action 3</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+          <el-dropdown trigger="click">
+            <span class="icon-wrap">
+              <el-icon><Setting /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>Action 1</el-dropdown-item>
+                <el-dropdown-item> Action 2 </el-dropdown-item>
+                <el-dropdown-item>Action 3</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
     </div>
     <div class="table-wrap">
@@ -51,9 +53,6 @@
           :sortable="item.sortable"
           showOverflowTooltip
         >
-          <!-- <template #header="{ column, $index }">
-          <div style="display: flex; align-items: center"></div>
-        </template> -->
           <template #default="{ row }">
             <!-- switch开关 -->
             <template v-if="item.columnType === 'switch'">
@@ -61,7 +60,7 @@
             </template>
             <!-- column动态插槽 -->
             <template v-else-if="item.columnType === 'slot'">
-              <slot :name="`column-${item.slotName}`" :data="row[item.prop]"></slot>
+              <slot :name="`column-${item.prop}`" :data="row[item.prop]"></slot>
             </template>
             <!-- 文本显示 -->
             <template v-else>{{ item.formatData ? item.formatData(row[item.prop]) : row[item.prop] }}</template>
@@ -183,12 +182,21 @@ defineExpose({
       display: flex;
       align-items: center;
       height: 100%;
-    }
 
-    .icon-wrap {
-      padding: 0 8px;
-      font-size: 18px;
-      cursor: pointer;
+      .icons {
+        display: flex;
+        padding-left: 8px;
+
+        .icon-wrap {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 32px;
+          height: 32px;
+          font-size: 18px;
+          cursor: pointer;
+        }
+      }
     }
   }
 

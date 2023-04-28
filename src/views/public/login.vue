@@ -1,33 +1,35 @@
 <template>
   <div class="login">
-    <div class="content-wrapper">
-      <div class="title-wrapper">
-        <h1 class="title">登录</h1>
-        <p class="description">{{ BASE_TITLE }}</p>
-      </div>
-      <el-form ref="formRef" :rules="rules" label-position="top" :model="loginForm" label-width="80px">
-        <el-form-item label="账号" prop="username">
-          <el-input v-model="loginForm.username" placeholder="请输入账号"></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <template #label>
-            <span>密码</span>
-          </template>
-          <el-input v-model="loginForm.password" type="password" placeholder="请输入密码"></el-input>
-        </el-form-item>
-      </el-form>
-      <el-button type="primary" class="login-btn" :loading="loading" @click="handleLogin(formRef)">登 录</el-button>
-      <!-- <el-alert
-        v-if="isLoginTimeOut"
-        title="由于登录时间超时，您已被注销登录！"
-        type="warning"
-        show-icon
-        :closable="false"
-        class="login-timeout"
-      >
-      </el-alert> -->
+    <div class="login-fl">
+      <SvgIcon name="login" size="368" />
     </div>
-    <div class="version-tips">版权信息 | cz6</div>
+    <div class="login-fr">
+      <div class="login-conten">
+        <div class="title-wrapper">
+          <h1 class="title">Welcome back!</h1>
+          <p class="description">{{ BASE_TITLE }}</p>
+        </div>
+        <el-form ref="formRef" :rules="rules" :model="loginForm">
+          <el-form-item prop="username">
+            <el-input v-model="loginForm.username" placeholder="请输入账号"></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input v-model="loginForm.password" type="password" show-password placeholder="请输入密码"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" class="login-btn" :loading="loading" @click="handleLogin(formRef)">登 录</el-button>
+        <!-- <el-alert
+            v-if="isLoginTimeOut"
+            title="由于登录时间超时，您已被注销登录！"
+            type="warning"
+            show-icon
+            :closable="false"
+            class="login-timeout"
+          >
+          </el-alert> -->
+      </div>
+      <div class="version-tips">版权信息 | cz6</div>
+    </div>
   </div>
 </template>
 
@@ -88,101 +90,75 @@ function handleLogin(formEl: FormInstance | undefined) {
 
 <style scoped lang="scss">
 .login {
-  position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
 
-  .content-wrapper {
-    width: 418px;
-
-    .title-wrapper {
-      display: flex;
-      align-items: baseline;
-
-      .title {
-        font-size: 32px;
-        font-weight: bold;
-        color: #333;
-      }
-
-      .description {
-        margin-left: 16px;
-        font-size: 16px;
-        font-weight: 400;
-        color: #999;
-        line-height: 22px;
-      }
-    }
-
-    :deep(.el-form) {
-      margin: 40px 0;
-      margin-top: 10px;
-
-      .el-form-item {
-        position: relative;
-        margin-bottom: 24px;
-
-        .el-form-item__label {
-          padding-bottom: 8px;
-          width: 56px;
-          height: 32px;
-          text-align: justify;
-          color: #333;
-          line-height: 32px !important;
-          vertical-align: top;
-
-          &::after {
-            display: inline-block;
-            width: 100%;
-            content: "";
-            height: 0;
-          }
-
-          &::before {
-            display: none;
-          }
-        }
-
-        .el-input__inner {
-          height: 40px;
-          line-height: 40px;
-        }
-
-        .code-view {
-          position: absolute;
-          top: 1px;
-          right: 1px;
-          z-index: 2;
-          border-radius: 4px;
-          width: 120px;
-          height: 38px;
-          cursor: pointer;
-          user-select: none;
-        }
-      }
-    }
-
-    :deep(.login-btn) {
-      margin-bottom: 16px;
-      width: 100%;
-      height: 40px;
-      line-height: 40px;
-    }
-
-    .login-timeout {
-      margin-top: 20px;
-    }
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
   }
 
-  .version-tips {
-    position: absolute;
-    bottom: 8px;
-    font-size: 12px;
-    font-weight: 400;
-    color: #999;
-    line-height: 18px;
+  .login-fl {
+    background-color: #f6f7f9;
+  }
+
+  .login-fr {
+    position: relative;
+
+    .login-conten {
+      .title-wrapper {
+        margin-bottom: 12px;
+
+        .title {
+          font-size: 32px;
+          font-weight: 600;
+        }
+
+        .description {
+          font-size: 16px;
+          font-weight: 400;
+          color: #999;
+          line-height: 36px;
+        }
+      }
+
+      :deep(.el-form) {
+        .el-form-item {
+          position: relative;
+          margin-bottom: 24px;
+          width: 300px;
+
+          .el-input__inner {
+            border-radius: 8px;
+            height: 40px;
+            line-height: 40px;
+          }
+        }
+      }
+
+      :deep(.login-btn) {
+        border-radius: 8px;
+        width: 300px;
+        height: 40px;
+        line-height: 40px;
+      }
+
+      .login-timeout {
+        margin-top: 20px;
+      }
+    }
+
+    .version-tips {
+      position: absolute;
+      bottom: 8px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #999;
+      line-height: 26px;
+    }
   }
 }
 </style>

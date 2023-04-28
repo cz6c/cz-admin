@@ -25,8 +25,12 @@
       selectionColum
       @selection-change="selectionChange"
     >
-      <template #column-name="{ data }"> {{ data }} </template>
+      <template #tools>
+        <el-button type="primary" @click="isEdit = true">新增角色</el-button>
+      </template>
+      <template #column-roleName="{ data }"> {{ data }} </template>
     </TableView>
+    <RoleDrawerEdit v-model="isEdit" />
   </div>
 </template>
 <script setup lang="ts" name="Role">
@@ -34,18 +38,15 @@ import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
 import { getRoleList } from "@/api/system";
 import dayjs from "dayjs";
+import RoleDrawerEdit from "./components/RoleDrawerEdit.vue";
 
+const isEdit = ref(false);
 const api = getRoleList;
 const columns: TableJsonItem[] = [
   {
-    label: "orderNo",
-    prop: "orderNo",
-    columnType: "slot",
-    slotName: "name",
-  },
-  {
     label: "roleName",
     prop: "roleName",
+    columnType: "slot",
   },
   {
     label: "roleValue",
