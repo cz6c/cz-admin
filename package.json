@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build:test": "vite build --mode test",
-    "build:production": "vite build --mode production",
+    "build:prod": "vite build --mode production",
     "preview": "vite preview",
     "lint:eslint": "eslint --fix",
     "lint:prettier": "prettier --write  \"src/**/*.{ts,json,scss,vue,html,md}\"",

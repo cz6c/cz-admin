@@ -1,18 +1,17 @@
 <template>
-  <div class="wscn-http404-container">
-    <div class="wscn-http404">
-      <div class="pic-404">
-        <img class="pic-404__parent" src="@/assets/images/404_images/404.png" alt="404" />
-        <img class="pic-404__child left" src="@/assets/images/404_images/404_cloud.png" alt="404" />
-        <img class="pic-404__child mid" src="@/assets/images/404_images/404_cloud.png" alt="404" />
-        <img class="pic-404__child right" src="@/assets/images/404_images/404_cloud.png" alt="404" />
+  <div class="wscn-http404">
+    <div class="pic-404">
+      <img class="pic-404__parent" src="@/assets/images/404_images/404.png" alt="404" />
+      <img class="pic-404__child left" src="@/assets/images/404_images/404_cloud.png" alt="404" />
+      <img class="pic-404__child mid" src="@/assets/images/404_images/404_cloud.png" alt="404" />
+    </div>
+    <div class="bullshit">
+      <div class="bullshit__oops">Sorry!</div>
+      <div class="bullshit__headline">Page not found or not authorized to access...</div>
+      <div class="bullshit__info">
+        Please check that the URL you entered is correct, or click the button below to return to the homepage.
       </div>
-      <div class="bullshit">
-        <div class="bullshit__oops">抱歉!</div>
-        <div class="bullshit__headline">找不到页面或无权访问...</div>
-        <!-- <div class="bullshit__info">Please check that the URL you entered is correct, or click the button below to return to the homepage.</div> -->
-        <a href class="bullshit__return-home" style="margin-top: 20px">回到首页</a>
-      </div>
+      <a href="/" class="bullshit__return-home" style="margin-top: 20px">back home</a>
     </div>
   </div>
 </template>
@@ -20,29 +19,17 @@
 <script setup lang="ts" name="PAGE_NOT_FOUND_NAME"></script>
 
 <style lang="scss" scoped>
-.wscn-http404-container {
-  height: 100%;
-}
-
-.bullshit__return-home {
-  text-decoration: none;
-}
-
 .wscn-http404 {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  padding: 0 50px;
-  width: 1200px;
   height: 100%;
+  background-color: #cce3ff;
 
   .pic-404 {
     position: relative;
-    float: left;
-    overflow: hidden;
-    width: 600px;
+    width: 836px;
 
     &__parent {
       width: 100%;
@@ -99,31 +86,6 @@
           opacity: 0;
         }
       }
-      @keyframes cloudRight {
-        0% {
-          top: 100px;
-          left: 500px;
-          opacity: 0;
-        }
-
-        20% {
-          top: 120px;
-          left: 460px;
-          opacity: 1;
-        }
-
-        80% {
-          top: 180px;
-          left: 340px;
-          opacity: 1;
-        }
-
-        100% {
-          top: 200px;
-          left: 300px;
-          opacity: 0;
-        }
-      }
 
       position: absolute;
 
@@ -150,18 +112,6 @@
         animation-fill-mode: forwards;
         animation-delay: 1.2s;
       }
-
-      &.right {
-        top: 100px;
-        left: 500px;
-        width: 62px;
-        opacity: 0;
-        animation-name: cloudRight;
-        animation-duration: 2s;
-        animation-timing-function: linear;
-        animation-fill-mode: forwards;
-        animation-delay: 1s;
-      }
     }
   }
 
@@ -178,17 +128,14 @@
       }
     }
 
-    position: relative;
-    float: left;
-    overflow: hidden;
-    padding: 30px 0;
-    width: 300px;
+    padding: 60px;
+    width: 368px;
 
     &__oops {
       margin-bottom: 20px;
       font-size: 32px;
       font-weight: bold;
-      color: #1482f0;
+      color: #5353dd;
       opacity: 0;
       line-height: 40px;
       animation-name: slideUp;
@@ -223,14 +170,14 @@
 
     &__return-home {
       display: block;
-      float: left;
       border-radius: 100px;
       width: 110px;
       height: 36px;
       font-size: 14px;
       text-align: center;
+      text-decoration: none;
       color: #fff;
-      background: #1482f0;
+      background: #5353dd;
       opacity: 0;
       line-height: 36px;
       cursor: pointer;
