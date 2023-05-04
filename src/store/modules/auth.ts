@@ -51,9 +51,9 @@ export const authStore = defineStore("auth", {
     async login(loginParams: LoginParams): Promise<string | unknown> {
       try {
         const { data } = await login(loginParams);
-        setToken(data.token);
+        setToken(data);
         await this.getLoginUserInfoAction();
-        return data.token;
+        return data;
       } catch (error) {
         return Promise.reject(error);
       }

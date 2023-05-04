@@ -74,7 +74,7 @@ const systemRouter = {
 
 export default [
   {
-    url: "/adminapi/getMenuList",
+    url: "/admin/getMenuList",
     method: "get",
     response: (request: requestParams) => {
       const token = getRequestToken(request);
@@ -86,7 +86,7 @@ export default [
     },
   },
   {
-    url: "/adminapi/getPermCodeList",
+    url: "/admin/getPermCodeList",
     method: "get",
     response: (request: requestParams) => {
       const token = getRequestToken(request);

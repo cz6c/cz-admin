@@ -311,7 +311,7 @@ const areaList: any[] = [
 ];
 export default [
   {
-    url: "/adminapi/cascader/getAreaRecord",
+    url: "/admin/cascader/getAreaRecord",
     method: "get",
     response: () => {
       return resultSuccess(areaList);

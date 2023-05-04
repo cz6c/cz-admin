@@ -23,7 +23,7 @@ service.interceptors.request.use(
     if (config.url === "/device/assets/importExcel") {
       config.timeout = 0;
     }
-    config.headers["token"] = config.headers["token"] || getToken();
+    config.headers["ctoken"] = config.headers["ctoken"] || getToken();
     return config;
   },
   error => {

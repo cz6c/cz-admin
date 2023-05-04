@@ -68,7 +68,7 @@ const deptList = (() => {
 
 export default [
   {
-    url: "/adminapi/system/getUserList",
+    url: "/admin/system/getUserList",
     method: "get",
     response: ({ query }) => {
       const { page, limit } = query;
@@ -79,7 +79,7 @@ export default [
     },
   },
   {
-    url: "/adminapi/system/getRoleList",
+    url: "/admin/system/getRoleList",
 
     method: "get",
     response: ({ query }) => {
@@ -91,7 +91,7 @@ export default [
     },
   },
   {
-    url: "/adminapi/system/setRoleStatus",
+    url: "/admin/system/setRoleStatus",
 
     method: "post",
     response: ({ query }) => {
@@ -100,7 +100,7 @@ export default [
     },
   },
   {
-    url: "/adminapi/system/getDeptList",
+    url: "/admin/system/getDeptList",
 
     method: "get",
     response: ({ query }) => {

@@ -26,7 +26,7 @@ const demoTreeList = keyword => {
 
 export default [
   {
-    url: "/adminapi/tree/getDemoOptions",
+    url: "/admin/tree/getDemoOptions",
     method: "get",
     response: ({ query }) => {
       const { keyword } = query;

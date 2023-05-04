@@ -44,7 +44,7 @@ const demoList = (() => {
 
 export default [
   {
-    url: "/adminapi/table/getDemoList",
+    url: "/admin/table/getDemoList",
     method: "get",
     response: ({ query }) => {
       const { page = 1, limit = 15 } = query;

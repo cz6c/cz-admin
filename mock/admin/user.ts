@@ -38,7 +38,7 @@ export function createFakeUserList() {
 
 export default [
   {
-    url: "/adminapi/login",
+    url: "/admin/login",
     method: "post",
     response: ({ body }) => {
       const { username, password } = body;
@@ -53,7 +53,7 @@ export default [
     },
   },
   {
-    url: "/adminapi/getUserInfo",
+    url: "/admin/getUserInfo",
     method: "get",
     response: (request: requestParams) => {
       const token = getRequestToken(request);
@@ -66,7 +66,7 @@ export default [
     },
   },
   {
-    url: "/adminapi/logout",
+    url: "/admin/logout",
     method: "get",
     response: (request: requestParams) => {
       const token = getRequestToken(request);

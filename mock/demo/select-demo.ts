@@ -16,7 +16,7 @@ const demoList = (keyword, count = 20) => {
 
 export default [
   {
-    url: "/adminapi/select/getDemoOptions",
+    url: "/admin/select/getDemoOptions",
     method: "get",
     response: ({ query }) => {
       const { keyword, count } = query;
