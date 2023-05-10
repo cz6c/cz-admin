@@ -17,16 +17,6 @@ export interface LoginParams {
   password: string;
 }
 
-// 用户信息
-export interface UserInfo {
-  userId: number;
-  username: string;
-  realName: string;
-  avatar: string;
-  desc: string;
-  roles: any[];
-}
-
 // 路由元信息
 export interface RouteMeta {
   // 路由title  一般必填

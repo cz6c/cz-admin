@@ -36,7 +36,7 @@
 <script setup lang="ts" name="Dept">
 import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
-import { getDeptList } from "@/api/system";
+import { getDeptList } from "@/api/system/dept";
 import dayjs from "dayjs";
 import DeptDrawerEdit from "./components/DeptDrawerEdit.vue";
 
@@ -68,7 +68,7 @@ const columns: TableJsonItem[] = [
   },
 ];
 const tableRef: any = ref(null);
-let selectList = [];
+let selectList: any = ref([]);
 let tableSearch = reactive({
   deptName: "",
   createTime: "",
@@ -82,7 +82,7 @@ const reset = () => {
   tableRef.value.getList();
 };
 const selectionChange = (selection: any[]) => {
-  selectList = selection || [];
+  selectList.value = selection || [];
 };
 </script>
 

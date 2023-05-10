@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import store from "@/store";
 import { setToken, removeToken } from "@/utils/auth";
-import { login, getLoginUserInfo, getMenuList, getPermCodeList } from "@/api/public";
-import { LoginParams, UserInfo } from "@/api/public/index.d";
+import { login, getMenuList, getPermCodeList } from "@/api/public";
+import { getLoginUserInfo } from "@/api/system/user";
+import { LoginParams } from "@/api/public/index.d";
+import { UserItem } from "@/api/system/user/index.d";
 import { isDynamicAddedRoute, isPermCode } from "@/config";
 import router, { resetRouter } from "@/router";
 import staticRouter from "@/router/modules/staticRoutes";
@@ -62,11 +64,11 @@ export const authStore = defineStore("auth", {
      * @description: 获取用户信息
      * @return {*}
      */
-    async getLoginUserInfoAction(): Promise<UserInfo | unknown> {
+    async getLoginUserInfoAction(): Promise<UserItem | unknown> {
       try {
         const { data } = await getLoginUserInfo();
-        const { userId, username, avatar } = data;
-        this.id = userId;
+        const { id, username, avatar } = data;
+        this.id = id;
         this.username = username;
         this.avatar = avatar;
         await this.getMenuListAction();
@@ -87,7 +89,7 @@ export const authStore = defineStore("auth", {
         let routeList: RouteRecordRaw[] = [];
         if (isDynamicAddedRoute) {
           const { data } = await getMenuList();
-          routeList = menuToRoute(data);
+          routeList = menuToRoute(data.list);
         } else {
           routeList = staticRouter;
         }

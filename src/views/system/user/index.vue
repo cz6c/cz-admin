@@ -42,7 +42,7 @@
 import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
 import tree from "./components/Tree.vue";
-import { getUserList } from "@/api/system";
+import { getUserList } from "@/api/system/user";
 import dayjs from "dayjs";
 import UserDrawerEdit from "./components/UserDrawerEdit.vue";
 
@@ -86,7 +86,7 @@ const columns: TableJsonItem[] = [
 ];
 const api = getUserList;
 const tableRef: any = ref(null);
-let selectList = [];
+let selectList: any = ref([]);
 let tableSearch = reactive({
   nickname: "",
   createTime: "",
@@ -101,7 +101,7 @@ const reset = () => {
   tableRef.value.getList();
 };
 const selectionChange = (selection: any[]) => {
-  selectList = selection || [];
+  selectList.value = selection || [];
 };
 </script>
 

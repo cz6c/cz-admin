@@ -46,8 +46,8 @@
 
 <script setup lang="ts" name="Tree">
 import { ref, watch, onMounted } from "vue";
-import { getDeptList } from "@/api/system/index";
-import { DeptItem } from "@/api/system/index.d";
+import { getDeptList } from "@/api/system/dept";
+import { DeptItem } from "@/api/system/dept/index.d";
 
 const treeRef = ref();
 const treeData = ref<DeptItem[]>([]);
@@ -86,7 +86,7 @@ watch(searchValue, val => {
 
 onMounted(async () => {
   const { data } = await getDeptList();
-  treeData.value = data;
+  treeData.value = data.list;
 });
 </script>
 

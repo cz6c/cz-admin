@@ -36,7 +36,7 @@
 <script setup lang="ts" name="Role">
 import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
-import { getRoleList } from "@/api/system";
+import { getRoleList } from "@/api/system/role";
 import dayjs from "dayjs";
 import RoleDrawerEdit from "./components/RoleDrawerEdit.vue";
 
@@ -76,7 +76,7 @@ const columns: TableJsonItem[] = [
   },
 ];
 const tableRef: any = ref(null);
-let selectList = [];
+let selectList: any = ref([]);
 let tableSearch = reactive({
   roleName: "",
   createTime: "",
@@ -91,7 +91,7 @@ const reset = () => {
   tableRef.value.getList();
 };
 const selectionChange = (selection: any[]) => {
-  selectList = selection || [];
+  selectList.value = selection || [];
 };
 </script>
 
