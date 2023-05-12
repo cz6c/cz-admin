@@ -2,8 +2,8 @@ import { GetListParams, GetListResponse } from "@/api/public/index.d";
 // 详情
 export interface UserItem {
   id: number;
-  roleId: number;
-  deptId: number;
+  roleId: number | string;
+  deptId: number | string;
   username: string;
   avatar: string;
   status: 0 | 1;
@@ -11,9 +11,9 @@ export interface UserItem {
 }
 // 新增/编辑body
 export interface UserInfo extends Omit<UserItem, "id" | "status" | "isDel"> {
-  id?: string;
-  status?: string;
-  isDel?: string;
+  id?: number;
+  status?: 0 | 1;
+  isDel?: 0 | 1;
 }
 // 列表
 export type ResponseUserList = GetListResponse<UserItem>;

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import store from "@/store";
 import { setToken, removeToken } from "@/utils/auth";
 import { login, getMenuList, getPermCodeList } from "@/api/public";
-import { getLoginUserInfo } from "@/api/system/user";
+import { getLoginUserInfoApi } from "@/api/system/user";
 import { LoginParams } from "@/api/public/index.d";
 import { UserItem } from "@/api/system/user/index.d";
 import { isDynamicAddedRoute, isPermCode } from "@/config";
@@ -11,7 +11,7 @@ import staticRouter from "@/router/modules/staticRoutes";
 import { menuToRoute } from "@/utils/router";
 import type { RouteRecordRaw } from "vue-router";
 import { useMultiTagsStore } from "./multiTags";
-import { filter } from "@/utils/tree";
+import { filterTree } from "@/utils/tree";
 
 interface authStoreState {
   id: number;
@@ -36,12 +36,15 @@ export const authStore = defineStore("auth", {
   }),
   getters: {
     getDynamicMenu(): RouteRecordRaw[] {
-      return filter(this.dynamicRoutes, route => {
+      return filterTree(this.dynamicRoutes, route => {
         return !route.meta?.hideMenu;
       });
     },
     getPermCodeList(): string[] {
       return this.permCodeList;
+    },
+    getDynamicRoutes(): RouteRecordRaw[] {
+      return this.dynamicRoutes;
     },
   },
   actions: {
@@ -66,7 +69,7 @@ export const authStore = defineStore("auth", {
      */
     async getLoginUserInfoAction(): Promise<UserItem | unknown> {
       try {
-        const { data } = await getLoginUserInfo();
+        const { data } = await getLoginUserInfoApi();
         const { id, username, avatar } = data;
         this.id = id;
         this.username = username;

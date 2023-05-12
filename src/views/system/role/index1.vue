@@ -1,74 +1,66 @@
 <template>
   <div class="page">
     <div class="search-wrap cz-card">
-      <ElForm :model="tableSearch">
-        <ElFormItem>
-          <ElInput v-model="tableSearch.nickname" placeholder="nickname" />
-        </ElFormItem>
-        <ElFormItem>
-          <ElDatePicker v-model="tableSearch.createTime" type="date" placeholder="createTime" />
-        </ElFormItem>
-        <ElFormItem>
-          <ElButton type="primary" @click="search">搜索</ElButton>
-          <ElButton @click="reset">重置</ElButton>
-        </ElFormItem>
-      </ElForm>
+      <el-form :model="tableSearch">
+        <el-form-item>
+          <el-input v-model="tableSearch.roleName" placeholder="nickname" />
+        </el-form-item>
+        <el-form-item>
+          <el-date-picker v-model="tableSearch.createTime" type="date" placeholder="createTime" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="search">搜索</el-button>
+          <el-button @click="reset">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
     <TableView
       ref="tableRef"
       :api="api"
       :columns="columns"
       :otherParams="tableSearch"
-      title="用户列表"
+      title="角色列表"
       tableHeight="calc(100% - 76px)"
       pagination
       selectionColum
       @selection-change="selectionChange"
     >
       <template #tools>
-        <ElButton type="primary" @click="add">新增用户</ElButton>
+        <el-button type="primary" @click="add">新增角色</el-button>
       </template>
-
-      <template #column-account="{ row }"> {{ row.account }} </template>
+      <template #column-roleName="{ row }"> {{ row.roleName }} </template>
       <template #column-status="{ row }">
-        <el-switch v-model="row.status" @change="statusChange($event, row.id)" :active-value="1" :inactive-value="0" />
+        <el-switch v-model="row.status" @click="statusChange(row)" :active-value="1" :inactive-value="0" />
       </template>
       <template #column-action="{ row }">
         <ElButton link type="primary" size="small" @click="del(row.id)">Detail</ElButton>
         <ElButton link type="primary" size="small" @click="edit(row.id)">Edit</ElButton>
       </template>
     </TableView>
-    <UserDrawerEdit v-model="_isEdit" :id="_id" />
+    <RoleDrawerEdit v-model="_isEdit" :id="_id" @update-list="search" />
   </div>
 </template>
-<script setup lang="ts" name="User">
+<script setup lang="ts" name="Role1">
 import { ref, reactive } from "vue";
 import { TableJsonItem } from "@/components/Table/index.d";
-import { getUserListApi, statusChangeApi, delUserApi } from "@/api/system/user";
+import { getRoleListApi, statusChangeApi, delRoleApi } from "@/api/system/role";
 import dayjs from "dayjs";
-import UserDrawerEdit from "./components/UserDrawerEdit.vue";
+import RoleDrawerEdit from "./components/RoleDrawerEdit.vue";
 import { ElMessageBox } from "element-plus";
 import { $message } from "@/utils/message";
 
 const _isEdit = ref(false);
 const _id = ref(0);
+const api = getRoleListApi;
 const columns: TableJsonItem[] = [
   {
-    label: "account",
-    prop: "account",
+    label: "roleName",
+    prop: "roleName",
     columnType: "slot",
   },
   {
-    label: "email",
-    prop: "email",
-  },
-  {
-    label: "nickname",
-    prop: "nickname",
-  },
-  {
-    label: "role",
-    prop: "role",
+    label: "menuIds",
+    prop: "menuIds",
   },
   {
     label: "status",
@@ -90,11 +82,10 @@ const columns: TableJsonItem[] = [
     columnType: "slot",
   },
 ];
-const api = getUserListApi;
 const tableRef: any = ref(null);
-const selectList: any = ref([]);
-const tableSearch = reactive({
-  nickname: "",
+let selectList: any = ref([]);
+let tableSearch = reactive({
+  roleName: "",
   createTime: "",
 });
 /**
@@ -107,7 +98,7 @@ function search() {
  * @description: 重置搜索
  */
 function reset() {
-  tableSearch.nickname = "";
+  tableSearch.roleName = "";
   tableSearch.createTime = "";
   search();
 }
@@ -135,11 +126,17 @@ function edit(id: number) {
 }
 /**
  * @description: 状态切换
- * @param {*} val
+ * @param {*} row
  */
-function statusChange(val: string | number | boolean, id: number) {
-  const status: number = val as number;
-  statusChangeApi({ status, id });
+async function statusChange({ id, status }: { id: number; status: 0 | 1 }) {
+  console.log(status);
+  try {
+    await statusChangeApi({ status, id });
+    $message.success("切换成功");
+    search();
+  } catch (error: any) {
+    $message.error(error.message);
+  }
 }
 /**
  * @description: 删除
@@ -152,8 +149,12 @@ async function del(id: number) {
     type: "warning",
   })
     .then(async () => {
-      await delUserApi({ id });
-      $message.success(`Delete completed`);
+      try {
+        await delRoleApi({ id });
+        $message.success(`Delete completed`);
+      } catch (error: any) {
+        $message.error(error.message);
+      }
     })
     .catch(() => {
       $message.info(`Delete canceled`);
