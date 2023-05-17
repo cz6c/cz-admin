@@ -7,7 +7,7 @@ import { LoginParams } from "@/api/public/index.d";
 import { UserItem } from "@/api/system/user/index.d";
 import { isDynamicAddedRoute, isPermCode } from "@/config";
 import router, { resetRouter } from "@/router";
-import staticRouter from "@/router/modules/staticRoutes";
+import { getStaticRoutes } from "@/router/static";
 import { menuToRoute } from "@/utils/router";
 import type { RouteRecordRaw } from "vue-router";
 import { useMultiTagsStore } from "./multiTags";
@@ -94,7 +94,7 @@ export const authStore = defineStore("auth", {
           const { data } = await getMenuList();
           routeList = menuToRoute(data.list);
         } else {
-          routeList = staticRouter;
+          routeList = await getStaticRoutes();
         }
         // 重置路由
         resetRouter();

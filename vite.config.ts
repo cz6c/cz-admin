@@ -3,7 +3,6 @@ import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
 import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-// import { viteMockServe } from "vite-plugin-mock";
 import vueSetupExtend from "vite-plugin-vue-setup-extend";
 import { createHtmlPlugin } from "vite-plugin-html";
 import Components from "unplugin-vue-components/vite";
@@ -73,18 +72,6 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         // 指定symbolId格式
         symbolId: "icon-[dir]-[name]",
       }),
-      /* https://github.com/anncwb/vite-plugin-mock */
-      // viteMockServe({
-      //   ignore: /^\_/, // 忽略读取指定格式的文件
-      //   mockPath: "mock", // 设置模拟.ts 文件的存储文件夹
-      //   localEnabled: command === "serve", // 开发环境启用mock
-      //   prodEnabled: command !== "serve", // 生产环境启用mock
-      //   // 生产环境被注入到mian.ts的代码
-      //   injectCode: `
-      //         import { setupProdMockServer } from '../mock/_createProductionServer';
-      //         setupProdMockServer();
-      //         `,
-      // }),
     ],
   };
 };
