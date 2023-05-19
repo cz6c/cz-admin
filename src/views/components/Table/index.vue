@@ -1,182 +1,105 @@
+<script lang="ts" setup>
+import { ComputedRef, computed, ref } from "vue";
+import TableColumn from "./TableColumn.vue";
+import { ElTable } from "element-plus";
+import Table from "./index.d";
+
+interface TableProps {
+  tableData: Array<object>; // table的数据
+  columns: Table.TableJsonItem[]; // 每列的配置项
+  options?: Table.TableOptions;
+}
+const props = defineProps<TableProps>();
+const tableRef = ref<InstanceType<typeof ElTable>>();
+// 设置option默认值，如果传入自定义的配置则合并option配置项
+const _options: ComputedRef<Table.TableOptions> = computed(() => {
+  const option = {
+    stripe: false,
+    tooltipEffect: "dark",
+    showHeader: true,
+    pagination: false,
+    rowStyle: () => "cursor:pointer", // 行样式
+  };
+  return Object.assign(option, props?.options);
+});
+// 合并分页配置
+const _paginationConfig = computed(() => {
+  const config = {
+    total: 0,
+    currentPage: 1,
+    pageSize: 10,
+    pageSizes: [10, 20, 30, 40, 50, 100],
+    layout: "total, sizes, prev, pager, next, jumper",
+  };
+  return Object.assign(config, _options.value.paginationConfig);
+});
+const emit = defineEmits([
+  "selection-change", // 当选择项发生变化时会触发该事件
+  "row-click", // 当某一行被点击时会触发该事件
+  "cell-click", // 当某个单元格被点击时会触发该事件
+  "command", // 按钮组事件
+  "size-change", // pageSize事件
+  "current-change", // currentPage按钮组事件
+  "pagination-change", // currentPage或者pageSize改变触发
+]);
+// 切换pageSize
+const pageSizeChange = (pageSize: number) => {
+  emit("size-change", pageSize);
+  emit("pagination-change", 1, pageSize);
+};
+// 切换currentPage
+const currentPageChange = (currentPage: number) => {
+  emit("current-change", currentPage);
+  emit("pagination-change", currentPage, _paginationConfig.value.pageSize);
+};
+// 多选事件
+const handleSelectionChange = (val: any) => {
+  emit("selection-change", val);
+};
+// 当某一行被点击时会触发该事件
+const handleRowClick = (row: any, column: any, event: MouseEvent) => {
+  emit("row-click", row, column, event);
+};
+// 当某个单元格被点击时会触发该事件
+const handleCellClick = (row: any, column: any, cell: any, event: MouseEvent) => {
+  emit("cell-click", row, column, cell, event);
+};
+// 暴露给父组件参数和方法，如果外部需要更多的参数或者方法，都可以从这里暴露出去。
+defineExpose({ element: tableRef });
+</script>
 <template>
-  <div class="table-view cz-card" :style="{ height: props.tableHeight }">
-    <TableAction :title="props.title" @update-list="getList">
-      <template #tools>
-        <slot name="tools"> </slot>
-      </template>
-    </TableAction>
-    <div class="table-wrap">
-      <el-table
-        v-loading="loading"
-        v-bind="props"
-        :data="apiData"
-        height="100%"
-        row-key="id"
-        @selection-change="selectionChange"
-      >
-        <template v-if="props.selectionColum">
-          <el-table-column type="selection" :align="props.align" />
-        </template>
-        <template v-if="props.indexColum">
-          <el-table-column type="index" label="序号" :align="props.align" />
-        </template>
-        <template v-if="props.expandColum">
-          <el-table-column type="expand" :align="props.align" />
-        </template>
-        <el-table-column
-          v-for="item in props.columns"
-          :key="item.prop"
-          :align="item.align || props.align"
-          showOverflowTooltip
-          v-bind="item"
-        >
-          <template #default="{ row }">
-            <!-- column动态插槽 -->
-            <template v-if="item.columnType === 'slot'">
-              <slot :name="`column-${item.prop}`" :row="row"></slot>
-            </template>
-            <!-- 文本显示 -->
-            <template v-else>{{ row[item.prop] }}</template>
+  <div>
+    <el-table
+      ref="tableRef"
+      :data="tableData"
+      v-bind="_options"
+      @selection-change="handleSelectionChange"
+      @row-click="handleRowClick"
+      @cell-click="handleCellClick"
+    >
+      <template v-for="col in columns" :key="col.prop">
+        <!---复选框, 序号 (START)-->
+        <el-table-column v-if="['index', 'selection', 'expand'].includes(col.type!)" v-bind="col">
+          <!-- 当type等于expand时， 配置通过h函数渲染、txs语法或者插槽自定义内容 -->
+          <template #default="{ row, $index }">
+            <component v-if="col.render" :is="col.render" :row="row" :index="$index" />
+            <slot v-else-if="col.slot" name="expand" :row="row" :index="$index"></slot>
           </template>
         </el-table-column>
-        <!-- 插入至表格最后一行之后的内容， 如果需要对表格的内容进行无限滚动操作，可能需要用到这个 slot。 若表格有合计行，该 slot 会位于合计行之上 -->
-        <template #append>
-          <slot name="append"></slot>
-        </template>
-        <!-- 当数据为空时自定义的内容 -->
-        <template #empty>
-          <slot name="empty"></slot>
-        </template>
-      </el-table>
-    </div>
-    <div class="pagination-wrap">
-      <el-pagination
-        v-model:current-page="pageQuery.page"
-        v-model:page-size="pageQuery.limit"
-        :page-sizes="[50, 100, 150, 200]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="listTotal"
-        small
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+        <!---复选框, 序号 (END)-->
+        <!-- 渲染插槽 START -->
+        <TableColumn :col="col" v-else>
+          <template v-for="slot in Object.keys($slots)" #[slot]="scope: Record<string, any>">
+            <slot :name="slot" v-bind="scope"></slot>
+          </template>
+        </TableColumn>
+        <!-- 渲染插槽 END -->
+      </template>
+    </el-table>
+    <!-- 分页器 -->
+    <div v-if="_options.pagination" class="mt20">
+      <el-pagination v-bind="_paginationConfig" @size-change="pageSizeChange" @current-change="currentPageChange" />
     </div>
   </div>
 </template>
-
-<script setup lang="ts" name="TableView">
-import { reactive, ref, onMounted } from "vue";
-import { isFunction } from "@/utils/is";
-import { $message } from "@/utils/message";
-import TableAction from "./components/TableAction.vue";
-
-interface TableJsonItem {
-  columnType?: "text" | "slot";
-  prop: string;
-  align?: string;
-}
-
-interface Props {
-  columns: Array<TableJsonItem>;
-  api: Function;
-  beforeFetch?: Function;
-  afterFetch?: Function;
-  otherParams?: any;
-  pagination?: boolean;
-  align?: string;
-  title?: string;
-  tableHeight?: string;
-  indexColum?: boolean;
-  selectionColum?: boolean;
-  expandColum?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), {
-  otherParams: {},
-  pagination: false,
-  align: "center",
-  title: "",
-  tableHeight: "100%",
-  indexColum: false,
-  selectionColum: false,
-  expandColum: false,
-});
-const emits = defineEmits(["selectionChange"]);
-
-const selectionChange = (selection: any[]) => {
-  emits("selectionChange", selection);
-};
-
-const loading = ref(true);
-const apiData = ref([]);
-const pageQuery = reactive({
-  page: 1,
-  limit: 15,
-});
-const listTotal = ref(0);
-/**
- * @description: 获取接口数据
- */
-async function getList() {
-  try {
-    const { api, beforeFetch, afterFetch, pagination } = props;
-    loading.value = true;
-    let params = pagination ? { ...pageQuery, ...props.otherParams } : props.otherParams;
-    console.log(params);
-
-    if (beforeFetch && isFunction(beforeFetch)) {
-      params = (await beforeFetch(params)) || params;
-    }
-    const { data } = api && isFunction(api) && (await api(params));
-    if (afterFetch && isFunction(afterFetch)) {
-      data.list = (await afterFetch(data.list)) || data.list;
-    }
-    apiData.value = data.list || [];
-    listTotal.value = data.total;
-    setTimeout(() => {
-      loading.value = false;
-    }, 600);
-  } catch (error: any) {
-    loading.value = false;
-    $message.warning(error.message);
-  }
-}
-onMounted(() => {
-  getList();
-});
-/**
- * @description: limit 改变
- */
-function handleSizeChange(value: number) {
-  pageQuery.limit = value;
-  pageQuery.page = 1;
-  getList();
-}
-/**
- * @description: page 改变
- */
-function handleCurrentChange(value: number) {
-  pageQuery.page = value;
-  getList();
-}
-
-defineExpose({
-  getList,
-});
-</script>
-
-<style scoped lang="scss">
-.table-view {
-  padding: 0 8px;
-
-  .table-wrap {
-    height: calc(100% - 90px);
-  }
-
-  .pagination-wrap {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 40px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
