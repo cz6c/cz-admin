@@ -2,10 +2,11 @@
   <FormView ref="formView" v-model="formList" labelWidth="126px" labelPosition="right" @sumbit="sumbit" />
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Form">
 import { reactive } from "vue";
-import { FormJsonItem } from "@/components/Form/index.d";
-import { useForm } from "@/components/Form/hooks/useForm";
+import { FormJsonItem } from "./index.d";
+import { useForm } from "./useForm";
+import FormView from "./index.vue";
 
 const options = Array.from({ length: 10000 }).map((_, idx) => ({
   value: `${idx + 1}`,

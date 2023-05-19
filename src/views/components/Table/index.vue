@@ -26,14 +26,9 @@
         <el-table-column
           v-for="item in props.columns"
           :key="item.prop"
-          :prop="item.prop"
-          :label="item.label"
-          :width="item.width"
-          :minWidth="item.minWidth"
-          :fixed="item.fixed"
           :align="item.align || props.align"
-          :sortable="item.sortable"
           showOverflowTooltip
+          v-bind="item"
         >
           <template #default="{ row }">
             <!-- column动态插槽 -->
@@ -41,7 +36,7 @@
               <slot :name="`column-${item.prop}`" :row="row"></slot>
             </template>
             <!-- 文本显示 -->
-            <template v-else>{{ item.formatData ? item.formatData(row[item.prop]) : row[item.prop] }}</template>
+            <template v-else>{{ row[item.prop] }}</template>
           </template>
         </el-table-column>
         <!-- 插入至表格最后一行之后的内容， 如果需要对表格的内容进行无限滚动操作，可能需要用到这个 slot。 若表格有合计行，该 slot 会位于合计行之上 -->
@@ -71,12 +66,40 @@
 
 <script setup lang="ts" name="TableView">
 import { reactive, ref, onMounted } from "vue";
-import tableProps from "./props";
 import { isFunction } from "@/utils/is";
 import { $message } from "@/utils/message";
 import TableAction from "./components/TableAction.vue";
 
-const props = defineProps(tableProps);
+interface TableJsonItem {
+  columnType?: "text" | "slot";
+  prop: string;
+  align?: string;
+}
+
+interface Props {
+  columns: Array<TableJsonItem>;
+  api: Function;
+  beforeFetch?: Function;
+  afterFetch?: Function;
+  otherParams?: any;
+  pagination?: boolean;
+  align?: string;
+  title?: string;
+  tableHeight?: string;
+  indexColum?: boolean;
+  selectionColum?: boolean;
+  expandColum?: boolean;
+}
+const props = withDefaults(defineProps<Props>(), {
+  otherParams: {},
+  pagination: false,
+  align: "center",
+  title: "",
+  tableHeight: "100%",
+  indexColum: false,
+  selectionColum: false,
+  expandColum: false,
+});
 const emits = defineEmits(["selectionChange"]);
 
 const selectionChange = (selection: any[]) => {

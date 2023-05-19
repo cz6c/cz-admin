@@ -26,31 +26,25 @@
       @selection-change="selectionChange"
     >
       <template #tools>
-        <el-button type="primary" @click="add">新增角色</el-button>
+        <el-button type="primary">Add</el-button>
       </template>
       <template #column-roleName="{ row }"> {{ row.roleName }} </template>
       <template #column-status="{ row }">
-        <el-switch v-model="row.status" @click="statusChange(row)" :active-value="1" :inactive-value="0" />
+        <el-switch v-model="row.status" :active-value="1" :inactive-value="0" />
       </template>
       <template #column-action="{ row }">
-        <ElButton link type="primary" size="small" @click="del(row.id)">Detail</ElButton>
-        <ElButton link type="primary" size="small" @click="edit(row.id)">Edit</ElButton>
+        <ElButton link type="primary" size="small">Detail</ElButton>
+        <ElButton link type="primary" size="small">Edit</ElButton>
       </template>
     </TableView>
-    <RoleDrawerEdit v-model="_isEdit" :id="_id" @update-list="search" />
   </div>
 </template>
-<script setup lang="ts" name="Role1">
+<script setup lang="ts" name="Table">
 import { ref, reactive } from "vue";
-import { TableJsonItem } from "@/components/Table/index.d";
-import { getRoleListApi, statusChangeApi, delRoleApi } from "@/api/system/role";
-import dayjs from "dayjs";
-import RoleDrawerEdit from "./components/RoleDrawerEdit.vue";
-import { ElMessageBox } from "element-plus";
-import { $message } from "@/utils/message";
+import { TableJsonItem } from "./index.d";
+import TableView from "./index.vue";
+import { getRoleListApi } from "@/api/system/role";
 
-const _isEdit = ref(false);
-const _id = ref(0);
 const api = getRoleListApi;
 const columns: TableJsonItem[] = [
   {
@@ -70,7 +64,6 @@ const columns: TableJsonItem[] = [
   {
     label: "createTime",
     prop: "createTime",
-    formatData: (data: number) => dayjs(data).format("YYYY-MM-DD HH:mm:ss"),
   },
   {
     label: "remark",
@@ -108,57 +101,6 @@ function reset() {
  */
 function selectionChange(selection: any[]) {
   selectList.value = selection || [];
-}
-/**
- * @description: 新增
- */
-function add() {
-  _id.value = 0;
-  _isEdit.value = true;
-}
-/**
- * @description: 编辑
- * @param {*} id
- */
-function edit(id: number) {
-  _id.value = id;
-  _isEdit.value = true;
-}
-/**
- * @description: 状态切换
- * @param {*} row
- */
-async function statusChange({ id, status }: { id: number; status: 0 | 1 }) {
-  console.log(status);
-  try {
-    await statusChangeApi({ status, id });
-    $message.success("切换成功");
-    search();
-  } catch (error: any) {
-    $message.error(error.message);
-  }
-}
-/**
- * @description: 删除
- * @param {*} id
- */
-async function del(id: number) {
-  ElMessageBox.confirm("proxy will permanently delete the file. Continue?", "Warning", {
-    confirmButtonText: "OK",
-    cancelButtonText: "Cancel",
-    type: "warning",
-  })
-    .then(async () => {
-      try {
-        await delRoleApi({ id });
-        $message.success(`Delete completed`);
-      } catch (error: any) {
-        $message.error(error.message);
-      }
-    })
-    .catch(() => {
-      $message.info(`Delete canceled`);
-    });
 }
 </script>
 

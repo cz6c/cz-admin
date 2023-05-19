@@ -1,15 +1,17 @@
-const modules = (import.meta as any).glob("/src/router/modules/*.ts");
-
-const routeModules = Object.keys(modules).reduce((pre, key) => {
-  pre.push(modules[key]());
-  return pre;
-}, [] as any[]);
-
 export async function getStaticRoutes() {
   try {
-    const res = await Promise.all(routeModules);
-    const routeArr: any = res.map(x => x.default);
-    return routeArr;
+    const files = (import.meta as any).glob("./modules/*.ts", { import: "default", eager: true });
+    // 菜单顺序
+    const sortFile = ["dashboard", "system", "components"];
+    const routes = [];
+    for (const key in files) {
+      const fileName = key.replace(/(\.\/modules\/|\.ts)/g, "");
+      const index = sortFile.indexOf(fileName);
+      if (index !== -1) {
+        routes[index] = files[key];
+      }
+    }
+    return routes;
   } catch (error) {
     console.log(error);
     return [];

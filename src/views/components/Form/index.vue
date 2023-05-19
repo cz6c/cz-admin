@@ -79,7 +79,7 @@
 <script setup lang="ts" name="FormView">
 import { ref, computed } from "vue";
 import { FormJsonItem } from "./index.d";
-import { useForm } from "./hooks/useForm";
+import { useForm } from "./useForm";
 import type { FormInstance, FormRules } from "element-plus";
 const formRef = ref<FormInstance>();
 
