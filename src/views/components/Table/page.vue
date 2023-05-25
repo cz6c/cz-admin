@@ -1,38 +1,37 @@
 <template>
   <div class="page">
-    <div class="search-wrap cz-card">
-      <el-form :model="tableSearch">
-        <el-form-item>
-          <el-input v-model="tableSearch.roleName" placeholder="nickname" />
-        </el-form-item>
-        <el-form-item>
-          <el-date-picker v-model="tableSearch.createTime" type="date" placeholder="createTime" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="search">搜索</el-button>
-          <el-button @click="reset">重置</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
     <TableView
       ref="tableRef"
-      :api="api"
+      :data="data"
       :columns="columns"
-      :otherParams="tableSearch"
       title="角色列表"
-      tableHeight="calc(100% - 76px)"
       pagination
+      :pageQuery="apiQuery"
       selectionColum
       @selection-change="selectionChange"
     >
-      <template #tools>
+      <template #table-search>
+        <el-form :model="tableSearch">
+          <el-form-item>
+            <el-input v-model="tableSearch.roleName" placeholder="nickname" />
+          </el-form-item>
+          <el-form-item>
+            <el-date-picker v-model="tableSearch.createTime" type="date" placeholder="createTime" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="search">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <template #table-tools>
         <el-button type="primary">Add</el-button>
       </template>
-      <template #column-roleName="{ row }"> {{ row.roleName }} </template>
-      <template #column-status="{ row }">
+      <template #roleName="{ row }"> {{ row.roleName }} </template>
+      <template #status="{ row }">
         <el-switch v-model="row.status" :active-value="1" :inactive-value="0" />
       </template>
-      <template #column-action="{ row }">
+      <template #action>
         <ElButton link type="primary" size="small">Detail</ElButton>
         <ElButton link type="primary" size="small">Edit</ElButton>
       </template>
@@ -40,17 +39,17 @@
   </div>
 </template>
 <script setup lang="ts" name="Table">
-import { ref, reactive } from "vue";
-import { TableJsonItem } from "./index.d";
+import { ref, reactive, onMounted } from "vue";
+import { TableCol } from "./index.d";
 import TableView from "./index.vue";
 import { getRoleListApi } from "@/api/system/role";
+import { RoleItem } from "@/api/system/role/index.d";
 
-const api = getRoleListApi;
-const columns: TableJsonItem[] = [
+const data = ref<RoleItem[]>([]);
+const columns: TableCol<RoleItem>[] = [
   {
     label: "roleName",
     prop: "roleName",
-    columnType: "slot",
   },
   {
     label: "menuIds",
@@ -59,7 +58,6 @@ const columns: TableJsonItem[] = [
   {
     label: "status",
     prop: "status",
-    columnType: "slot",
   },
   {
     label: "createTime",
@@ -72,20 +70,35 @@ const columns: TableJsonItem[] = [
   {
     label: "操作",
     prop: "action",
-    columnType: "slot",
   },
 ];
 const tableRef: any = ref(null);
+const apiQuery = {
+  page: 1,
+  limit: 15,
+  total: 0,
+};
 let selectList: any = ref([]);
 let tableSearch = reactive({
   roleName: "",
   createTime: "",
 });
+onMounted(() => {
+  getList();
+});
+async function getList() {
+  try {
+    const {
+      data: { list },
+    } = await getRoleListApi(apiQuery);
+    data.value = list || [];
+  } catch (error) {}
+}
 /**
  * @description: 搜索
  */
 function search() {
-  tableRef.value.getList();
+  getList();
 }
 /**
  * @description: 重置搜索
@@ -107,25 +120,5 @@ function selectionChange(selection: any[]) {
 <style lang="scss" scoped>
 .page {
   height: 100%;
-
-  .search-wrap {
-    margin-bottom: 16px;
-    padding: 0 16px;
-    height: 60px;
-
-    :deep(.el-form) {
-      display: flex;
-      align-items: center;
-      height: 100%;
-
-      .el-form-item {
-        margin-bottom: 0;
-      }
-
-      .el-form-item + .el-form-item {
-        margin-left: 10px;
-      }
-    }
-  }
 }
 </style>

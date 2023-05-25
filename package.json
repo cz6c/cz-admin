@@ -61,6 +61,7 @@
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
     "@vitejs/plugin-vue": "^2.2.0",
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
     "cz-git": "^1.6.0",
     "czg": "^1.6.0",
     "eslint": "^8.33.0",

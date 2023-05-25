@@ -2,6 +2,7 @@
 import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
 import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
+import vueJsx from "@vitejs/plugin-vue-jsx";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import vueSetupExtend from "vite-plugin-vue-setup-extend";
 import { createHtmlPlugin } from "vite-plugin-html";
@@ -48,10 +49,12 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     },
     plugins: [
       vue(),
+      vueJsx(),
       /* setup script标签上定义组件name */
       vueSetupExtend(),
       /* 自动导入组件 */
       Components({
+        dts: "src/components/components.d.ts",
         resolvers: [ElementPlusResolver({ importStyle: "sass" })],
       }),
       /* https://github.com/vbenjs/vite-plugin-html/blob/main/README.zh_CN.md */

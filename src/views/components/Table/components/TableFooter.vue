@@ -1,32 +1,33 @@
+<script setup lang="ts" name="TableFooter">
+import { GetListParams } from "@/api/public/index.d";
+
+interface PaginationProps {
+  pageQuery: GetListParams;
+  handleSizeChange: (size: number) => void;
+  handleCurrentChange: (currentPage: number) => void;
+}
+
+defineProps<PaginationProps>();
+</script>
 <template>
   <div class="table-footer">
+    <!-- 分页组件 -->
     <el-pagination
-      v-model:current-page="pageQuery.page"
-      v-model:page-size="pageQuery.limit"
-      :page-sizes="[50, 100, 150, 200]"
+      :current-page="pageQuery.page"
+      :page-size="pageQuery.limit"
+      :total="pageQuery.total"
+      :page-sizes="[10, 25, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="listTotal"
-      small
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
   </div>
 </template>
-
-<script setup lang="ts" name="TableFooter">
-const props = defineProps({
-  title: {
-    type: String,
-  },
-});
-const emits = defineEmits(["updateList"]);
-</script>
-
-<style scoped lang="scss">
-.pagination-wrap {
+<style lang="scss" scoped>
+.table-footer {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 40px;
+  height: 50px;
 }
 </style>

@@ -2,6 +2,7 @@
 export interface GetListParams {
   page?: number;
   limit?: number;
+  total?: number;
 }
 // 列表响应
 export interface GetListResponse<T> {
