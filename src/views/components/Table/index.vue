@@ -1,160 +1,103 @@
-<script lang="ts" setup>
-import { ref } from "vue";
-import { ElTable } from "element-plus";
-import TableAction from "./components/TableAction.vue";
-import TableColumn from "./components/TableColumn.vue";
-import TableFooter from "./components/TableFooter.vue";
-import { GetListParams } from "@/api/public/index.d";
-import { TableCol } from "./index.d";
-
-// 表格配置
-interface TableProps {
-  columns: TableCol[]; // 列配置项  ==> 必传
-  data?: any[]; // 静态 table data 数据，若存在则不会使用 requestApi 返回的 data ==> 非必传
-  title?: string;
-  height?: string | number;
-  // Table 的高度， 默认为自动高度。 如果 height 为 number 类型，单位 px；如果 height 为 string 类型，则这个高度会设置为 Table 的 style.height 的值，Table 的高度会受控于外部样式。
-  stripe?: boolean; // 是否为斑马纹 table
-  maxHeight?: string | number; // Table 的最大高度。 合法的值为数字或者单位为 px 的高度。
-  size?: "large" | "default" | "small"; // Table 的尺寸
-  showHeader?: boolean; // 是否显示表头,
-  tooltipEffect?: "dark" | "light"; // tooltip effect 属性
-  pagination?: boolean; // 是否展示分页器
-  pageQuery?: GetListParams;
-  rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染。
-}
-
-const props = withDefaults(defineProps<TableProps>(), {
-  title: "",
-  height: "100%",
-  rowKey: "id",
-});
-
-const tableRef = ref<InstanceType<typeof ElTable>>();
-
-const emit = defineEmits([
-  "selection-change", // 当选择项发生变化时会触发该事件
-  "row-click", // 当某一行被点击时会触发该事件
-  "cell-click", // 当某个单元格被点击时会触发该事件
-  "command", // 按钮组事件
-  "size-change", // pageSize事件
-  "current-change", // currentPage按钮组事件
-  "pagination-change", // currentPage或者pageSize改变触发
-  "updete-list", // currentPage或者pageSize改变触发
-]);
-// 切换pageSize
-const pageSizeChange = (pageSize: number) => {
-  emit("size-change", pageSize);
-  emit("pagination-change", 1, pageSize);
-};
-// 切换currentPage
-const currentPageChange = (currentPage: number) => {
-  emit("current-change", currentPage);
-  emit("pagination-change", currentPage, props.pageQuery?.page);
-};
-// 多选事件
-const handleSelectionChange = (val: any) => {
-  emit("selection-change", val);
-};
-// 当某一行被点击时会触发该事件
-const handleRowClick = (row: any, column: any, event: MouseEvent) => {
-  emit("row-click", row, column, event);
-};
-// 当某个单元格被点击时会触发该事件
-const handleCellClick = (row: any, column: any, cell: any, event: MouseEvent) => {
-  emit("cell-click", row, column, cell, event);
-};
-// 暴露给父组件参数和方法，如果外部需要更多的参数或者方法，都可以从这里暴露出去。
-defineExpose({ element: tableRef });
-</script>
 <template>
-  <div class="table-view">
-    <div class="table-search cz-card"></div>
-    <div class="table-main cz-card">
-      <TableAction :title="props?.title" @update-list="$emit('updete-list')">
-        <template #tools>
-          <slot name="table-tools"> </slot>
-        </template>
-      </TableAction>
-      <!-- 表格主体 -->
-      <el-table
-        ref="tableRef"
-        v-bind="props"
-        @selection-change="handleSelectionChange"
-        @row-click="handleRowClick"
-        @cell-click="handleCellClick"
-      >
-        <!-- 默认插槽 -->
-        <slot></slot>
-        <template v-for="item in props.columns" :key="item">
-          <!-- selection || index || expand -->
-          <el-table-column
-            v-bind="item"
-            :align="item.align ?? 'center'"
-            :reserve-selection="item.type == 'selection'"
-            v-if="item.type && ['selection', 'index', 'expand'].includes(item.type)"
-          >
-            <template #default="scope" v-if="item.type == 'expand'">
-              <component :is="item.render" v-bind="scope" v-if="item.render" />
-              <slot :name="item.type" v-bind="scope" v-else></slot>
-            </template>
-          </el-table-column>
-          <!-- other -->
-          <TableColumn v-if="!item.type && item.prop" :column="item">
-            <template v-for="slot in Object.keys($slots)" #[slot]="scope">
-              <slot :name="slot" v-bind="scope"></slot>
-            </template>
-          </TableColumn>
-        </template>
-        <!-- 插入表格最后一行之后的插槽 -->
-        <template #append>
-          <slot name="append"> </slot>
-        </template>
-        <!-- 无数据 -->
-        <template #empty>
-          <div class="table-empty">
-            <slot name="empty"> </slot>
-          </div>
-        </template>
-      </el-table>
-      <!-- 分页器 -->
-      <TableFooter
-        v-if="props.pagination"
-        :pageQuery="props.pageQuery!"
-        :handleSizeChange="pageSizeChange"
-        :handleCurrentChange="currentPageChange"
-      />
-    </div>
+  <div class="page">
+    <TableView
+      ref="tableRef"
+      :columns="columns"
+      :getListApi="getListApi"
+      pagination
+      title="角色列表"
+      @selection-change="selectionChange"
+    >
+      <template #table-search>
+        <el-form :model="tableSearch">
+          <el-form-item>
+            <el-input v-model="tableSearch.roleName" placeholder="nickname" />
+          </el-form-item>
+          <el-form-item>
+            <el-date-picker v-model="tableSearch.createTime" type="date" placeholder="createTime" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="getList">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <template #table-tools>
+        <el-button type="primary">Add</el-button>
+      </template>
+      <template #roleName="{ row }"> {{ row.roleName }} </template>
+      <template #status="{ row }">
+        <el-switch v-model="row.status" :active-value="1" :inactive-value="0" />
+      </template>
+      <template #action>
+        <ElButton link type="primary" size="small">Detail</ElButton>
+        <ElButton link type="primary" size="small">Edit</ElButton>
+      </template>
+    </TableView>
   </div>
 </template>
+<script setup lang="ts" name="Table">
+import { ref, reactive } from "vue";
+import { TableCol } from "@/components/TableView/index.d";
+import TableView from "./index.vue";
+import { getRoleListApi } from "@/api/system/role";
+import { RoleItem } from "@/api/system/role/index.d";
+
+const getListApi = getRoleListApi;
+const columns: TableCol<RoleItem>[] = [
+  {
+    label: "roleName",
+    prop: "roleName",
+  },
+  {
+    label: "menuIds",
+    prop: "menuIds",
+  },
+  {
+    label: "status",
+    prop: "status",
+  },
+  {
+    label: "createTime",
+    prop: "createTime",
+  },
+  {
+    label: "remark",
+    prop: "remark",
+  },
+  {
+    label: "操作",
+    prop: "action",
+  },
+];
+const tableRef: any = ref(null);
+
+let selectList: any = ref([]);
+let tableSearch = reactive({
+  roleName: "",
+  createTime: "",
+});
+
+/**
+ * @description: 重置搜索
+ */
+function reset() {
+  tableSearch.roleName = "";
+  tableSearch.createTime = "";
+  // getList();
+}
+
+/**
+ * @description: 列表选中
+ * @param {*} selection
+ */
+function selectionChange(selection: any[]) {
+  selectList.value = selection || [];
+}
+</script>
+
 <style lang="scss" scoped>
-.table-view {
+.page {
   height: 100%;
-
-  .table-search {
-    margin-bottom: 16px;
-    padding: 0 16px;
-    height: 60px;
-
-    :deep(.el-form) {
-      display: flex;
-      align-items: center;
-      height: 100%;
-
-      .el-form-item {
-        margin-bottom: 0;
-      }
-
-      .el-form-item + .el-form-item {
-        margin-left: 10px;
-      }
-    }
-  }
-
-  .table-main {
-    display: flex;
-    height: calc(100% - 76px);
-    flex-direction: column;
-  }
 }
 </style>

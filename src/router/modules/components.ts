@@ -14,18 +14,18 @@ export default {
     {
       path: "/components/table",
       name: "Table",
-      component: () => import("@/views/components/table/page.vue"),
+      component: () => import("@/views/components/Table/index.vue"),
       meta: {
         title: "高级列表",
       },
     },
-    {
-      path: "/components/form",
-      name: "From",
-      component: () => import("@/views/components/form/page.vue"),
-      meta: {
-        title: "高级表单",
-      },
-    },
+    // {
+    //   path: "/components/form",
+    //   name: "From",
+    //   component: () => import("@/views/components/form/page.vue"),
+    //   meta: {
+    //     title: "高级表单",
+    //   },
+    // },
   ],
 } as RouteRecordRaw;

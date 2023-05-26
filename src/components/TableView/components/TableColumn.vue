@@ -4,19 +4,19 @@
 
 <script setup lang="tsx" name="TableColumn">
 import { useSlots } from "vue";
-import Table from "../index.d";
+import { TableCol, RenderScope, HeaderRenderScope } from "../index.d";
 import { formatValue, handleProp, handleRowAccordingToProp } from "@/utils";
 
-defineProps<{ column: Table.TableCol }>();
+defineProps<{ column: TableCol }>();
 
 const slots = useSlots();
 
 // 渲染表格数据
-const renderCellData = (item: Table.TableCol, scope: Table.RenderScope<any>) => {
+const renderCellData = (item: TableCol, scope: RenderScope<any>) => {
   return formatValue(handleRowAccordingToProp(scope.row, item.prop!));
 };
 
-const RenderTableColumn = (item: Table.TableCol) => {
+const RenderTableColumn = (item: TableCol) => {
   return (
     <>
       {
@@ -26,12 +26,12 @@ const RenderTableColumn = (item: Table.TableCol) => {
           showOverflowTooltip={item.showOverflowTooltip ?? item.prop !== "operation"}
         >
           {{
-            default: (scope: Table.RenderScope<any>) => {
+            default: (scope: RenderScope<any>) => {
               if (item.render) return item.render(scope);
               if (slots[handleProp(item.prop!)]) return slots[handleProp(item.prop!)]!(scope);
               return renderCellData(item, scope);
             },
-            header: (scope: Table.HeaderRenderScope<any>) => {
+            header: (scope: HeaderRenderScope<any>) => {
               if (item.headerRender) return item.headerRender(scope);
               if (slots[`${handleProp(item.prop!)}Header`]) return slots[`${handleProp(item.prop!)}Header`]!(scope);
               return item.label;
