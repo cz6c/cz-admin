@@ -78,8 +78,6 @@ defineExpose({ element: tableRef });
         @selection-change="handleSelectionChange"
         @row-click="handleRowClick"
       >
-        <!-- 默认插槽 -->
-        <slot></slot>
         <template v-for="item in props.columns" :key="item">
           <!-- selection || index || expand -->
           <el-table-column
@@ -100,6 +98,8 @@ defineExpose({ element: tableRef });
             </template>
           </TableColumn>
         </template>
+        <!-- 默认插槽 -->
+        <slot></slot>
         <!-- 插入表格最后一行之后的插槽 -->
         <template #append>
           <slot name="append"> </slot>

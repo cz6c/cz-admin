@@ -1,15 +1,10 @@
 <template>
-  <div class="card table-search" v-if="props.modelValue.length">
-    <el-form ref="formRef" :model="formData">
+  <div class="card table-search" v-if="columns.length">
+    <el-form ref="formRef" :model="searchParam">
       <Grid ref="gridRef" :collapsed="collapsed" :gap="[20, 0]" :cols="searchCol">
-        <GridItem
-          v-for="(item, index) in props.modelValue"
-          :key="item.prop"
-          v-bind="getResponsive(item)"
-          :index="index"
-        >
-          <el-form-item :label="`${item.label} :`">
-            <SearchFormItem :column="item" :search-param="formData" />
+        <GridItem v-for="(item, index) in columns" :key="item.props.prop" v-bind="getResponsive(item)" :index="index">
+          <el-form-item :label="`${item.props.label} :`">
+            <SearchFormItem :column="item" :search-param="searchParam" />
           </el-form-item>
         </GridItem>
         <GridItem suffix>
@@ -30,28 +25,29 @@
 </template>
 <script setup lang="ts" name="SearchForm">
 import { computed, ref } from "vue";
+import { SearchProps } from "./index.d";
 import { BreakPoint } from "@/components/Grid/interface";
 import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
 import SearchFormItem from "./components/SearchFormItem.vue";
 import Grid from "@/components/Grid/index.vue";
 import GridItem from "@/components/Grid/components/GridItem.vue";
-import { useForm } from "./useForm";
-import { FormJsonItem } from "./index.d";
 
 interface ProTableProps {
-  modelValue: Array<FormJsonItem>;
+  columns?: SearchProps[]; // 搜索配置列
+  searchParam?: { [key: string]: any }; // 搜索参数
   searchCol: number | Record<BreakPoint, number>;
   search: (params: any) => void; // 搜索方法
   reset: (params: any) => void; // 重置方法
 }
 
 // 默认值
-const props = withDefaults(defineProps<ProTableProps>(), {});
-
-const { formData } = useForm({ rawList: props.modelValue });
+const props = withDefaults(defineProps<ProTableProps>(), {
+  columns: () => [],
+  searchParam: () => ({}),
+});
 
 // 获取响应式设置
-const getResponsive = (item: FormJsonItem) => {
+const getResponsive = (item: SearchProps) => {
   return {
     span: item?.span,
     offset: item?.offset ?? 0,
@@ -73,10 +69,10 @@ const breakPoint = computed<BreakPoint>(() => gridRef.value?.breakPoint);
 // 判断是否显示 展开/合并 按钮
 const showCollapse = computed(() => {
   let show = false;
-  props.modelValue.reduce((prev, current) => {
+  props.columns.reduce((prev, current) => {
     prev +=
-      (current[breakPoint.value]?.span ?? current?.span ?? 1) +
-      (current[breakPoint.value]?.offset ?? current?.offset ?? 0);
+      (current![breakPoint.value]?.span ?? current?.span ?? 1) +
+      (current![breakPoint.value]?.offset ?? current?.offset ?? 0);
     if (typeof props.searchCol !== "number") {
       if (prev >= props.searchCol[breakPoint.value]) show = true;
     } else {

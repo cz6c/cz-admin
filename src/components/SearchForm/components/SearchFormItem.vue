@@ -1,15 +1,16 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <component
-    :is="column?.render ?? `el-${column?.type}`"
+    :is="column?.render ?? `el-${column?.el}`"
     v-bind="{ ...handleSearchProps, ...placeholder, searchParam, clearable }"
-    v-model.trim="searchParam[handleProp(column.prop!)]"
-    :data="column.type === 'tree-select' ? columnEnum : []"
-    :options="['cascader', 'select-v2'].includes(column.type!) ? columnEnum : []"
+    v-model="searchParam[column?.key ?? handleProp(column.props.prop!)]"
+    :data="column?.el === 'tree-select' ? columnEnum : []"
+    :options="['cascader', 'select-v2'].includes(column?.el!) ? columnEnum : []"
   >
-    <template #default="{ data }" v-if="column?.type === 'cascader'">
+    <template #default="{ data }" v-if="column?.el === 'cascader'">
       <span>{{ data[fieldNames.label] }}</span>
     </template>
-    <template v-if="column?.type === 'select'">
+    <template v-if="column?.el === 'select'">
       <component
         :is="`el-option`"
         v-for="(col, index) in columnEnum"
@@ -25,10 +26,10 @@
 <script setup lang="ts" name="SearchFormItem">
 import { computed, inject, ref } from "vue";
 import { handleProp } from "@/utils";
-import { FormJsonItem } from "../index.d";
+import { SearchProps } from "../index.d";
 
 interface SearchFormItem {
-  column: FormJsonItem;
+  column: SearchProps;
   searchParam: { [key: string]: any };
 }
 const props = defineProps<SearchFormItem>();
@@ -36,18 +37,18 @@ const props = defineProps<SearchFormItem>();
 // 判断 fieldNames 设置 label && value && children 的 key 值
 const fieldNames = computed(() => {
   return {
-    label: "label",
-    value: "value",
-    children: "children",
+    label: props.column.fieldNames?.label ?? "label",
+    value: props.column.fieldNames?.value ?? "value",
+    children: props.column.fieldNames?.children ?? "children",
   };
 });
 
 // 接收 enumMap (el 为 select-v2 需单独处理 enumData)
 const enumMap = inject("enumMap", ref(new Map()));
 const columnEnum = computed(() => {
-  let enumData = enumMap.value.get(props.column.prop);
+  let enumData = enumMap.value.get(props.column.props.prop);
   if (!enumData) return [];
-  if (props.column?.type === "select-v2") {
+  if (props.column?.el === "select-v2" && props.column.fieldNames) {
     enumData = enumData.map((item: { [key: string]: any }) => {
       return { ...item, label: item[fieldNames.value.label], value: item[fieldNames.value.value] };
     });
@@ -60,8 +61,8 @@ const handleSearchProps = computed(() => {
   const label = fieldNames.value.label;
   const value = fieldNames.value.value;
   const children = fieldNames.value.children;
-  const searchEl = props.column?.type;
-  let searchProps = props.column?.elProps ?? {};
+  const searchEl = props.column?.el;
+  let searchProps = props.column?.props ?? {};
   if (searchEl === "tree-select") {
     searchProps = { ...searchProps, props: { ...searchProps.props, label, children }, nodeKey: value };
   }
@@ -74,16 +75,16 @@ const handleSearchProps = computed(() => {
 // 处理默认 placeholder
 const placeholder = computed(() => {
   const search = props.column;
-  if (["datetimerange", "daterange", "monthrange"].includes(search?.elProps?.type) || search?.elProps?.isRange) {
+  if (["datetimerange", "daterange", "monthrange"].includes(search?.props?.type) || search?.props?.isRange) {
     return { rangeSeparator: "至", startPlaceholder: "开始时间", endPlaceholder: "结束时间" };
   }
-  const placeholder = search?.elProps?.placeholder ?? (search?.type?.includes("input") ? "请输入" : "请选择");
+  const placeholder = search?.props?.placeholder ?? (search?.el?.includes("input") ? "请输入" : "请选择");
   return { placeholder };
 });
 
 // 是否有清除按钮 (当搜索项有默认值时，清除按钮不显示)
 const clearable = computed(() => {
   const search = props.column;
-  return search?.elProps?.clearable ?? (search?.initilaData == null || search?.initilaData == undefined);
+  return search?.props?.clearable ?? (search?.defaultValue == null || search?.defaultValue == undefined);
 });
 </script>

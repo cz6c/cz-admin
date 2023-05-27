@@ -19,13 +19,13 @@ export default {
         title: "高级列表",
       },
     },
-    // {
-    //   path: "/components/form",
-    //   name: "From",
-    //   component: () => import("@/views/components/form/page.vue"),
-    //   meta: {
-    //     title: "高级表单",
-    //   },
-    // },
+    {
+      path: "/components/form",
+      name: "From",
+      component: () => import("@/views/components/Form/page1.vue"),
+      meta: {
+        title: "高级表单",
+      },
+    },
   ],
 } as RouteRecordRaw;

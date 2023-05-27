@@ -17,7 +17,7 @@
             <el-date-picker v-model="tableSearch.createTime" type="date" placeholder="createTime" />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="getList">搜索</el-button>
+            <!-- <el-button type="primary" @click="getList">搜索</el-button> -->
             <el-button @click="reset">重置</el-button>
           </el-form-item>
         </el-form>
@@ -39,7 +39,6 @@
 <script setup lang="ts" name="Table">
 import { ref, reactive } from "vue";
 import { TableCol } from "@/components/TableView/index.d";
-import TableView from "./index.vue";
 import { getRoleListApi } from "@/api/system/role";
 import { RoleItem } from "@/api/system/role/index.d";
 
