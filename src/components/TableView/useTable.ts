@@ -1,23 +1,18 @@
-import { reactive, ref, onMounted, toRefs } from "vue";
+import { reactive, onMounted, toRefs, computed } from "vue";
 import { isFunction } from "@/utils/is";
 import { $message } from "@/utils/message";
 import { TableProps } from "./index.vue";
 import { GetListParams } from "@/api/public/index.d";
+import { SearchProps } from "@/components/SearchForm/type";
 
 interface State {
   loading: boolean;
   tableData: any[];
   apiQuery: GetListParams;
+  searchParam: Record<string, any>;
 }
 
 export function useTable(props: TableProps) {
-  // const loading = ref(false);
-  // const tableData = ref([]);
-  // const apiQuery = reactive<GetListParams>({
-  //   page: 1,
-  //   limit: 20,
-  //   total: 0,
-  // });
   const state = reactive<State>({
     loading: false,
     tableData: [],
@@ -26,15 +21,28 @@ export function useTable(props: TableProps) {
       limit: 20,
       total: 0,
     },
+    searchParam: {},
   });
-
+  // 计算搜索项的初始值
+  const initData = computed(() => {
+    const temp: Record<string, any> = {};
+    const list = Array.prototype.concat(...props.searchColumns!);
+    list.forEach((item: SearchProps) => {
+      const { prop, defaultValue } = item;
+      temp[prop] = defaultValue;
+    });
+    return temp;
+  });
   /**
    * @description: 获取列表数据
    */
   async function getList() {
     try {
       state.loading = true;
-      const params = props.pagination ? { ...state.apiQuery } : {};
+      let params = props.pagination ? { ...state.apiQuery, ...state.searchParam } : { ...state.searchParam };
+      if (props.beforeFetch && isFunction(props.beforeFetch)) {
+        params = props.beforeFetch(params);
+      }
       const { data } = props.getListApi && isFunction(props.getListApi) && (await props.getListApi(params));
       state.tableData = props.pagination ? data.list : data;
       if (props.afterFetch && isFunction(props.afterFetch)) {
@@ -42,19 +50,25 @@ export function useTable(props: TableProps) {
       }
       const { page, limit, total } = data;
       props.pagination && Object.assign(state.apiQuery, { page, limit, total });
-      state.loading = false;
     } catch (error: any) {
-      state.loading = false;
       $message.warning(error.message);
+    } finally {
+      state.loading = false;
     }
   }
-
-  onMounted(() => {
+  /**
+   * @description: 重置搜索
+   */
+  function reset() {
+    Object.assign(state.searchParam, initData.value);
     getList();
+  }
+  onMounted(() => {
+    reset();
   });
-
   return {
     ...toRefs(state),
     getList,
+    reset,
   };
 }

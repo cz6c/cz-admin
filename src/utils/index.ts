@@ -15,31 +15,6 @@ export function generateUUID() {
 }
 
 /**
- * 判断两个对象是否相同
- * @param {Object} a 要比较的对象一
- * @param {Object} b 要比较的对象二
- * @returns {Boolean} 相同返回 true，反之 false
- */
-export function isObjectValueEqual(a: { [key: string]: any }, b: { [key: string]: any }) {
-  if (!a || !b) return false;
-  const aProps = Object.getOwnPropertyNames(a);
-  const bProps = Object.getOwnPropertyNames(b);
-  if (aProps.length != bProps.length) return false;
-  for (let i = 0; i < aProps.length; i++) {
-    const propName = aProps[i];
-    const propA = a[propName];
-    const propB = b[propName];
-    if (!b.hasOwnProperty(propName)) return false;
-    if (propA instanceof Object) {
-      if (!isObjectValueEqual(propA, propB)) return false;
-    } else if (propA !== propB) {
-      return false;
-    }
-  }
-  return true;
-}
-
-/**
  * @description 生成随机数
  * @param {Number} min 最小值
  * @param {Number} max 最大值
@@ -54,7 +29,7 @@ export function randomNum(min: number, max: number): number {
  * @description 获取当前时间对应的提示语
  * @returns {String}
  */
-export function getTimeState() {
+export function getTimeState(): string {
   const timeNow = new Date();
   const hours = timeNow.getHours();
   if (hours >= 6 && hours <= 10) return `早上好 ⛅`;
@@ -62,19 +37,7 @@ export function getTimeState() {
   if (hours >= 14 && hours <= 18) return `下午好 🌞`;
   if (hours >= 18 && hours <= 24) return `晚上好 🌛`;
   if (hours >= 0 && hours <= 6) return `凌晨好 🌛`;
-}
-
-/**
- * @description 格式化表格单元格默认值 (el-table-column)
- * @param {Number} row 行
- * @param {Number} col 列
- * @param {*} callValue 当前单元格值
- * @returns {String}
- * */
-export function formatTableColumn(row: number, col: number, callValue: any) {
-  // 如果当前值为数组，使用 / 拼接（根据需求自定义）
-  if (isArray(callValue)) return callValue.length ? callValue.join(" / ") : "--";
-  return callValue ?? "--";
+  return "";
 }
 
 /**
@@ -82,7 +45,7 @@ export function formatTableColumn(row: number, col: number, callValue: any) {
  * @param {*} callValue 需要处理的值
  * @returns {String}
  * */
-export function formatValue(callValue: any) {
+export function formatValue(callValue: any): string {
   // 如果当前值为数组，使用 / 拼接（根据需求自定义）
   if (isArray(callValue)) return callValue.length ? callValue.join(" / ") : "--";
   return callValue ?? "--";
@@ -94,7 +57,7 @@ export function formatValue(callValue: any) {
  * @param {String} prop 当前 prop
  * @returns {*}
  * */
-export function handleRowAccordingToProp(row: { [key: string]: any }, prop: string) {
+export function handleRowAccordingToProp(row: { [key: string]: any }, prop: string): any {
   if (!prop.includes(".")) return row[prop] ?? "--";
   prop.split(".").forEach(item => (row = row[item] ?? "--"));
   return row;
@@ -105,7 +68,7 @@ export function handleRowAccordingToProp(row: { [key: string]: any }, prop: stri
  * @param {String} prop 当前 prop
  * @returns {String}
  * */
-export function handleProp(prop: string) {
+export function handleProp(prop: string): string {
   const propArr = prop.split(".");
   if (propArr.length == 1) return prop;
   return propArr[propArr.length - 1];

@@ -4,7 +4,7 @@
 
 <script setup lang="tsx" name="TableColumn">
 import { useSlots } from "vue";
-import { TableCol, RenderScope, HeaderRenderScope } from "../index.d";
+import { TableCol, RenderScope, HeaderRenderScope } from "../type";
 import { formatValue, handleProp, handleRowAccordingToProp } from "@/utils";
 
 defineProps<{ column: TableCol }>();

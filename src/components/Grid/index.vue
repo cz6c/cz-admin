@@ -19,13 +19,13 @@ import {
   VNodeArrayChildren,
   VNode,
 } from "vue";
-import type { BreakPoint } from "./interface/index";
+import type { BreakPoint } from "./type";
 
 type Props = {
-  cols?: number | Record<BreakPoint, number>;
-  collapsed?: boolean;
-  collapsedRows?: number;
-  gap?: [number, number] | number;
+  cols?: number | Record<BreakPoint, number>; // 响应式栅格数
+  collapsed?: boolean; // 是否折叠
+  collapsedRows?: number; // suffix所占列
+  gap?: [number, number] | number; // 横向/纵线 间距
 };
 
 const props = withDefaults(defineProps<Props>(), {

@@ -1,76 +1,34 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <component
-    :is="column?.render ?? `el-${column?.el}`"
-    v-bind="{ ...handleSearchProps, ...placeholder, searchParam, clearable }"
-    v-model="searchParam[column?.key ?? handleProp(column.props.prop!)]"
-    :data="column?.el === 'tree-select' ? columnEnum : []"
-    :options="['cascader', 'select-v2'].includes(column?.el!) ? columnEnum : []"
+    :is="`el-${column?.el}`"
+    v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+    v-model="searchParam[handleProp(column.prop)]"
+    :data="column?.el === 'tree-select' ? column.options : []"
+    :options="['cascader', 'select-v2'].includes(column?.el!) ? column.options : []"
   >
-    <template #default="{ data }" v-if="column?.el === 'cascader'">
-      <span>{{ data[fieldNames.label] }}</span>
-    </template>
     <template v-if="column?.el === 'select'">
       <component
         :is="`el-option`"
-        v-for="(col, index) in columnEnum"
+        v-for="(col, index) in column.options"
         :key="index"
-        :label="col[fieldNames.label]"
-        :value="col[fieldNames.value]"
+        :label="col['label']"
+        :value="col['value']"
       />
     </template>
-    <slot v-else></slot>
   </component>
 </template>
 
 <script setup lang="ts" name="SearchFormItem">
-import { computed, inject, ref } from "vue";
+import { computed } from "vue";
 import { handleProp } from "@/utils";
-import { SearchProps } from "../index.d";
+import { SearchProps } from "../type";
 
-interface SearchFormItem {
+interface Props {
   column: SearchProps;
   searchParam: { [key: string]: any };
 }
-const props = defineProps<SearchFormItem>();
-
-// 判断 fieldNames 设置 label && value && children 的 key 值
-const fieldNames = computed(() => {
-  return {
-    label: props.column.fieldNames?.label ?? "label",
-    value: props.column.fieldNames?.value ?? "value",
-    children: props.column.fieldNames?.children ?? "children",
-  };
-});
-
-// 接收 enumMap (el 为 select-v2 需单独处理 enumData)
-const enumMap = inject("enumMap", ref(new Map()));
-const columnEnum = computed(() => {
-  let enumData = enumMap.value.get(props.column.props.prop);
-  if (!enumData) return [];
-  if (props.column?.el === "select-v2" && props.column.fieldNames) {
-    enumData = enumData.map((item: { [key: string]: any }) => {
-      return { ...item, label: item[fieldNames.value.label], value: item[fieldNames.value.value] };
-    });
-  }
-  return enumData;
-});
-
-// 处理透传的 searchProps (el 为 tree-select、cascader 的时候需要给下默认 label && value && children)
-const handleSearchProps = computed(() => {
-  const label = fieldNames.value.label;
-  const value = fieldNames.value.value;
-  const children = fieldNames.value.children;
-  const searchEl = props.column?.el;
-  let searchProps = props.column?.props ?? {};
-  if (searchEl === "tree-select") {
-    searchProps = { ...searchProps, props: { ...searchProps.props, label, children }, nodeKey: value };
-  }
-  if (searchEl === "cascader") {
-    searchProps = { ...searchProps, props: { ...searchProps.props, label, value, children } };
-  }
-  return searchProps;
-});
+const props = defineProps<Props>();
 
 // 处理默认 placeholder
 const placeholder = computed(() => {

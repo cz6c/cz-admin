@@ -22,7 +22,7 @@ export default {
     {
       path: "/components/form",
       name: "From",
-      component: () => import("@/views/components/Form/page1.vue"),
+      component: () => import("@/views/components/Form/page.vue"),
       meta: {
         title: "高级表单",
       },

@@ -5,28 +5,18 @@
 </template>
 <script setup lang="ts" name="GridItem">
 import { computed, inject, Ref, ref, useAttrs, watch } from "vue";
-import { BreakPoint, Responsive } from "../interface/index";
+import { BreakPoint } from "../type";
 
 type Props = {
   offset?: number;
   span?: number;
   suffix?: boolean;
-  xs?: Responsive;
-  sm?: Responsive;
-  md?: Responsive;
-  lg?: Responsive;
-  xl?: Responsive;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   offset: 0,
   span: 1,
   suffix: false,
-  xs: undefined,
-  sm: undefined,
-  md: undefined,
-  lg: undefined,
-  xl: undefined,
 });
 
 const attrs = useAttrs() as { index: string };
@@ -48,8 +38,8 @@ watch(
 const gap = inject("gap", 0);
 const cols = inject("cols", ref(4));
 const style = computed(() => {
-  let span = props[breakPoint.value]?.span ?? props.span;
-  let offset = props[breakPoint.value]?.offset ?? props.offset;
+  let span = props.span;
+  let offset = props.offset;
   if (props.suffix) {
     return {
       gridColumnStart: cols.value - span - offset + 1,
