@@ -16,4 +16,6 @@ export const common = {
   imgApi: `${BASE_URL}/admin/upload`,
 };
 // 上传图片
-export const qiNiuUpload = createPost<never, never>("/admin/upload");
+export const uploadImg = createPost<FormData, { fileUrl: string }>("/admin/upload");
+
+export const uploadVideo = createPost<FormData, { fileUrl: string }>("/admin/upload");

@@ -27,5 +27,21 @@ export default {
         title: "高级表单",
       },
     },
+    {
+      path: "/components/wangEditor",
+      name: "WangEditorPage",
+      component: () => import("@/views/components/wangEditor/index.vue"),
+      meta: {
+        title: "富文本编辑器",
+      },
+    },
+    {
+      path: "/components/upload",
+      name: "Upload",
+      component: () => import("@/views/components/upload/index.vue"),
+      meta: {
+        title: "图片上传",
+      },
+    },
   ],
 } as RouteRecordRaw;
