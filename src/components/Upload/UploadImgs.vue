@@ -53,7 +53,6 @@ import { ImageMimeType } from "./type";
 
 interface UploadFileProps {
   fileList: UploadUserFile[];
-  api?: (params: any) => Promise<any>; // 上传图片的 api 方法，一般项目上传都是同一个 api 方法，在组件里直接引入即可 ==> 非必传
   drag?: boolean; // 是否支持拖拽上传 ==> 非必传（默认为 true）
   disabled?: boolean; // 是否禁用上传组件 ==> 非必传（默认为 false）
   limit?: number; // 最大图片上传数 ==> 非必传（默认为 5张）
@@ -127,8 +126,7 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
   let formData = new FormData();
   formData.append("file", options.file);
   try {
-    const api = props.api ?? uploadImg;
-    const { data } = await api(formData);
+    const { data } = await uploadImg(formData);
     options.onSuccess(data);
   } catch (error) {
     options.onError(error as any);

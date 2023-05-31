@@ -1,6 +1,5 @@
 import { createGet, createPost } from "@/utils/request";
 import { LoginParams, RouteRow, GetListResponse } from "./index.d";
-import { BASE_URL } from "@/config";
 
 // 登录
 export const login = createPost<LoginParams, string>("/admin/login");
@@ -11,11 +10,9 @@ export const getPermCodeList = createGet<never, string[]>("/admin/getPermCodeLis
 // 获取城市地区
 export const getAreaList = createGet<never, any>("/admin/getAreaList");
 
-// 统一后台七牛云存储接口（单文件/多文件）
-export const common = {
-  imgApi: `${BASE_URL}/admin/upload`,
-};
 // 上传图片
-export const uploadImg = createPost<FormData, { fileUrl: string }>("/admin/upload");
+export const uploadImg = createPost<FormData, string>("/admin/upload");
 
-export const uploadVideo = createPost<FormData, { fileUrl: string }>("/admin/upload");
+export const uploadVideo = createPost<FormData, string>("/admin/upload");
+// 获取七牛云上传token
+export const getQiniuToken = createGet<never, { token: string; key: string; uphost: string }>("/admin/getQiniuToken");
