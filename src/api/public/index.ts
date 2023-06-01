@@ -15,4 +15,4 @@ export const uploadImg = createPost<FormData, string>("/admin/upload");
 
 export const uploadVideo = createPost<FormData, string>("/admin/upload");
 // 获取七牛云上传token
-export const getQiniuToken = createGet<never, { token: string; key: string; uphost: string }>("/admin/getQiniuToken");
+export const getQiniuToken = createGet<never, { token: string; key: string; domain: string }>("/admin/getQiniuToken");
