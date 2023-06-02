@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup name="TableView">
 import { ref } from "vue";
 import { ElTable } from "element-plus";
 import TableAction from "./components/TableAction.vue";
@@ -24,7 +24,6 @@ export interface TableProps {
 const props = withDefaults(defineProps<TableProps>(), {
   title: "",
   pagination: false,
-  rowKey: "id",
 });
 
 const { loading, apiQuery, tableData, searchParam, reset, getList } = useTable(props);
@@ -55,11 +54,11 @@ const handleRowClick = (row: any, column: any, event: MouseEvent) => {
   emits("row-click", row, column, event);
 };
 // 暴露给父组件参数和方法，如果外部需要更多的参数或者方法，都可以从这里暴露出去。
-defineExpose({ element: tableRef });
+defineExpose({ element: tableRef, getList, apiQuery });
 </script>
 <template>
   <div class="table-view">
-    <div class="table-search cz-card" v-if="columns.length">
+    <div class="table-search cz-card" v-if="searchColumns!.length">
       <SearchForm
         ref="formView"
         :columns="searchColumns"
@@ -80,6 +79,7 @@ defineExpose({ element: tableRef });
         ref="tableRef"
         v-bind="$attrs"
         :data="data ?? tableData"
+        :rowKey="rowKey ?? 'id'"
         @selection-change="handleSelectionChange"
         @row-click="handleRowClick"
       >
@@ -139,14 +139,17 @@ defineExpose({ element: tableRef });
   }
 
   .table-main {
+    display: flex;
+    overflow: hidden;
     padding: 0 16px;
     box-sizing: border-box;
-    height: calc(100% - 78px);
+    flex: 1;
+    flex-direction: column;
   }
 }
 
 // el-table 表格样式
 ::v-deep(.el-table) {
-  height: calc(100% - 100px);
+  flex: 1;
 }
 </style>

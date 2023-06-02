@@ -3,7 +3,7 @@
     ref="tableRef"
     :columns="columns"
     :getListApi="getListApi"
-    :searchColumns="formList"
+    :searchColumns="searchList"
     pagination
     title="角色列表"
     @selection-change="selectionChange"
@@ -63,15 +63,12 @@ const options = Array.from({ length: 10000 }).map((_, idx) => ({
 }));
 let selectList: any = ref([]);
 
-const formList = reactive<SearchProps[]>([
+const searchList = reactive<SearchProps[]>([
   {
     el: "input",
     prop: "name",
     label: "Activity name",
     defaultValue: "Hello",
-    props: {
-      disabled: true,
-    },
   },
   {
     el: "select",

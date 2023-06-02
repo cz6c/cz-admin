@@ -1,5 +1,7 @@
-import { VNode } from "vue";
+import { VNode, ComponentPublicInstance } from "vue";
 import { TableColumnCtx } from "element-plus/es/components/table/src/table-column/defaults";
+import { TableProps } from "./index.vue";
+import TableView from "./index.vue";
 
 export type RenderScope<T> = {
   row: T;
@@ -19,3 +21,5 @@ export interface TableCol<T = any> extends Partial<Omit<TableColumnCtx<T>, "rend
   headerRender?: (scope: HeaderRenderScope<T>) => VNode; // 自定义表头内容渲染（tsx语法）
   render?: (scope: RenderScope<T>) => VNode | string; // 自定义单元格内容渲染（tsx语法）
 }
+
+export type TableViewInstance = Omit<InstanceType<typeof TableView>, keyof ComponentPublicInstance | keyof TableProps>;

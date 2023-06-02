@@ -1,84 +1,59 @@
 <template>
-  <div class="page">
-    <div class="search-wrap cz-card">
-      <ElForm :model="tableSearch">
-        <ElFormItem>
-          <ElInput v-model="tableSearch.nickname" placeholder="nickname" />
-        </ElFormItem>
-        <ElFormItem>
-          <ElDatePicker v-model="tableSearch.createTime" type="date" placeholder="createTime" />
-        </ElFormItem>
-        <ElFormItem>
-          <ElButton type="primary" @click="search">搜索</ElButton>
-          <ElButton @click="reset">重置</ElButton>
-        </ElFormItem>
-      </ElForm>
-    </div>
-    <TableView
-      ref="tableRef"
-      :api="api"
-      :columns="columns"
-      :otherParams="tableSearch"
-      title="用户列表"
-      tableHeight="calc(100% - 76px)"
-      pagination
-      selectionColum
-      @selection-change="selectionChange"
-    >
-      <template #tools>
-        <ElButton type="primary" @click="add">新增用户</ElButton>
-      </template>
-
-      <template #column-account="{ row }"> {{ row.account }} </template>
-      <template #column-status="{ row }">
-        <el-switch v-model="row.status" @change="statusChange($event, row.id)" :active-value="1" :inactive-value="0" />
-      </template>
-      <template #column-action="{ row }">
-        <ElButton link type="primary" size="small" @click="del(row.id)">Detail</ElButton>
-        <ElButton link type="primary" size="small" @click="edit(row.id)">Edit</ElButton>
-      </template>
-    </TableView>
-    <UserDrawerEdit v-model="_isEdit" :id="_id" />
-  </div>
+  <TableView
+    ref="tableRef"
+    :columns="columns"
+    :getListApi="getListApi"
+    :searchColumns="searchList"
+    pagination
+    title="用户列表"
+    @selection-change="selectionChange"
+  >
+    <template #table-tools>
+      <el-button type="primary" @click="add">新增用户</el-button>
+    </template>
+    <template #status="{ row }">
+      <el-switch v-model="row.status" :active-value="1" :inactive-value="0" @click="statusChange(row.status, row.id)" />
+    </template>
+    <template #action="{ row }">
+      <el-button link type="primary" size="small" @click="del(row.id)">Detail</el-button>
+      <el-button link type="primary" size="small" @click="edit(row.id)">Edit</el-button>
+    </template>
+  </TableView>
+  <UserDrawerEdit v-model="_isEdit" :id="_id" @update-list="tableRef?.getList" />
 </template>
 <script setup lang="ts" name="User">
 import { ref, reactive } from "vue";
-import { TableJsonItem } from "@/components/Table/index.d";
+import { TableCol, TableViewInstance } from "@/components/TableView/type";
+import { SearchProps } from "@/components/SearchForm/type";
 import { getUserListApi, statusChangeApi, delUserApi } from "@/api/system/user";
-import dayjs from "dayjs";
+import { UserItem } from "@/api/system/user/index.d";
 import UserDrawerEdit from "./components/UserDrawerEdit.vue";
 import { ElMessageBox } from "element-plus";
 import { $message } from "@/utils/message";
 
-const _isEdit = ref(false);
-const _id = ref(0);
-const columns: TableJsonItem[] = [
+const getListApi = getUserListApi;
+const delApi = delUserApi;
+const statusApi = statusChangeApi;
+
+const columns: TableCol<UserItem>[] = [
   {
-    label: "account",
-    prop: "account",
-    columnType: "slot",
+    type: "selection",
   },
   {
-    label: "email",
-    prop: "email",
+    label: "roleName",
+    prop: "roleName",
   },
   {
-    label: "nickname",
-    prop: "nickname",
-  },
-  {
-    label: "role",
-    prop: "role",
+    label: "menuIds",
+    prop: "menuIds",
   },
   {
     label: "status",
     prop: "status",
-    columnType: "slot",
   },
   {
     label: "createTime",
     prop: "createTime",
-    formatData: (data: number) => dayjs(data).format("YYYY-MM-DD HH:mm:ss"),
   },
   {
     label: "remark",
@@ -87,37 +62,54 @@ const columns: TableJsonItem[] = [
   {
     label: "操作",
     prop: "action",
-    columnType: "slot",
   },
 ];
-const api = getUserListApi;
-const tableRef: any = ref(null);
-const selectList: any = ref([]);
-const tableSearch = reactive({
-  nickname: "",
-  createTime: "",
-});
-/**
- * @description: 搜索
- */
-function search() {
-  tableRef.value.getList();
-}
-/**
- * @description: 重置搜索
- */
-function reset() {
-  tableSearch.nickname = "";
-  tableSearch.createTime = "";
-  search();
-}
+const searchList = reactive<SearchProps[]>([
+  {
+    el: "input",
+    prop: "nickname",
+    label: "nickname",
+    defaultValue: "",
+  },
+  {
+    el: "date-picker",
+    defaultValue: "",
+    prop: "createTime",
+    label: "createTime",
+    props: {
+      type: "date",
+    },
+  },
+  {
+    el: "switch",
+    prop: "delivery",
+    label: "Instant delivery",
+    defaultValue: 0,
+  },
+  {
+    prop: "desc",
+    label: "Activity form",
+    el: "input",
+    defaultValue: "",
+    props: {
+      type: "textarea",
+    },
+  },
+]);
+
+const tableRef = ref<TableViewInstance>();
+
 /**
  * @description: 列表选中
  * @param {*} selection
  */
+const selectList: any = ref([]);
 function selectionChange(selection: any[]) {
   selectList.value = selection || [];
 }
+
+const _isEdit = ref(false);
+const _id = ref(0);
 /**
  * @description: 新增
  */
@@ -135,11 +127,18 @@ function edit(id: number) {
 }
 /**
  * @description: 状态切换
- * @param {*} val
+ * @param {*} status
+ * @param {*} id
  */
-function statusChange(val: string | number | boolean, id: number) {
-  const status: number = val as number;
-  statusChangeApi({ status, id });
+async function statusChange(status: 0 | 1, id: number) {
+  console.log(id, status);
+  try {
+    await statusApi({ status, id });
+    $message.success("切换成功");
+    tableRef?.value?.getList();
+  } catch (error: any) {
+    $message.error(error.message);
+  }
 }
 /**
  * @description: 删除
@@ -152,37 +151,16 @@ async function del(id: number) {
     type: "warning",
   })
     .then(async () => {
-      await delUserApi({ id });
-      $message.success(`Delete completed`);
+      try {
+        await delApi({ id });
+        tableRef?.value?.getList();
+        $message.success(`Delete completed`);
+      } catch (error: any) {
+        $message.error(error.message);
+      }
     })
     .catch(() => {
       $message.info(`Delete canceled`);
     });
 }
 </script>
-
-<style lang="scss" scoped>
-.page {
-  height: 100%;
-
-  .search-wrap {
-    margin-bottom: 16px;
-    padding: 0 16px;
-    height: 60px;
-
-    :deep(.el-form) {
-      display: flex;
-      align-items: center;
-      height: 100%;
-
-      .el-form-item {
-        margin-bottom: 0;
-      }
-
-      .el-form-item + .el-form-item {
-        margin-left: 10px;
-      }
-    }
-  }
-}
-</style>

@@ -1,117 +1,166 @@
 <template>
-  <ListContainer title="角色列表" :loading="loading" @update-list="getList">
-    <template #search>
-      <el-form :model="otherParams">
-        <el-form-item>
-          <el-input v-model="otherParams.roleName" placeholder="nickname" />
-        </el-form-item>
-        <el-form-item>
-          <el-date-picker v-model="otherParams.createTime" type="date" placeholder="createTime" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="getList">搜索</el-button>
-          <el-button @click="reset">重置</el-button>
-        </el-form-item>
-      </el-form>
-    </template>
-    <template #action>
+  <TableView
+    ref="tableRef"
+    :columns="columns"
+    :getListApi="getListApi"
+    :searchColumns="searchList"
+    pagination
+    title="角色列表"
+    @selection-change="selectionChange"
+  >
+    <template #table-tools>
       <el-button type="primary" @click="add">新增角色</el-button>
     </template>
-    <template #table>
-      <el-table
-        height="calc(100% - 40px)"
-        :data="tableData"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" width="55" />
-        <el-table-column label="roleName" width="180" prop="roleName" />
-        <el-table-column label="menuIds" min-width="120" prop="menuIds" />
-        <el-table-column label="状态" width="120">
-          <template #default="{ row }">
-            <el-switch v-model="row.status" @click="statusChange(row)" :active-value="1" :inactive-value="0" />
-          </template>
-        </el-table-column>
-        <el-table-column label="createTime" min-width="200" prop="createTime" />
-        <el-table-column label="remark" min-width="200" prop="remark" />
-        <el-table-column label="操作" width="130">
-          <template #default="{ row }">
-            <el-button link type="primary" size="small" @click="del(row.id)">Detail</el-button>
-            <el-button link type="primary" size="small" @click="edit(row.id)">Edit</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="pagination-wrap">
-        <el-pagination
-          v-model:current-page="apiQuery.page"
-          v-model:page-size="apiQuery.limit"
-          :page-sizes="[20, 50, 75, 100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="listTotal"
-          small
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
-      </div>
-      <RoleDrawerEdit v-model="_isEdit" :id="_id" @update-list="getList" />
+    <template #status="{ row }">
+      <el-switch v-model="row.status" :active-value="1" :inactive-value="0" @click="statusChange(row.status, row.id)" />
     </template>
-  </ListContainer>
+    <template #action="{ row }">
+      <el-button link type="primary" size="small" @click="del(row.id)">Detail</el-button>
+      <el-button link type="primary" size="small" @click="edit(row.id)">Edit</el-button>
+    </template>
+  </TableView>
+  <RoleDrawerEdit v-model="_isEdit" :id="_id" @update-list="tableRef?.getList" />
 </template>
 <script setup lang="ts" name="Role">
 import { ref, reactive } from "vue";
+import { TableCol, TableViewInstance } from "@/components/TableView/type";
+import { SearchProps } from "@/components/SearchForm/type";
 import { getRoleListApi, statusChangeApi, delRoleApi } from "@/api/system/role";
+import { RoleItem } from "@/api/system/role/index.d";
 import RoleDrawerEdit from "./components/RoleDrawerEdit.vue";
-import { useTable } from "@/components/ListContainer/useTable";
+import { ElMessageBox } from "element-plus";
+import { $message } from "@/utils/message";
 
 const getListApi = getRoleListApi;
 const delApi = delRoleApi;
-const otherParams = reactive({ roleName: "", createTime: "" });
-const {
-  loading,
-  _isEdit,
-  _id,
-  apiQuery,
-  listTotal,
-  tableData,
-  getList,
-  handleSizeChange,
-  handleCurrentChange,
-  statusChange,
-  add,
-  edit,
-  del,
-} = useTable({
-  getListApi,
-  statusChangeApi,
-  delApi,
-  otherParams,
-});
+const statusApi = statusChangeApi;
 
-/**
- * @description: 重置搜索
- */
-function reset() {
-  otherParams.roleName = "";
-  otherParams.createTime = "";
-  getList();
-}
+const columns: TableCol<RoleItem>[] = [
+  {
+    type: "selection",
+  },
+  {
+    label: "roleName",
+    prop: "roleName",
+  },
+  {
+    label: "menuIds",
+    prop: "menuIds",
+  },
+  {
+    label: "status",
+    prop: "status",
+  },
+  {
+    label: "createTime",
+    prop: "createTime",
+  },
+  {
+    label: "remark",
+    prop: "remark",
+  },
+  {
+    label: "操作",
+    prop: "action",
+  },
+];
+const searchList = reactive<SearchProps[]>([
+  {
+    el: "input",
+    prop: "roleName",
+    label: "roleName",
+    defaultValue: "",
+  },
+  {
+    el: "date-picker",
+    defaultValue: "",
+    prop: "createTime",
+    label: "createTime",
+    props: {
+      type: "date",
+    },
+  },
+  {
+    el: "switch",
+    prop: "delivery",
+    label: "Instant delivery",
+    defaultValue: 0,
+  },
+  {
+    prop: "desc",
+    label: "Activity form",
+    el: "input",
+    defaultValue: "",
+    props: {
+      type: "textarea",
+    },
+  },
+]);
 
-let selectList: any = ref([]);
+const tableRef = ref<TableViewInstance>();
 
 /**
  * @description: 列表选中
  * @param {*} selection
  */
-function handleSelectionChange(selection: any[]) {
+const selectList: any = ref([]);
+function selectionChange(selection: any[]) {
   selectList.value = selection || [];
 }
-</script>
 
-<style lang="scss" scoped>
-.pagination-wrap {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 40px;
+const _isEdit = ref(false);
+const _id = ref(0);
+/**
+ * @description: 新增
+ */
+function add() {
+  _id.value = 0;
+  _isEdit.value = true;
 }
-</style>
+/**
+ * @description: 编辑
+ * @param {*} id
+ */
+function edit(id: number) {
+  _id.value = id;
+  _isEdit.value = true;
+}
+/**
+ * @description: 状态切换
+ * @param {*} status
+ * @param {*} id
+ */
+async function statusChange(status: 0 | 1, id: number) {
+  console.log(id, status);
+  try {
+    await statusApi({ status, id });
+    $message.success("切换成功");
+    tableRef?.value?.getList();
+  } catch (error: any) {
+    $message.error(error.message);
+  }
+}
+/**
+ * @description: 删除
+ * @param {*} id
+ */
+async function del(id: number) {
+  ElMessageBox.confirm("proxy will permanently delete the file. Continue?", "Warning", {
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+    type: "warning",
+  })
+    .then(async () => {
+      try {
+        await delApi({ id });
+        tableRef?.value?.getList();
+        $message.success(`Delete completed`);
+      } catch (error: any) {
+        $message.error(error.message);
+      }
+    })
+    .catch(() => {
+      $message.info(`Delete canceled`);
+    });
+}
+</script>
