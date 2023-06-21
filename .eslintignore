@@ -1,6 +1,15 @@
-build/*.js
-src/assets
-public
-dist
-components.d.ts
 
+*.sh
+node_modules
+*.md
+*.woff
+*.ttf
+.vscode
+.idea
+dist
+/public
+/docs
+.husky
+.local
+/bin
+Dockerfile

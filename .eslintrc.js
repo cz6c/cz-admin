@@ -1,17 +1,9 @@
-/* eslint-disable prettier/prettier */
 module.exports = {
   root: true,
   env: {
     browser: true,
     node: true,
     es6: true,
-  },
-  globals: {
-    // script setup
-    defineProps: "readonly",
-    defineEmits: "readonly",
-    defineExpose: "readonly",
-    withDefaults: "readonly",
   },
   parser: "vue-eslint-parser",
   parserOptions: {
@@ -22,7 +14,12 @@ module.exports = {
       jsx: true,
     },
   },
-  extends: ["plugin:vue/vue3-recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+  extends: [
+    "plugin:vue/vue3-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "./.eslintrc-auto-import.json",
+  ],
   // add your custom rules here
   // it is base on https://github.com/vuejs/eslint-config-vue
   rules: {

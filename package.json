@@ -7,32 +7,12 @@
     "build:test": "vite build --mode test",
     "build:prod": "vite build --mode production",
     "preview": "vite preview",
-    "lint:eslint": "eslint --fix",
-    "lint:prettier": "prettier --write  \"src/**/*.{ts,json,scss,vue,html,md}\"",
-    "lint:stylelint": "stylelint --fix \"src/**/*.{vue,scss}\"",
+    "lint:eslint": "eslint --cache --max-warnings 0  \"src/**/*.{vue,ts,tsx}\" --fix",
+    "lint:prettier": "prettier --write  \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
+    "lint:stylelint": "stylelint --cache --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
     "lint:lint-staged": "lint-staged",
     "prepare": "husky install",
-    "cz": "czg"
-  },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.vue": [
-      "eslint --fix",
-      "prettier --write",
-      "stylelint --fix"
-    ],
-    "*.{scss}": [
-      "stylelint --fix",
-      "prettier --write"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-git"
-    }
+    "cz": "git add . && czg"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.10",
@@ -78,6 +58,7 @@
     "postcss-html": "^1.5.0",
     "postcss-scss": "^4.0.6",
     "prettier": "^2.8.4",
+    "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.57.1",
     "stylelint": "^15.2.0",
     "stylelint-config-html": "^1.1.0",
@@ -86,12 +67,55 @@
     "stylelint-config-standard": "^30.0.1",
     "stylelint-config-standard-scss": "^7.0.1",
     "stylelint-order": "^6.0.3",
+    "terser": "^5.18.1",
     "typescript": "^4.5.4",
+    "unplugin-auto-import": "^0.16.4",
     "unplugin-vue-components": "^0.24.1",
     "vite": "^4.3.2",
-    "vite-plugin-html": "^3.2.0",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-imagemin": "^0.6.1",
+    "vite-plugin-progress": "^0.0.7",
+    "vite-plugin-restart": "^0.3.1",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-vue-setup-extend": "^0.4.0",
+    "vite-plugin-vue-setup-extend-plus": "^0.1.0",
     "vue-tsc": "^0.29.8"
+  },
+  "resolutions": {
+    "bin-wrapper": "npm:bin-wrapper-china",
+    "gifsicle": "5.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
+      "prettier --write--parser json"
+    ],
+    "package.json": [
+      "prettier --write"
+    ],
+    "*.vue": [
+      "eslint --fix",
+      "prettier --write",
+      "stylelint --fix"
+    ],
+    "*.{scss,less,styl,html}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
   }
 }

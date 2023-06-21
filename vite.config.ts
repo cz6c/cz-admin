@@ -1,35 +1,36 @@
-/* eslint-disable prettier/prettier */
 import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
 import { resolve } from "path";
-import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
-import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-import vueSetupExtend from "vite-plugin-vue-setup-extend";
-import { createHtmlPlugin } from "vite-plugin-html";
-import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import { createVitePlugins } from "./build/vite/plugins";
+import { wrapperEnv } from "./build/utils";
+import { proxy } from "./build/vite/proxy";
+
+const pathResolve = (dir: string) => {
+  return resolve(process.cwd(), ".", dir);
+};
 
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfigExport => {
-  // 根据当前工作目录中的 `mode` 加载 .env 文件
-  // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
-  const { VITE_PUBLIC_PATH, VITE_PORT, VITE_BASE_URL, VITE_PROXY_URL, VITE_APP_TITLE } = loadEnv(mode, process.cwd());
-  // 开发模式自动设置代理
-  const proxy = {};
-  if (command === "serve") {
-    proxy[VITE_BASE_URL] = {
-      target: VITE_PROXY_URL,
-      changeOrigin: true,
-      rewrite: path => path.replace(/^\/api/, ""),
-    };
-  }
+  const isProduction = command === "build";
+  console.log(isProduction);
+  const root = process.cwd();
+  const env = loadEnv(mode, root);
+  const viteEnv = wrapperEnv(env);
+  console.log(env);
   return {
-    base: VITE_PUBLIC_PATH,
-    root: process.cwd(),
+    root,
     resolve: {
-      alias: {
-        "@": resolve(__dirname, "src"),
-      },
+      alias: [
+        // /@/xxxx => src/xxxx
+        {
+          find: /@\//,
+          replacement: pathResolve("src") + "/",
+        },
+        // /#/xxxx => types/xxxx
+        {
+          find: /#\//,
+          replacement: pathResolve("types") + "/",
+        },
+      ],
     },
     css: {
       preprocessorOptions: {
@@ -41,40 +42,20 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     },
     /*  https://cn.vitejs.dev/config/server-options.html#server-proxy */
     server: {
+      host: true,
       hmr: true,
-      host: "0.0.0.0",
-      port: Number(VITE_PORT),
-      open: false,
-      proxy: proxy,
+      proxy,
     },
-    plugins: [
-      vue(),
-      vueJsx(),
-      /* setup script标签上定义组件name */
-      vueSetupExtend(),
-      /* 自动导入组件 */
-      Components({
-        dts: "src/components/components.d.ts",
-        resolvers: [ElementPlusResolver({ importStyle: "sass" })],
-      }),
-      /* https://github.com/vbenjs/vite-plugin-html/blob/main/README.zh_CN.md */
-      createHtmlPlugin({
-        // 是否压缩html
-        minify: true,
-        // 需要注入 index.html ejs 模版的数据
-        inject: {
-          data: {
-            title: VITE_APP_TITLE,
-          },
+    plugins: createVitePlugins(viteEnv, isProduction),
+    build: {
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          //生产环境时移除console
+          drop_console: true,
+          drop_debugger: true,
         },
-      }),
-      /* https://github.com/anncwb/vite-plugin-svg-icons */
-      createSvgIconsPlugin({
-        // 指定需要缓存的图标文件夹
-        iconDirs: [resolve(process.cwd(), "src/assets/svg")],
-        // 指定symbolId格式
-        symbolId: "icon-[dir]-[name]",
-      }),
-    ],
+      },
+    },
   };
 };
