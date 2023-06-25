@@ -1,7 +1,7 @@
 import type { App, Directive, DirectiveBinding } from "vue";
-import { useAuthStore } from "@/store/modules/auth";
+import { useAuthStore } from "/@/store/modules/auth";
 import { intersection } from "lodash-es";
-import { isArray } from "@/utils/is";
+import { isArray } from "/@/utils/is";
 
 const authStore = useAuthStore();
 

@@ -6,7 +6,7 @@ import TableColumn from "./components/TableColumn.vue";
 import TableFooter from "./components/TableFooter.vue";
 import { TableCol } from "./type";
 import { useTable } from "./useTable";
-import { SearchProps } from "@/components/SearchForm/type";
+import { SearchProps } from "/@/components/SearchForm/type";
 
 // 表格配置
 export interface TableProps {

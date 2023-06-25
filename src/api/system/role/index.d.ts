@@ -1,4 +1,4 @@
-import { GetListParams, GetListResponse } from "@/api/public/index.d";
+import { GetListParams, GetListResponse } from "/@/api/public/index.d";
 
 // 详情
 export interface RoleItem {

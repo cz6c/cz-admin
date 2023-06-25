@@ -1,8 +1,8 @@
 import { toRaw, ref, nextTick } from "vue";
 import type { RouteLocationNormalized } from "vue-router";
-import { useSortable } from "@/hooks/useSortable";
-import { useMultiTagsStore } from "@/store/modules/multiTags";
-import { isNullAndUnDef } from "@/utils/is";
+import { useSortable } from "/@/hooks/useSortable";
+import { useMultiTagsStore } from "/@/store/modules/multiTags";
+import { isNullAndUnDef } from "/@/utils/is";
 import { useRouter } from "vue-router";
 
 export function initAffixTags(): string[] {

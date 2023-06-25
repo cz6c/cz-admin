@@ -1,11 +1,11 @@
 <script setup lang="ts" name="SearchForm">
 import { computed, ref } from "vue";
 import { SearchProps } from "./type";
-import { BreakPoint } from "@/components/Grid/type";
+import { BreakPoint } from "/@/components/Grid/type";
 import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
 import SearchFormItem from "./components/SearchFormItem.vue";
-import Grid from "@/components/Grid/index.vue";
-import GridItem from "@/components/Grid/components/GridItem.vue";
+import Grid from "/@/components/Grid/index.vue";
+import GridItem from "/@/components/Grid/components/GridItem.vue";
 
 interface Props {
   columns?: SearchProps[]; // 搜索配置列

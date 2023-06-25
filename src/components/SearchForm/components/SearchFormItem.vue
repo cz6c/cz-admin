@@ -21,7 +21,7 @@
 
 <script setup lang="ts" name="SearchFormItem">
 import { computed } from "vue";
-import { handleProp } from "@/utils";
+import { handleProp } from "/@/utils";
 import { SearchProps } from "../type";
 
 interface Props {

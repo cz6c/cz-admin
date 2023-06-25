@@ -22,12 +22,12 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       alias: [
         // /@/xxxx => src/xxxx
         {
-          find: /@\//,
+          find: /\/@\//,
           replacement: pathResolve("src") + "/",
         },
         // /#/xxxx => types/xxxx
         {
-          find: /#\//,
+          find: /\/#\//,
           replacement: pathResolve("types") + "/",
         },
       ],
@@ -36,7 +36,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       preprocessorOptions: {
         // 配置全局scss文件
         scss: {
-          additionalData: '@use "@/assets/style/variables.scss" as *;',
+          additionalData: '@use "/@/assets/style/variables.scss" as *;',
         },
       },
     },

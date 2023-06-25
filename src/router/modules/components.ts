@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/router";
+import { Layout } from "/@/router";
 
 export default {
   path: "/components",
@@ -14,7 +14,7 @@ export default {
     {
       path: "/components/table",
       name: "Table",
-      component: () => import("@/views/components/Table/index.vue"),
+      component: () => import("/@/views/components/Table/index.vue"),
       meta: {
         title: "高级列表",
       },
@@ -22,7 +22,7 @@ export default {
     {
       path: "/components/form",
       name: "From",
-      component: () => import("@/views/components/Form/page.vue"),
+      component: () => import("/@/views/components/Form/page.vue"),
       meta: {
         title: "高级表单",
       },
@@ -30,7 +30,7 @@ export default {
     {
       path: "/components/wangEditor",
       name: "WangEditorPage",
-      component: () => import("@/views/components/wangEditor/index.vue"),
+      component: () => import("/@/views/components/wangEditor/index.vue"),
       meta: {
         title: "富文本编辑器",
       },
@@ -38,7 +38,7 @@ export default {
     {
       path: "/components/upload",
       name: "Upload",
-      component: () => import("@/views/components/upload/index.vue"),
+      component: () => import("/@/views/components/upload/index.vue"),
       meta: {
         title: "图片上传",
       },

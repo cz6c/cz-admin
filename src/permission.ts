@@ -1,10 +1,10 @@
-import { PAGE_NOT_FOUND_ROUTE, RouterEnum } from "@/router";
-import { useAuthStore } from "@/store/modules/auth";
-import { getToken } from "@/utils/auth";
+import { PAGE_NOT_FOUND_ROUTE, RouterEnum } from "/@/router";
+import { useAuthStore } from "/@/store/modules/auth";
+import { getToken } from "/@/utils/auth";
 import type { Router } from "vue-router";
 import nProgress from "nprogress";
 import { ElMessage, ElNotification } from "element-plus";
-import { BASE_TITLE } from "@/config";
+import { BASE_TITLE } from "/@/config";
 
 /**
  * @description:  创建项目前置权限

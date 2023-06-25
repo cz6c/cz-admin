@@ -1,14 +1,14 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import { setupStore } from "@/store";
-import router, { setupRouter } from "@/router";
-import { setupRouterGuard } from "@/permission";
-import { registerGlobComp } from "@/components";
-import { setupGlobDirectives } from "@/directives";
+import { setupStore } from "/@/store";
+import router, { setupRouter } from "/@/router";
+import { setupRouterGuard } from "/@/permission";
+import { registerGlobComp } from "/@/components";
+import { setupGlobDirectives } from "/@/directives";
 
 // css
 import "normalize.css";
-import "@/assets/style/global.scss";
+import "/@/assets/style/global.scss";
 
 // 注册svg
 import "virtual:svg-icons-register";

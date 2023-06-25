@@ -35,9 +35,9 @@
 <script setup lang="ts" name="Sidebar">
 import SubMenu from "./components/SubMenu.vue";
 import { useRouter } from "vue-router";
-import { useLayoutStore } from "@/store/modules/layout";
-import { useAuthStore } from "@/store/modules/auth";
-import { BASE_TITLE } from "@/config";
+import { useLayoutStore } from "/@/store/modules/layout";
+import { useAuthStore } from "/@/store/modules/auth";
+import { BASE_TITLE } from "/@/config";
 
 const authStore = useAuthStore();
 

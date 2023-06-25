@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/router";
+import { Layout } from "/@/router";
 
 export default {
   path: "/dashboard",
@@ -14,7 +14,7 @@ export default {
     {
       path: "/dashboard/workbench",
       name: "Workbench",
-      component: () => import("@/views/dashboard/workbench/index.vue"),
+      component: () => import("/@/views/dashboard/workbench/index.vue"),
       meta: {
         title: "工作台",
         affix: true,

@@ -1,5 +1,5 @@
 <script setup lang="ts" name="TableFooter">
-import { GetListParams } from "@/api/public/index.d";
+import { GetListParams } from "/@/api/public/index.d";
 
 interface PaginationProps {
   pageQuery: GetListParams;

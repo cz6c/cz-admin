@@ -28,7 +28,7 @@
 import Breadcrumb from "./components/BreadCrumb.vue";
 import FoldButton from "./components/FoldButton.vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/store/modules/auth";
+import { useAuthStore } from "/@/store/modules/auth";
 
 const { webLogout } = useAuthStore();
 

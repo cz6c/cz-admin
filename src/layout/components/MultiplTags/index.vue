@@ -29,10 +29,10 @@
 </template>
 <script setup lang="ts" name="MultiplTags">
 import { ref, watch, unref } from "vue";
-import { useMultiTagsStore, MultiTagsItem } from "@/store/modules/multiTags";
+import { useMultiTagsStore, MultiTagsItem } from "/@/store/modules/multiTags";
 import { useRoute } from "vue-router";
 import { useEventListener } from "@vueuse/core";
-import { RouterEnum } from "@/router";
+import { RouterEnum } from "/@/router";
 import { initAffixTags, useTagsDrag } from "./useMultipleTags";
 import RightDropdown from "./components/RightDropdown.vue";
 

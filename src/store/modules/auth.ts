@@ -1,17 +1,17 @@
 import { defineStore } from "pinia";
-import store from "@/store";
-import { setToken, removeToken } from "@/utils/auth";
-import { login, getMenuList, getPermCodeList } from "@/api/public";
-import { getLoginUserInfoApi } from "@/api/system/user";
-import { LoginParams } from "@/api/public/index.d";
-import { UserItem } from "@/api/system/user/index.d";
-import { isDynamicAddedRoute, isPermCode } from "@/config";
-import router, { resetRouter } from "@/router";
-import { getStaticRoutes } from "@/router/static";
-import { menuToRoute } from "@/utils/router";
+import store from "/@/store";
+import { setToken, removeToken } from "/@/utils/auth";
+import { login, getMenuList, getPermCodeList } from "/@/api/public";
+import { getLoginUserInfoApi } from "/@/api/system/user";
+import { LoginParams } from "/@/api/public/index.d";
+import { UserItem } from "/@/api/system/user/index.d";
+import { isDynamicAddedRoute, isPermCode } from "/@/config";
+import router, { resetRouter } from "/@/router";
+import { getStaticRoutes } from "/@/router/static";
+import { menuToRoute } from "/@/utils/router";
 import type { RouteRecordRaw } from "vue-router";
 import { useMultiTagsStore } from "./multiTags";
-import { filterTree } from "@/utils/tree";
+import { filterTree } from "/@/utils/tree";
 
 interface authStoreState {
   id: number;

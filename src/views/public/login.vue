@@ -11,10 +11,10 @@
         </div>
         <el-form ref="formRef" :rules="rules" :model="loginForm">
           <el-form-item prop="username">
-            <el-input v-model="loginForm.username" placeholder="请输入账号"></el-input>
+            <el-input v-model="loginForm.username" placeholder="请输入账号" />
           </el-form-item>
           <el-form-item prop="password">
-            <el-input v-model="loginForm.password" type="password" show-password placeholder="请输入密码"></el-input>
+            <el-input v-model="loginForm.password" type="password" show-password placeholder="请输入密码" />
           </el-form-item>
         </el-form>
         <el-button type="primary" class="login-btn" :loading="loading" @click="handleLogin(formRef)">登 录</el-button>
@@ -35,11 +35,11 @@
 
 <script setup lang="ts" name="Login">
 import { watch, ref, reactive } from "vue";
-import { useAuthStore } from "@/store/modules/auth";
+import { useAuthStore } from "/@/store/modules/auth";
 import { useRoute, useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
-import { $message } from "@/utils/message";
-import { BASE_TITLE } from "@/config";
+import { $message } from "/@/utils/message";
+import { BASE_TITLE } from "/@/config";
 
 const formRef = ref<FormInstance>();
 const route = useRoute();

@@ -1,8 +1,8 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
-import router from "@/router/index";
-import { getToken, removeToken } from "@/utils/auth";
-import { BASE_URL } from "@/config";
+import router from "/@/router/index";
+import { getToken, removeToken } from "/@/utils/auth";
+import { BASE_URL } from "/@/config";
 
 // 封装axios
 const service = axios.create({

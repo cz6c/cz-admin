@@ -30,13 +30,13 @@
 </template>
 <script setup lang="ts" name="User">
 import { ref, reactive } from "vue";
-import { TableCol, TableViewInstance } from "@/components/TableView/type";
-import { SearchProps } from "@/components/SearchForm/type";
-import { getUserListApi, statusChangeApi, delUserApi } from "@/api/system/user";
-import { UserItem } from "@/api/system/user/index.d";
+import { TableCol, TableViewInstance } from "/@/components/TableView/type";
+import { SearchProps } from "/@/components/SearchForm/type";
+import { getUserListApi, statusChangeApi, delUserApi } from "/@/api/system/user";
+import { UserItem } from "/@/api/system/user/index.d";
 import UserDrawerEdit from "./components/UserDrawerEdit.vue";
 import { ElMessageBox } from "element-plus";
-import { $message } from "@/utils/message";
+import { $message } from "/@/utils/message";
 
 const getListApi = getUserListApi;
 const delApi = delUserApi;

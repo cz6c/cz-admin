@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-import { Layout } from "@/router";
+import { Layout } from "/@/router";
 
 export default {
   path: "/system",
@@ -14,7 +14,7 @@ export default {
     {
       path: "/system/user",
       name: "User",
-      component: () => import("@/views/system/user/index.vue"),
+      component: () => import("/@/views/system/user/index.vue"),
       meta: {
         title: "用户管理",
       },
@@ -22,7 +22,7 @@ export default {
     {
       path: "/system/role",
       name: "Role",
-      component: () => import(`@/views/system/role/index.vue`),
+      component: () => import(`/@/views/system/role/index.vue`),
       meta: {
         title: "角色管理",
       },
