@@ -2,7 +2,7 @@ import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
 import { resolve } from "path";
 import { createVitePlugins } from "./build/vite/plugins";
 import { wrapperEnv } from "./build/utils";
-import { proxy } from "./build/vite/proxy";
+import { createProxy } from "./build/vite/proxy";
 
 const pathResolve = (dir: string) => {
   return resolve(process.cwd(), ".", dir);
@@ -44,7 +44,8 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     server: {
       host: true,
       hmr: true,
-      proxy,
+      port: viteEnv.VITE_PORT,
+      proxy: createProxy(viteEnv.VITE_PROXY),
     },
     plugins: createVitePlugins(viteEnv, isProduction),
     build: {

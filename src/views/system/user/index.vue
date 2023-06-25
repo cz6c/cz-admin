@@ -1,25 +1,32 @@
 <template>
-  <TableView
-    ref="tableRef"
-    :columns="columns"
-    :getListApi="getListApi"
-    :searchColumns="searchList"
-    pagination
-    title="用户列表"
-    @selection-change="selectionChange"
-  >
-    <template #table-tools>
-      <el-button type="primary" @click="add">新增用户</el-button>
-    </template>
-    <template #status="{ row }">
-      <el-switch v-model="row.status" :active-value="1" :inactive-value="0" @click="statusChange(row.status, row.id)" />
-    </template>
-    <template #action="{ row }">
-      <el-button link type="primary" size="small" @click="del(row.id)">Detail</el-button>
-      <el-button link type="primary" size="small" @click="edit(row.id)">Edit</el-button>
-    </template>
-  </TableView>
-  <UserDrawerEdit v-model="_isEdit" :id="_id" @update-list="tableRef?.getList" />
+  <div class="page">
+    <TableView
+      ref="tableRef"
+      :columns="columns"
+      :getListApi="getListApi"
+      :searchColumns="searchList"
+      pagination
+      title="用户列表"
+      @selection-change="selectionChange"
+    >
+      <template #table-tools>
+        <el-button type="primary" @click="add">新增用户</el-button>
+      </template>
+      <template #status="{ row }">
+        <el-switch
+          v-model="row.status"
+          :active-value="1"
+          :inactive-value="0"
+          @click="statusChange(row.status, row.id)"
+        />
+      </template>
+      <template #action="{ row }">
+        <el-button link type="primary" size="small" @click="del(row.id)">Detail</el-button>
+        <el-button link type="primary" size="small" @click="edit(row.id)">Edit</el-button>
+      </template>
+    </TableView>
+    <UserDrawerEdit v-model="_isEdit" :id="_id" @update-list="tableRef?.getList" />
+  </div>
 </template>
 <script setup lang="ts" name="User">
 import { ref, reactive } from "vue";

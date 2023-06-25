@@ -8,7 +8,7 @@
 const value = "";
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .page {
   padding: 30px;
   height: 100%;

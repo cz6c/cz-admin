@@ -48,6 +48,10 @@ function toggleSideBar() {
 
   .el-scrollbar__view {
     height: 100%;
+
+    .page {
+      height: 100%;
+    }
   }
 }
 </style>

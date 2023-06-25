@@ -1,8 +1,5 @@
 <template>
-  <ListContainer>
-    <template #search> </template>
-    <template #table> </template>
-  </ListContainer>
+  <div>123</div>
 </template>
 <script setup lang="ts" name="LoginLog"></script>
 
