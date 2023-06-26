@@ -11,11 +11,9 @@ const pathResolve = (dir: string) => {
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfigExport => {
   const isProduction = command === "build";
-  console.log(isProduction);
   const root = process.cwd();
   const env = loadEnv(mode, root);
   const viteEnv = wrapperEnv(env);
-  console.log(env);
   return {
     root,
     resolve: {

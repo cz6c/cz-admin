@@ -9,20 +9,20 @@ export default {
     title: "Components",
     icon: "dashboard",
   },
-  redirect: "/components/table",
+  redirect: "/components/tablePage",
   children: [
     {
-      path: "/components/table",
+      path: "/components/tablePage",
       name: "Table",
-      component: () => import("/@/views/components/Table/index.vue"),
+      component: () => import("/@/views/components/tablePage/index.vue"),
       meta: {
         title: "高级列表",
       },
     },
     {
-      path: "/components/form",
+      path: "/components/formPage",
       name: "From",
-      component: () => import("/@/views/components/Form/page.vue"),
+      component: () => import("/@/views/components/formPage/page.vue"),
       meta: {
         title: "高级表单",
       },

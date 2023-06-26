@@ -9,6 +9,7 @@ export {};
 
 declare module "@vue/runtime-core" {
   export interface GlobalComponents {
+    ColumnSetting: typeof import("./../src/components/TableView/components/ColumnSetting.vue")["default"];
     ElAside: typeof import("element-plus/es")["ElAside"];
     ElAvatar: typeof import("element-plus/es")["ElAvatar"];
     ElBreadcrumb: typeof import("element-plus/es")["ElBreadcrumb"];
@@ -55,6 +56,8 @@ declare module "@vue/runtime-core" {
     TableAction: typeof import("./../src/components/TableView/components/TableAction.vue")["default"];
     TableColumn: typeof import("./../src/components/TableView/components/TableColumn.vue")["default"];
     TableFooter: typeof import("./../src/components/TableView/components/TableFooter.vue")["default"];
+    TableHeader: typeof import("./../src/components/TableView/components/TableHeader.vue")["default"];
+    TableSetting: typeof import("./../src/components/TableView/components/TableSetting.vue")["default"];
     TableView: typeof import("./../src/components/TableView/index.vue")["default"];
     UploadImg: typeof import("./../src/components/Upload/UploadImg.vue")["default"];
     UploadImgs: typeof import("./../src/components/Upload/UploadImgs.vue")["default"];

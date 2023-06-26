@@ -1,12 +1,12 @@
 <script lang="ts" setup name="TableView">
-import { ref } from "vue";
 import { ElTable } from "element-plus";
-import TableAction from "./components/TableAction.vue";
+import TableHeader from "./components/TableHeader.vue";
 import TableColumn from "./components/TableColumn.vue";
 import TableFooter from "./components/TableFooter.vue";
 import { TableCol } from "./type";
 import { useTable } from "./useTable";
 import { SearchProps } from "/@/components/SearchForm/type";
+import { cloneDeep } from "lodash-es";
 
 // 表格配置
 export interface TableProps {
@@ -24,44 +24,45 @@ export interface TableProps {
 const props = withDefaults(defineProps<TableProps>(), {
   title: "",
   pagination: false,
+  rowKey: "id",
 });
 
-const { loading, apiQuery, tableData, searchParam, reset, getList } = useTable(props);
+const { loading, apiQuery, tableData, searchParam, reset, getList, pageSizeChange, currentPageChange } =
+  useTable(props);
 
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
-// 切换pageSize
-const pageSizeChange = (pageSize: number) => {
-  apiQuery.value.page = 1;
-  apiQuery.value.limit = pageSize;
-  getList();
-};
-// 切换currentPage
-const currentPageChange = (currentPage: number) => {
-  apiQuery.value.page = currentPage;
-  getList();
-};
+/**
+ * @description: 更新columns
+ */
+const checkedColumns = ref<TableCol[]>([]);
+checkedColumns.value = cloneDeep(props.columns);
+function handleColumnChange(data: TableCol[]) {
+  checkedColumns.value = data;
+}
+
+/**
+ * @description: 列表事件传递
+ */
 const emits = defineEmits([
   "selection-change", // 当选择项发生变化时会触发该事件
   "row-click", // 当某一行被点击时会触发该事件
 ]);
-// 多选事件
 const handleSelectionChange = (val: any) => {
   emits("selection-change", val);
 };
-// 当某一行被点击时会触发该事件
 const handleRowClick = (row: any, column: any, event: MouseEvent) => {
   emits("row-click", row, column, event);
 };
-// 暴露给父组件参数和方法，如果外部需要更多的参数或者方法，都可以从这里暴露出去。
-defineExpose({ element: tableRef, getList, apiQuery });
+// 暴露给父组件参数和方法
+defineExpose({ getList });
 </script>
 <template>
   <div class="table-view">
-    <div class="table-search cz-card" v-if="searchColumns!.length">
+    <div class="table-search cz-card" v-if="props.searchColumns!.length">
       <SearchForm
         ref="formView"
-        :columns="searchColumns"
+        :columns="props.searchColumns"
         :search-param="searchParam"
         @search="getList"
         @reset="reset"
@@ -69,27 +70,32 @@ defineExpose({ element: tableRef, getList, apiQuery });
     </div>
     <div class="table-main cz-card" v-loading="loading">
       <!-- 表格头部 -->
-      <TableAction :title="props.title" @update-list="getList">
+      <TableHeader
+        :title="props.title"
+        :columns="props.columns"
+        @columns-change="handleColumnChange"
+        @update-list="getList"
+      >
         <template #tools>
           <slot name="table-tools"> </slot>
         </template>
-      </TableAction>
+      </TableHeader>
       <!-- 表格主体 -->
       <el-table
         ref="tableRef"
         v-bind="$attrs"
-        :data="data ?? tableData"
-        :rowKey="rowKey ?? 'id'"
+        :data="props.data ?? tableData"
+        :rowKey="props.rowKey ?? 'id'"
         @selection-change="handleSelectionChange"
         @row-click="handleRowClick"
       >
-        <template v-for="item in props.columns" :key="item">
+        <template v-for="item in checkedColumns" :key="item">
           <!-- selection || index || expand -->
           <el-table-column
             v-bind="item"
             :align="item.align ?? 'center'"
             :reserve-selection="item.type == 'selection'"
-            v-if="item.type && ['selection', 'index', 'expand'].includes(item.type)"
+            v-if="(item.type && ['selection', 'index', 'expand'].includes(item.type)) || item.visible"
           >
             <template #default="scope" v-if="item.type == 'expand'">
               <component :is="item.render" v-bind="scope" v-if="item.render" />
@@ -97,7 +103,7 @@ defineExpose({ element: tableRef, getList, apiQuery });
             </template>
           </el-table-column>
           <!-- other -->
-          <TableColumn v-if="!item.type && item.prop" :column="item">
+          <TableColumn v-if="(!item.type && item.prop) || item.visible" :column="item">
             <template v-for="slot in Object.keys($slots)" #[slot]="scope">
               <slot :name="slot" v-bind="scope"></slot>
             </template>
