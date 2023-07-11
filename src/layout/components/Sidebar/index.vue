@@ -2,7 +2,7 @@
   <div class="side-bar">
     <div class="logo-container">
       <router-link :key="+new Date()" :title="BASE_TITLE" class="logo-link" to="/">
-        <SvgIcon name="logo" size="32" />
+        <SvgIcon name="logo" size="26" />
         <div v-if="!layoutStore.getIsCollapse" class="logo-title">{{ BASE_TITLE }}</div>
       </router-link>
     </div>
@@ -68,7 +68,9 @@ const getActiveRoutePath = computed((): string => {
 
     .logo-link {
       display: flex;
+      justify-content: center;
       align-items: center;
+      width: 100%;
       height: 100%;
 
       :deep(.svg-icon) {
@@ -80,7 +82,7 @@ const getActiveRoutePath = computed((): string => {
         width: 136px;
         font-size: 20px;
         font-weight: 600;
-        color: var(--el-color-primary);
+        color: #000;
       }
     }
   }
