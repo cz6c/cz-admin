@@ -44,15 +44,16 @@ const statusApi = statusChangeApi;
 
 const columns: TableCol<UserItem>[] = [
   {
-    type: "selection",
+    label: "username",
+    prop: "username",
   },
   {
-    label: "roleName",
-    prop: "roleName",
+    label: "avatar",
+    prop: "avatar",
   },
   {
-    label: "menuIds",
-    prop: "menuIds",
+    label: "roleId",
+    prop: "roleId",
   },
   {
     label: "status",
@@ -66,16 +67,12 @@ const columns: TableCol<UserItem>[] = [
     label: "remark",
     prop: "remark",
   },
-  {
-    label: "操作",
-    prop: "action",
-  },
 ];
 const searchList = reactive<SearchProps[]>([
   {
     el: "input",
-    prop: "nickname",
-    label: "nickname",
+    prop: "username",
+    label: "username",
     defaultValue: "",
   },
   {

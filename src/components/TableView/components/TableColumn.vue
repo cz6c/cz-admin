@@ -20,11 +20,7 @@ const RenderTableColumn = (item: TableCol) => {
   return (
     <>
       {
-        <el-table-column
-          {...item}
-          align={item.align ?? "center"}
-          showOverflowTooltip={item.showOverflowTooltip ?? item.prop !== "operation"}
-        >
+        <el-table-column {...item} align={item.align ?? "center"} showOverflowTooltip={item.showOverflowTooltip}>
           {{
             default: (scope: RenderScope<any>) => {
               if (item.render) return item.render(scope);

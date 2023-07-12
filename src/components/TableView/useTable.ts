@@ -82,6 +82,11 @@ export function useTable(props: TableProps) {
    */
   function reset() {
     Object.assign(state.searchParam, initData.value);
+    Object.assign(state.apiQuery, {
+      page: 1,
+      limit: 20,
+      total: 0,
+    });
     getList();
   }
   onMounted(() => {

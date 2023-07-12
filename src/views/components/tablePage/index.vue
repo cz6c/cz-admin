@@ -33,26 +33,27 @@ const columns: TableCol<RoleItem>[] = [
   {
     label: "角色名称",
     prop: "roleName",
+    width: "300px",
   },
   {
     label: "菜单",
     prop: "menuIds",
+    width: "300px",
   },
   {
     label: "状态",
     prop: "status",
+    width: "300px",
   },
   {
     label: "创建时间",
     prop: "createTime",
+    width: "300px",
   },
   {
     label: "备注",
     prop: "remark",
-  },
-  {
-    label: "操作",
-    prop: "action",
+    width: "300px",
   },
 ];
 const tableRef: any = ref(null);

@@ -1,34 +1,77 @@
 <script setup lang="ts" name="TableHeader">
-import { CheckboxValueType } from "element-plus";
+import { CheckboxValueType } from "element-plus/es/components/checkbox";
 import { TableCol } from "../type";
 import { useSortable } from "/@/hooks/useSortable";
 import { isNullAndUnDef } from "/@/utils/is";
 import { cloneDeep } from "lodash-es";
+import SvgIcon from "../../SvgIcon.vue";
 
 const props = defineProps<{
   title: String;
   columns: TableCol[];
 }>();
-const emits = defineEmits(["updateList", "columns-change"]);
+const emits = defineEmits(["update-list", "update-columns"]);
 
 const plainSortOptions = ref<TableCol[]>([]);
 const checkedList = ref<string[]>([]);
-plainSortOptions.value = cloneDeep(props.columns);
-checkedList.value = props.columns.map(c => c.prop!);
+const checkAll = ref(false);
+const isIndeterminate = ref(true);
+const isSelectionCol = ref(false);
+const isIndexCol = ref(true);
 
+/**
+ * @description: 初始化/重置
+ */
+function init() {
+  plainSortOptions.value = props.columns.map(c => {
+    return { ...c, fixed: false };
+  });
+  handleCheckAllChange(true);
+  isSelectionCol.value = false;
+  isIndexCol.value = true;
+}
+onMounted(() => {
+  init();
+});
+
+/**
+ * @description: 全选
+ * @param {*} val
+ */
+function handleCheckAllChange(val: CheckboxValueType) {
+  checkedList.value = val ? unref(plainSortOptions).map(c => c.prop!) : [];
+  handleCheckedChange(checkedList.value);
+}
+/**
+ * @description: 单选
+ * @param {*} checkedList
+ */
+function handleCheckedChange(checkedList: CheckboxValueType[]) {
+  // 判断是否全选
+  const checkedCount = checkedList.length;
+  checkAll.value = checkedCount === unref(plainSortOptions).map(c => c.prop!).length;
+  isIndeterminate.value = checkedCount > 0 && checkedCount < unref(plainSortOptions).map(c => c.prop!).length;
+  // 重新排序
+  const arr = checkedList as string[];
+  const sortList = unref(plainSortOptions).map(item => item.prop);
+  arr.sort((prev, next) => {
+    return sortList.indexOf(prev) - sortList.indexOf(next);
+  });
+  setColumns(arr);
+}
+/**
+ * @description: 拖拽排序
+ */
 nextTick(() => {
   const el = document.querySelectorAll(`.el-checkbox-group`)?.[0] as HTMLElement;
   const { initSortable } = useSortable(el, {
     onEnd: evt => {
       const { oldIndex, newIndex } = evt;
-
       if (isNullAndUnDef(oldIndex) || isNullAndUnDef(newIndex) || oldIndex === newIndex) {
         return;
       }
-
-      // Sort column
+      // 排序改变
       const columns = cloneDeep(plainSortOptions.value);
-
       if (oldIndex > newIndex) {
         columns.splice(newIndex, 0, columns[oldIndex]);
         columns.splice(oldIndex + 1, 1);
@@ -36,39 +79,36 @@ nextTick(() => {
         columns.splice(newIndex + 1, 0, columns[oldIndex]);
         columns.splice(oldIndex, 1);
       }
-
       plainSortOptions.value = columns;
-      console.log(plainSortOptions.value);
       setColumns(columns.filter(item => checkedList.value.includes(item.prop!)));
     },
   });
   initSortable();
 });
+function handleItemfixed(key: string, type: string) {
+  const item = unref(plainSortOptions).find(c => c.prop === key);
+  if (!item) return;
+  item.fixed = type;
+  console.log(item);
+  console.log(unref(plainSortOptions));
+  setColumns(unref(plainSortOptions));
+}
+/**
+ * @description: 更新columns
+ * @param {*} columns
+ */
 function setColumns(columns: TableCol[] | string[]) {
-  console.log(columns);
-  // table.setColumns(columns);
-  const data: any[] = unref(plainSortOptions).map(col => {
+  const data: TableCol[] = unref(plainSortOptions).map(col => {
     const visible =
       columns.findIndex((c: TableCol | string) => c === col.prop || (typeof c !== "string" && c.prop === col.prop)) !==
       -1;
-    return { ...col, dataIndex: col.prop, visible };
+    return { ...col, visible };
   });
-  console.log(data);
-  emits("columns-change", data);
+  emits("update-columns", data);
 }
-/**
- * @description: 选择改变时，重新排序后更新columns
- * @param {*} checkedList
- */
-function onChange(checkedList: CheckboxValueType[]) {
-  const arr = checkedList as string[];
-  console.log(arr);
-  const sortList = unref(plainSortOptions).map(item => item.prop);
-  arr.sort((prev, next) => {
-    return sortList.indexOf(prev) - sortList.indexOf(next);
-  });
-  setColumns(arr);
-}
+
+// 暴露给父组件参数和方法
+defineExpose({ isSelectionCol, isIndexCol });
 </script>
 
 <template>
@@ -77,23 +117,48 @@ function onChange(checkedList: CheckboxValueType[]) {
     <div class="header-operate">
       <slot name="tools"> </slot>
       <div class="icons">
-        <span class="icon-wrap" @click="emits('updateList')">
+        <span class="icon-wrap" @click="emits('update-list')">
           <el-icon><Refresh /></el-icon>
         </span>
-        <el-dropdown trigger="click" :hide-on-click="false">
-          <span class="icon-wrap">
-            <el-icon><Setting /></el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-checkbox-group v-model="checkedList" @change="onChange">
-                <el-dropdown-item v-for="item in props.columns" :key="item.prop">
-                  <el-checkbox :label="item.prop">{{ item.label }}</el-checkbox>
-                </el-dropdown-item>
-              </el-checkbox-group>
-            </el-dropdown-menu>
+        <el-popover placement="bottom-start" :width="336" trigger="click" popper-class="setting-popper">
+          <template #reference>
+            <span class="icon-wrap">
+              <el-icon><Setting /></el-icon>
+            </span>
           </template>
-        </el-dropdown>
+          <template #default>
+            <div class="flex">
+              <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"
+                >数据列
+              </el-checkbox>
+              <el-checkbox v-model="isSelectionCol">多选列</el-checkbox>
+              <el-checkbox v-model="isIndexCol">序号列</el-checkbox>
+              <el-button type="text" class="reset" @click="init">重置</el-button>
+            </div>
+            <el-divider />
+            <el-checkbox-group v-model="checkedList" @change="handleCheckedChange">
+              <div class="flex item" v-for="item in plainSortOptions" :key="item.prop">
+                <el-icon size="16" class="move"><Rank /></el-icon>
+                <el-checkbox :label="item.prop">{{ item.label }}</el-checkbox>
+                <div class="fixed">
+                  <SvgIcon
+                    name="fixed-l"
+                    size="18"
+                    :class="{ on: item.fixed === 'left' }"
+                    @click="handleItemfixed(item.prop!, 'left')"
+                  />
+                  <el-divider direction="vertical" />
+                  <SvgIcon
+                    name="fixed-r"
+                    size="18"
+                    :class="{ on: item.fixed === 'right' }"
+                    @click="handleItemfixed(item.prop!, 'right')"
+                  />
+                </div>
+              </div>
+            </el-checkbox-group>
+          </template>
+        </el-popover>
       </div>
     </div>
   </div>
@@ -131,6 +196,52 @@ function onChange(checkedList: CheckboxValueType[]) {
         cursor: pointer;
       }
     }
+  }
+}
+</style>
+<style lang="scss">
+.setting-popper {
+  .flex {
+    display: flex;
+    align-items: center;
+
+    .reset {
+      margin-left: 30px;
+    }
+
+    &.item {
+      .move {
+        cursor: move;
+        margin-right: 8px;
+      }
+
+      .el-checkbox {
+        flex: 1;
+      }
+
+      .fixed {
+        display: flex;
+        align-items: center;
+
+        .svg-icon {
+          color: #c1c1c1;
+          cursor: pointer;
+
+          &.on {
+            color: var(--el-color-primary);
+          }
+        }
+
+        .el-divider {
+          margin: 0 8px;
+          height: 14px;
+        }
+      }
+    }
+  }
+
+  .el-divider {
+    margin: 8px 0;
   }
 }
 </style>
