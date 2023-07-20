@@ -21,7 +21,7 @@
 
 <script setup lang="ts" name="WangEditor">
 import { nextTick, computed, inject, shallowRef, onBeforeUnmount } from "vue";
-import { IToolbarConfig, IEditorConfig } from "@wangeditor/editor";
+import { IToolbarConfig, IEditorConfig, IDomEditor } from "@wangeditor/editor";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import "@wangeditor/editor/dist/css/style.css";
 import { formContextKey, formItemContextKey } from "element-plus";
@@ -29,16 +29,16 @@ import { uploadImg } from "/@/api/public";
 import { qiniuUpload } from "/@/components/Upload/qiniu";
 
 // 富文本 DOM 元素
-const editorRef = shallowRef();
+const editorRef = shallowRef<IDomEditor | undefined>(undefined);
 
 // 实列化编辑器
-const handleCreated = (editor: any) => {
+const handleCreated = (editor: IDomEditor) => {
   editorRef.value = editor;
 };
 
 // 接收父组件参数，并设置默认值
 interface RichEditorProps {
-  value: string; // 富文本值 ==> 必传
+  modelValue: string; // 富文本值 ==> 必传
   toolbarConfig?: Partial<IToolbarConfig>; // 工具栏配置 ==> 非必传（默认为空）
   editorConfig?: Partial<IEditorConfig>; // 编辑器配置 ==> 非必传（默认为空）
   height?: string; // 富文本高度 ==> 非必传（默认为 500px）
@@ -74,22 +74,19 @@ const self_disabled = computed(() => {
 });
 
 // 判断当前富文本编辑器是否禁用
-if (self_disabled.value) nextTick(() => editorRef.value.disable());
+if (self_disabled.value) nextTick(() => editorRef.value?.disable());
 
 // 富文本的内容监听，触发父组件改变，实现双向数据绑定
 type EmitProps = {
-  (e: "update:value", val: string): void;
-  (e: "check-validate"): void;
+  (e: "update:modelValue", val: string): void;
 };
 const emit = defineEmits<EmitProps>();
 const valueHtml = computed({
-  get() {
-    return props.value;
-  },
-  set(val: string) {
+  get: () => props.modelValue,
+  set: (val: string) => {
     // 防止富文本内容为空时，校验失败
-    if (editorRef.value.isEmpty()) val = "";
-    emit("update:value", val);
+    if (editorRef.value?.isEmpty()) val = "";
+    emit("update:modelValue", val);
   },
 });
 
@@ -152,8 +149,10 @@ const handleBlur = () => {
 
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {
-  if (!editorRef.value) return;
-  editorRef.value.destroy();
+  const editor = editorRef.value;
+  if (editor == null) return;
+
+  editor.destroy();
 });
 
 defineExpose({

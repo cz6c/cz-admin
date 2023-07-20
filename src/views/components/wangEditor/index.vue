@@ -1,11 +1,11 @@
 <template>
   <div class="page cz-card">
-    <WangEditor :value="value" />
+    <WangEditor v-model="value" />
   </div>
 </template>
 
 <script setup lang="ts" name="WangEditorPage">
-const value = "";
+const value = ref("123");
 </script>
 
 <style lang="scss" scoped>

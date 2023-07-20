@@ -26,7 +26,6 @@ declare global {
     VITE_PORT: number;
     VITE_BASE_URL: string;
     VITE_PROXY: [string, string][];
-    VITE_USE_DEV: boolean;
     VITE_USE_COMPRESS: boolean;
     VITE_USE_REPORT: boolean;
   }

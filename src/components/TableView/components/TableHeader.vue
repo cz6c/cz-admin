@@ -133,7 +133,7 @@ defineExpose({ isSelectionCol, isIndexCol });
               </el-checkbox>
               <el-checkbox v-model="isSelectionCol">多选列</el-checkbox>
               <el-checkbox v-model="isIndexCol">序号列</el-checkbox>
-              <el-button type="text" class="reset" @click="init">重置</el-button>
+              <el-button type="primary" link class="reset" @click="init">重置</el-button>
             </div>
             <el-divider />
             <el-checkbox-group v-model="checkedList" @change="handleCheckedChange">

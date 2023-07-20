@@ -8,7 +8,7 @@ interface layoutStore {
 export const layoutStore = defineStore("layout", {
   state: (): layoutStore => ({
     // Sidebar 折叠
-    isCollapse: true,
+    isCollapse: false,
   }),
   getters: {
     getIsCollapse(): boolean {

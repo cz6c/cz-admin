@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="upload">
+<script setup lang="ts" name="Upload">
 import { ref } from "vue";
 const url = ref("");
 const urls = ref([]);

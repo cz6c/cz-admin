@@ -7,7 +7,7 @@ export default {
   component: Layout,
   meta: {
     title: "Dashboard",
-    icon: "dashboard",
+    icon: "menu-dashboard",
   },
   redirect: "/dashboard/workbench",
   children: [

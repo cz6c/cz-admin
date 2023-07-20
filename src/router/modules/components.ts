@@ -6,8 +6,8 @@ export default {
   name: "Components",
   component: Layout,
   meta: {
-    title: "Components",
-    icon: "dashboard",
+    title: "组件",
+    icon: "menu-components",
   },
   redirect: "/components/tablePage",
   children: [
