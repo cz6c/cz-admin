@@ -1,12 +1,13 @@
 <script lang="ts" setup name="TableView">
-import { ref } from "vue";
 import { ElTable } from "element-plus";
-import TableAction from "./components/TableAction.vue";
+import TableHeader from "./components/TableHeader.vue";
 import TableColumn from "./components/TableColumn.vue";
 import TableFooter from "./components/TableFooter.vue";
+import SearchForm from "/@/components/SearchForm/index.vue";
 import { TableCol } from "./type";
 import { useTable } from "./useTable";
 import { SearchProps } from "/@/components/SearchForm/type";
+import { cloneDeep } from "lodash-es";
 
 // 表格配置
 export interface TableProps {
@@ -24,85 +25,91 @@ export interface TableProps {
 const props = withDefaults(defineProps<TableProps>(), {
   title: "",
   pagination: false,
+  rowKey: "id",
 });
 
-const { loading, apiQuery, tableData, searchParam, reset, getList } = useTable(props);
+const { loading, apiQuery, tableData, searchParam, reset, getList, pageSizeChange, currentPageChange } =
+  useTable(props);
 
+const tableHeaderRef = ref<InstanceType<typeof TableHeader>>();
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
-// 切换pageSize
-const pageSizeChange = (pageSize: number) => {
-  apiQuery.value.page = 1;
-  apiQuery.value.limit = pageSize;
-  getList();
-};
-// 切换currentPage
-const currentPageChange = (currentPage: number) => {
-  apiQuery.value.page = currentPage;
-  getList();
-};
+/**
+ * @description: 更新columns
+ */
+const checkedColumns = ref<TableCol[]>(cloneDeep(props.columns));
+function updateColumn(data: TableCol[]) {
+  checkedColumns.value = data;
+}
+
+/**
+ * @description: 列表事件传递
+ */
 const emits = defineEmits([
   "selection-change", // 当选择项发生变化时会触发该事件
   "row-click", // 当某一行被点击时会触发该事件
 ]);
-// 多选事件
 const handleSelectionChange = (val: any) => {
   emits("selection-change", val);
 };
-// 当某一行被点击时会触发该事件
 const handleRowClick = (row: any, column: any, event: MouseEvent) => {
   emits("row-click", row, column, event);
 };
-// 暴露给父组件参数和方法，如果外部需要更多的参数或者方法，都可以从这里暴露出去。
-defineExpose({ element: tableRef, getList, apiQuery });
+// 暴露给父组件参数和方法
+defineExpose({ getList });
 </script>
 <template>
   <div class="table-view">
-    <div class="table-search cz-card" v-if="searchColumns!.length">
-      <SearchForm
-        ref="formView"
-        :columns="searchColumns"
-        :search-param="searchParam"
-        @search="getList"
-        @reset="reset"
-      />
+    <!-- 表格搜索 -->
+    <div class="table-search cz-card" v-if="props.searchColumns!.length">
+      <SearchForm :columns="props.searchColumns" :search-param="searchParam" @search="getList" @reset="reset" />
     </div>
-    <div class="table-main cz-card" v-loading="loading">
+    <div class="table-main cz-card">
       <!-- 表格头部 -->
-      <TableAction :title="props.title" @update-list="getList">
+      <TableHeader
+        ref="tableHeaderRef"
+        :title="props.title"
+        :columns="props.columns"
+        @update-columns="updateColumn"
+        @update-list="getList"
+      >
         <template #tools>
           <slot name="table-tools"> </slot>
         </template>
-      </TableAction>
+      </TableHeader>
       <!-- 表格主体 -->
       <el-table
         ref="tableRef"
         v-bind="$attrs"
-        :data="data ?? tableData"
-        :rowKey="rowKey ?? 'id'"
+        :data="props.data ?? tableData"
+        :rowKey="props.rowKey ?? 'id'"
         @selection-change="handleSelectionChange"
         @row-click="handleRowClick"
+        v-loading="loading"
       >
-        <template v-for="item in props.columns" :key="item">
-          <!-- selection || index || expand -->
-          <el-table-column
-            v-bind="item"
-            :align="item.align ?? 'center'"
-            :reserve-selection="item.type == 'selection'"
-            v-if="item.type && ['selection', 'index', 'expand'].includes(item.type)"
-          >
-            <template #default="scope" v-if="item.type == 'expand'">
-              <component :is="item.render" v-bind="scope" v-if="item.render" />
-              <slot :name="item.type" v-bind="scope" v-else></slot>
-            </template>
-          </el-table-column>
-          <!-- other -->
-          <TableColumn v-if="!item.type && item.prop" :column="item">
+        <!-- selection || index  -->
+        <el-table-column
+          v-if="tableHeaderRef?.isSelectionCol"
+          align="center"
+          type="selection"
+          width="50"
+          reserve-selection
+        />
+        <el-table-column v-if="tableHeaderRef?.isIndexCol" align="center" type="index" width="60" label="序号" />
+        <!-- other -->
+        <template v-for="item in checkedColumns" :key="item">
+          <TableColumn :column="item" v-if="item.visible">
             <template v-for="slot in Object.keys($slots)" #[slot]="scope">
               <slot :name="slot" v-bind="scope"></slot>
             </template>
           </TableColumn>
         </template>
+        <!-- 操作列插槽 -->
+        <el-table-column v-if="$slots.action" align="center" label="操作">
+          <template #default="scope">
+            <slot name="action" v-bind="scope"></slot>
+          </template>
+        </el-table-column>
         <!-- 默认插槽 -->
         <slot></slot>
         <!-- 插入表格最后一行之后的插槽 -->

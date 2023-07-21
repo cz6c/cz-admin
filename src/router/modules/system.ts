@@ -7,7 +7,7 @@ export default {
   component: Layout,
   meta: {
     title: "组织架构",
-    icon: "tree",
+    icon: "menu-system",
   },
   redirect: "/system/user",
   children: [

@@ -44,31 +44,24 @@ const statusApi = statusChangeApi;
 
 const columns: TableCol<RoleItem>[] = [
   {
-    type: "selection",
-  },
-  {
-    label: "roleName",
+    label: "角色名称",
     prop: "roleName",
   },
   {
-    label: "menuIds",
+    label: "菜单",
     prop: "menuIds",
   },
   {
-    label: "status",
+    label: "状态",
     prop: "status",
   },
   {
-    label: "createTime",
+    label: "创建时间",
     prop: "createTime",
   },
   {
-    label: "remark",
+    label: "备注",
     prop: "remark",
-  },
-  {
-    label: "操作",
-    prop: "action",
   },
 ];
 const searchList = reactive<SearchProps[]>([

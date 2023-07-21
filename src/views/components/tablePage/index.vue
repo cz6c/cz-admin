@@ -31,28 +31,29 @@ import { SearchProps } from "/@/components/SearchForm/type";
 const getListApi = getRoleListApi;
 const columns: TableCol<RoleItem>[] = [
   {
-    label: "roleName",
+    label: "角色名称",
     prop: "roleName",
+    width: "300px",
   },
   {
-    label: "menuIds",
+    label: "菜单",
     prop: "menuIds",
+    width: "300px",
   },
   {
-    label: "status",
+    label: "状态",
     prop: "status",
+    width: "300px",
   },
   {
-    label: "createTime",
+    label: "创建时间",
     prop: "createTime",
+    width: "300px",
   },
   {
-    label: "remark",
+    label: "备注",
     prop: "remark",
-  },
-  {
-    label: "操作",
-    prop: "action",
+    width: "300px",
   },
 ];
 const tableRef: any = ref(null);

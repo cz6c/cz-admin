@@ -4,7 +4,7 @@
       <el-sub-menu :index="item.path">
         <template #title>
           <SvgIcon v-if="item.meta?.icon" :name="item.meta?.icon" size="18" />
-          <span class="menu-text">{{ item.meta?.title }}</span>
+          <span class="sub-menu-text">{{ item.meta?.title }}</span>
         </template>
         <SubMenu v-if="item.children?.length" :menu-list="item.children" />
       </el-sub-menu>
@@ -46,40 +46,28 @@ const handleClickMenu = (item: RouteRecordRaw) => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.scrollbar-wrapper) {
-  .el-menu {
-    border: none;
-  }
+:deep(.el-menu-item) {
+  margin: 0 6px;
+  border-radius: 8px;
 
-  .el-menu-item {
-    margin: 0 6px;
-    border-radius: 8px;
+  &.is-active {
+    background: #ededfa;
 
-    &.is-active {
-      background: #ededfa;
-
-      &::before {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        border-radius: 0 2px 2px 0;
-        width: 3px;
-        height: 40%;
-        transform: translateY(-50%);
-        background: var(--el-color-primary);
-        content: "";
-      }
+    &::before {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      border-radius: 0 2px 2px 0;
+      width: 3px;
+      height: 40%;
+      transform: translateY(-50%);
+      background: var(--el-color-primary);
+      content: "";
     }
   }
+}
 
-  .on {
-    .el-sub-menu__title {
-      padding-right: 0;
-    }
-  }
-
-  .menu-text {
-    margin-left: 8px;
-  }
+.svg-icon {
+  margin-right: 8px;
 }
 </style>

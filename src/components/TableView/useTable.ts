@@ -23,16 +23,7 @@ export function useTable(props: TableProps) {
     },
     searchParam: {},
   });
-  // 计算搜索项的初始值
-  const initData = computed(() => {
-    const temp: Record<string, any> = {};
-    const list = Array.prototype.concat(...props.searchColumns!);
-    list.forEach((item: SearchProps) => {
-      const { prop, defaultValue } = item;
-      temp[prop] = defaultValue;
-    });
-    return temp;
-  });
+
   /**
    * @description: 获取列表数据
    */
@@ -56,11 +47,46 @@ export function useTable(props: TableProps) {
       state.loading = false;
     }
   }
+
+  /**
+   * @description: 切换pageSize
+   * @param {number} pageSize
+   */
+  const pageSizeChange = (pageSize: number) => {
+    state.apiQuery.page = 1;
+    state.apiQuery.limit = pageSize;
+    getList();
+  };
+
+  /**
+   * @description: 切换currentPage
+   * @param {number} currentPage
+   */
+  const currentPageChange = (currentPage: number) => {
+    state.apiQuery.page = currentPage;
+    getList();
+  };
+
+  // 计算搜索项的初始值
+  const initData = computed(() => {
+    const temp: Record<string, any> = {};
+    const list = Array.prototype.concat(...props.searchColumns!);
+    list.forEach((item: SearchProps) => {
+      const { prop, defaultValue } = item;
+      temp[prop] = defaultValue;
+    });
+    return temp;
+  });
   /**
    * @description: 重置搜索
    */
   function reset() {
     Object.assign(state.searchParam, initData.value);
+    Object.assign(state.apiQuery, {
+      page: 1,
+      limit: 20,
+      total: 0,
+    });
     getList();
   }
   onMounted(() => {
@@ -70,5 +96,7 @@ export function useTable(props: TableProps) {
     ...toRefs(state),
     getList,
     reset,
+    pageSizeChange,
+    currentPageChange,
   };
 }

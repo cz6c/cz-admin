@@ -7,7 +7,7 @@ import { BASE_URL } from "/@/config";
 // 封装axios
 const service = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // 设置跨域cookie上传
+  withCredentials: false, // 设置跨域cookie上传
   timeout: 10000, // 请求超时
 });
 

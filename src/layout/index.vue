@@ -34,12 +34,12 @@ function toggleSideBar() {
 <style scoped lang="scss">
 :deep(.el-aside) {
   border-right: 1px solid #f2f2f2;
-  background: var(--el-menu-bg-color);
+  background: #fff;
 }
 
 :deep(.el-header) {
   border-right: 1px solid #f2f2f2;
-  background: var(--el-menu-bg-color);
+  background: #fff;
 }
 
 :deep(.el-main) {

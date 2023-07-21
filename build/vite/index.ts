@@ -7,14 +7,14 @@ import type { PluginOption } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import vueSetupExtend from "vite-plugin-vue-setup-extend-plus";
-import { ConfigSvgIconsPlugin } from "./svgIcons";
-import { AutoRegistryComponents } from "./component";
-import { AutoImportDeps } from "./autoImport";
-import { ConfigCompressPlugin } from "./compress";
-import { ConfigRestartPlugin } from "./restart";
-import { ConfigProgressPlugin } from "./progress";
-import { ConfigImageminPlugin } from "./imagemin";
-import { ConfigVisualizerConfig } from "./visualizer";
+import { ConfigSvgIconsPlugin } from "./plugins/svgIcons";
+import { AutoRegistryComponents } from "./plugins/component";
+import { AutoImportDeps } from "./plugins/autoImport";
+import { ConfigCompressPlugin } from "./plugins/compress";
+import { ConfigRestartPlugin } from "./plugins/restart";
+import { ConfigProgressPlugin } from "./plugins/progress";
+import { ConfigImageminPlugin } from "./plugins/imagemin";
+import { ConfigVisualizerConfig } from "./plugins/visualizer";
 
 export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   const { VITE_USE_COMPRESS, VITE_USE_REPORT } = env;

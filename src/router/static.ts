@@ -2,7 +2,7 @@ export async function getStaticRoutes() {
   try {
     const files = (import.meta as any).glob("./modules/*.ts", { import: "default", eager: true });
     // 菜单顺序
-    const sortFile = ["dashboard", "system", "components"];
+    const sortFile = ["dashboard", "system", "components", "feat", "charts"];
     const routes = [];
     for (const key in files) {
       const fileName = key.replace(/(\.\/modules\/|\.ts)/g, "");

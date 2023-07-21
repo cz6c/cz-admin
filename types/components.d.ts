@@ -9,6 +9,7 @@ export {};
 
 declare module "@vue/runtime-core" {
   export interface GlobalComponents {
+    Components: typeof import("./../src/components/index.vue")["default"];
     ElAside: typeof import("element-plus/es")["ElAside"];
     ElAvatar: typeof import("element-plus/es")["ElAvatar"];
     ElBreadcrumb: typeof import("element-plus/es")["ElBreadcrumb"];
@@ -19,6 +20,7 @@ declare module "@vue/runtime-core" {
     ElCol: typeof import("element-plus/es")["ElCol"];
     ElContainer: typeof import("element-plus/es")["ElContainer"];
     ElDatePicker: typeof import("element-plus/es")["ElDatePicker"];
+    ElDivider: typeof import("element-plus/es")["ElDivider"];
     ElDrawer: typeof import("element-plus/es")["ElDrawer"];
     ElDropdown: typeof import("element-plus/es")["ElDropdown"];
     ElDropdownItem: typeof import("element-plus/es")["ElDropdownItem"];
@@ -34,6 +36,7 @@ declare module "@vue/runtime-core" {
     ElMenuItem: typeof import("element-plus/es")["ElMenuItem"];
     ElOption: typeof import("element-plus/es")["ElOption"];
     ElPagination: typeof import("element-plus/es")["ElPagination"];
+    ElPopover: typeof import("element-plus/es")["ElPopover"];
     ElRadio: typeof import("element-plus/es")["ElRadio"];
     ElRadioGroup: typeof import("element-plus/es")["ElRadioGroup"];
     ElRow: typeof import("element-plus/es")["ElRow"];
@@ -46,15 +49,14 @@ declare module "@vue/runtime-core" {
     ElUpload: typeof import("element-plus/es")["ElUpload"];
     Grid: typeof import("./../src/components/Grid/index.vue")["default"];
     GridItem: typeof import("./../src/components/Grid/components/GridItem.vue")["default"];
-    ListContainer: typeof import("./../src/components/ListContainer/index.vue")["default"];
     RouterLink: typeof import("vue-router")["RouterLink"];
     RouterView: typeof import("vue-router")["RouterView"];
     SearchForm: typeof import("./../src/components/SearchForm/index.vue")["default"];
     SearchFormItem: typeof import("./../src/components/SearchForm/components/SearchFormItem.vue")["default"];
-    SvgIcon: typeof import("./../src/components/SvgIcon.vue")["default"];
-    TableAction: typeof import("./../src/components/TableView/components/TableAction.vue")["default"];
+    SvgIcon: typeof import("./../src/components/SvgIcon/index.vue")["default"];
     TableColumn: typeof import("./../src/components/TableView/components/TableColumn.vue")["default"];
     TableFooter: typeof import("./../src/components/TableView/components/TableFooter.vue")["default"];
+    TableHeader: typeof import("./../src/components/TableView/components/TableHeader.vue")["default"];
     TableView: typeof import("./../src/components/TableView/index.vue")["default"];
     UploadImg: typeof import("./../src/components/Upload/UploadImg.vue")["default"];
     UploadImgs: typeof import("./../src/components/Upload/UploadImgs.vue")["default"];

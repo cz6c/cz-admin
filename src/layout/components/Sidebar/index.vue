@@ -2,7 +2,7 @@
   <div class="side-bar">
     <div class="logo-container">
       <router-link :key="+new Date()" :title="BASE_TITLE" class="logo-link" to="/">
-        <SvgIcon name="logo" size="32" />
+        <SvgIcon name="logo" size="26" />
         <div v-if="!layoutStore.getIsCollapse" class="logo-title">{{ BASE_TITLE }}</div>
       </router-link>
     </div>
@@ -68,8 +68,11 @@ const getActiveRoutePath = computed((): string => {
 
     .logo-link {
       display: flex;
+      justify-content: center;
       align-items: center;
+      width: 100%;
       height: 100%;
+      color: #000;
 
       :deep(.svg-icon) {
         margin: 0 14px;
@@ -80,7 +83,6 @@ const getActiveRoutePath = computed((): string => {
         width: 136px;
         font-size: 20px;
         font-weight: 600;
-        color: var(--el-color-primary);
       }
     }
   }
@@ -93,35 +95,10 @@ const getActiveRoutePath = computed((): string => {
         border: none;
       }
 
-      .el-menu-item {
-        margin: 0 6px;
-        border-radius: 8px;
-
-        &.is-active {
-          background: #ededfa;
-
-          &::before {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            border-radius: 0 2px 2px 0;
-            width: 3px;
-            height: 40%;
-            transform: translateY(-50%);
-            background: var(--el-color-primary);
-            content: "";
-          }
-        }
-      }
-
       .on {
         .el-sub-menu__title {
           padding-right: 0;
         }
-      }
-
-      .menu-text {
-        margin-left: 8px;
       }
     }
   }
