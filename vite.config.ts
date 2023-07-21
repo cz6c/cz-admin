@@ -1,6 +1,6 @@
 import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
 import { resolve } from "path";
-import { createVitePlugins } from "./build/vite/plugins";
+import { createVitePlugins } from "./build/vite";
 import { wrapperEnv } from "./build/utils";
 import { createProxy } from "./build/vite/proxy";
 
