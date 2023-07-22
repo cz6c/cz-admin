@@ -1,23 +1,4 @@
 /* eslint-disable prettier/prettier */
-// .commitlintrc.js
-const { execSync } = require("child_process");
-const fs = require("fs");
-const path = require("path");
-
-// precomputed scope
-const scopeComplete = execSync("git status --porcelain || true")
-  .toString()
-  .trim()
-  .split("\n")
-  .find(r => ~r.indexOf("M  src"))
-  ?.replace(/(\/)/g, "%%")
-  ?.match(/src%%((\w|-)*)/)?.[1];
-
-const scopes = fs
-  .readdirSync(path.resolve(__dirname, "src"), { withFileTypes: true })
-  .filter(dirent => dirent.isDirectory())
-  .map(dirent => dirent.name.replace(/s$/, ""));
-
 /** @type {import('cz-git').UserConfig} */
 module.exports = {
   rules: {
@@ -34,31 +15,24 @@ module.exports = {
       [
         "feat",
         "fix",
-        "perf",
         "style",
-        "docs",
-        "test",
+        "perf",
         "refactor",
-        "build",
-        "ci",
-        "chore",
         "revert",
-        "wip",
+        "test",
+        "docs",
+        "chore",
         "workflow",
+        "ci",
+        "build",
         "types",
-        "release",
+        "wip",
       ],
     ],
   },
   extends: ["@commitlint/config-conventional"],
   prompt: {
     alias: { fd: "docs: fix typos" },
-    //设置 选择范围 中 为空选项(empty) 和 自定义选项(custom) 的 位置
-    customScopesAlign: !scopeComplete ? "top" : "bottom",
-    // 自动获取 “代码修改范围”。 适用于存在很多范围选项（例如组件库、monorepo）的情况。
-    defaultScope: scopeComplete,
-    // 自定义选择 模块范围 命令行显示信息
-    scopes: [...scopes, "mock"],
     // 是否在选择 ISSUE 前缀 显示为跳过选项(skip)
     allowEmptyIssuePrefix: false,
     // 是否在选择 ISSUE 前缀 显示自定义选项(custom)
@@ -78,19 +52,20 @@ module.exports = {
       confirmCommit: "是否提交或修改commit ?",
     },
     types: [
-      { value: "feat", name: "feat:    新增功能" },
-      { value: "fix", name: "fix:    修复缺陷" },
-      { value: "docs", name: "docs:    文档变更" },
-      { value: "style", name: "style:    代码格式 | 不影响代码含义的改动" },
-      { value: "refactor", name: "refactor:    代码重构 | 既不修复错误也不添加功能的代码更改" },
-      { value: "perf", name: "perf:    性能优化" },
-      { value: "test", name: "test:    测试相关 | 添加缺失的测试或更正现有测试" },
-      { value: "build", name: "build:    构建相关 | 构建流程、外部依赖变更 (如升级 npm 包、修改打包配置等)" },
-      { value: "ci", name: "ci:    持续集成 | 修改 CI 配置、脚本" },
-      { value: "revert", name: "revert:    回退代码 | 回滚 commit" },
-      { value: "chore", name: "chore:    其他修改 | 对构建过程或辅助工具和库的更改 (不影响源文件、测试用例)" },
-      { value: "wip", name: "wip:    正在开发中" },
-      { value: "types", name: "types:    类型定义文件修改" },
+      { value: "feat", name: "feat: 新增功能" },
+      { value: "fix", name: "fix: 修复问题/BUG" },
+      { value: "style", name: "style: 代码风格相关无影响运行结果的" },
+      { value: "perf", name: "perf: 优化/性能提升" },
+      { value: "refactor", name: "refactor: 代码重构" },
+      { value: "revert", name: "revert: 回退代码 | 回滚 commit" },
+      { value: "test", name: "test: 测试相关" },
+      { value: "docs", name: "docs: 文档/注释" },
+      { value: "chore", name: "chore: 依赖更新/脚手架配置修改等" },
+      { value: "workflow", name: "workflow: 工作流改进" },
+      { value: "ci", name: "ci: 持续集成" },
+      { value: "build", name: "build: 构建相关 | 构建流程、外部依赖变更 (如升级 npm 包、修改打包配置等)" },
+      { value: "types", name: "types: 类型定义文件更改" },
+      { value: "wip", name: "wip: 开发中" },
     ],
   },
 };
