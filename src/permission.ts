@@ -4,7 +4,6 @@ import { getToken } from "/@/utils/auth";
 import type { Router } from "vue-router";
 import nProgress from "nprogress";
 import { ElMessage, ElNotification } from "element-plus";
-import { BASE_TITLE } from "/@/config";
 
 /**
  * @description:  创建项目前置权限
@@ -103,6 +102,7 @@ function createMessageGuard(router: Router) {
  * @param {Router} router
  */
 function createTitleGuard(router: Router) {
+  const BASE_TITLE = import.meta.env.VITE_APP_TITLE;
   router.beforeEach(async to => {
     document.title = to.meta.title ? `${to.meta.title} | ${BASE_TITLE}` : `${BASE_TITLE}`;
     return true;

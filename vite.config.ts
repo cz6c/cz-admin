@@ -16,6 +16,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
   const viteEnv = wrapperEnv(env);
   return {
     root,
+    base: viteEnv.VITE_PUBLIC_PATH,
     resolve: {
       alias: [
         // /@/xxxx => src/xxxx

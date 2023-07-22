@@ -18,15 +18,6 @@
           </el-form-item>
         </el-form>
         <el-button type="primary" class="login-btn" :loading="loading" @click="handleLogin(formRef)">登 录</el-button>
-        <!-- <el-alert
-            v-if="isLoginTimeOut"
-            title="由于登录时间超时，您已被注销登录！"
-            type="warning"
-            show-icon
-            :closable="false"
-            class="login-timeout"
-          >
-          </el-alert> -->
       </div>
       <div class="version-tips">版权信息 | cz6</div>
     </div>
@@ -34,12 +25,13 @@
 </template>
 
 <script setup lang="ts" name="Login">
-import { watch, ref, reactive } from "vue";
 import { useAuthStore } from "/@/store/modules/auth";
-import { useRoute, useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
 import { $message } from "/@/utils/message";
-import { BASE_TITLE } from "/@/config";
+
+const BASE_TITLE = computed(() => {
+  return import.meta.env.VITE_APP_TITLE;
+});
 
 const formRef = ref<FormInstance>();
 const route = useRoute();

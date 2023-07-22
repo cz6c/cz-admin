@@ -5,7 +5,7 @@ import { login, getMenuList, getPermCodeList } from "/@/api/public";
 import { getLoginUserInfoApi } from "/@/api/system/user";
 import { LoginParams } from "/@/api/public/index.d";
 import { UserItem } from "/@/api/system/user/index.d";
-import { isDynamicAddedRoute, isPermCode } from "/@/config";
+import { productConfig } from "/@/config";
 import router, { resetRouter } from "/@/router";
 import { getStaticRoutes } from "/@/router/static";
 import { menuToRoute } from "/@/utils/router";
@@ -75,7 +75,7 @@ export const authStore = defineStore("auth", {
         this.username = username;
         this.avatar = avatar;
         await this.getMenuListAction();
-        if (isPermCode) {
+        if (productConfig.isPermCode) {
           await this.getPermCodeListAction();
         }
         return data;
@@ -90,7 +90,7 @@ export const authStore = defineStore("auth", {
     async getMenuListAction(): Promise<RouteRecordRaw[] | unknown> {
       try {
         let routeList: RouteRecordRaw[] = [];
-        if (isDynamicAddedRoute) {
+        if (productConfig.isDynamicAddedRoute) {
           const { data } = await getMenuList();
           routeList = menuToRoute(data.list);
         } else {

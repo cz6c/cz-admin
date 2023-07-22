@@ -24,6 +24,7 @@ declare global {
     VITE_NODE_ENV: "development" | "test" | "production";
     VITE_APP_TITLE: string;
     VITE_PORT: number;
+    VITE_PUBLIC_PATH: string;
     VITE_BASE_URL: string;
     VITE_PROXY: [string, string][];
     VITE_USE_COMPRESS: boolean;
