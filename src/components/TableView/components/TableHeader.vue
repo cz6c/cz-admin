@@ -4,7 +4,6 @@ import { TableCol } from "../type";
 import { useSortable } from "/@/hooks/useSortable";
 import { isNullAndUnDef } from "/@/utils/is";
 import { cloneDeep } from "lodash-es";
-import SvgIcon from "../../SvgIcon.vue";
 
 const props = defineProps<{
   title: String;

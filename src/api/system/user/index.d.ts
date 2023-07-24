@@ -3,7 +3,6 @@ import { GetListParams, GetListResponse } from "/@/api/public/index.d";
 export interface UserItem {
   id: number;
   roleId: number | string;
-  deptId: number | string;
   username: string;
   avatar: string;
   status: 0 | 1;

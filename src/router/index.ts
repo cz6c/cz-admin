@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 import type { App } from "vue";
+import type { AppRouteRecordRaw } from "/@/router/type";
 
 export const Layout = () => import("/@/layout/index.vue");
+export const IFrame = () => import("/@/views/iframe/index.vue");
 
 export enum RouterEnum {
   // login path
@@ -14,7 +16,7 @@ export enum RouterEnum {
 }
 
 // 公共菜单
-const routesList: RouteRecordRaw[] = [
+const routesList: AppRouteRecordRaw[] = [
   // 根路由
   {
     path: "/",
@@ -36,7 +38,7 @@ const routesList: RouteRecordRaw[] = [
 ];
 
 // Layout  404
-export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
+export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   path: "/:path(.*)*",
   name: "PAGE_NOT_FOUND_NAME",
   component: () => import("/@/views/public/404.vue"),
@@ -48,7 +50,7 @@ export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
   },
 };
 // Layout redirect
-export const REDIRECT_ROUTE: RouteRecordRaw = {
+export const REDIRECT_ROUTE: AppRouteRecordRaw = {
   path: "/redirect",
   component: Layout,
   name: "RouterEnum.REDIRECT_NAME",
@@ -73,7 +75,7 @@ export const REDIRECT_ROUTE: RouteRecordRaw = {
   ],
 };
 
-const routes = [...routesList, PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE];
+const routes = [...routesList, PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE] as RouteRecordRaw[];
 
 // app router
 const router = createRouter({

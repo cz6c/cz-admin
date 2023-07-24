@@ -7,9 +7,9 @@ import { LoginParams } from "/@/api/public/index.d";
 import { UserItem } from "/@/api/system/user/index.d";
 import { productConfig } from "/@/config";
 import router, { resetRouter } from "/@/router";
-import { getStaticRoutes } from "/@/router/static";
-import { menuToRoute } from "/@/utils/router";
+import { menuToRoute, getStaticRoutes } from "/@/router/utils";
 import type { RouteRecordRaw } from "vue-router";
+import type { AppRouteRecordRaw } from "/@/router/type";
 import { useMultiTagsStore } from "./multiTags";
 import { filterTree } from "/@/utils/tree";
 
@@ -17,7 +17,7 @@ interface authStoreState {
   id: number;
   username: string;
   avatar: string;
-  dynamicRoutes: RouteRecordRaw[];
+  dynamicRoutes: AppRouteRecordRaw[];
   permCodeList: string[];
 }
 
@@ -29,22 +29,22 @@ export const authStore = defineStore("auth", {
     username: "",
     // 用户头像
     avatar: "",
-    // 动态路由
+    // 动态菜单
     dynamicRoutes: [],
     // 按钮级权限
-    permCodeList: [],
+    permCodeList: ["1000"],
   }),
   getters: {
-    getDynamicMenu(): RouteRecordRaw[] {
+    getDynamicMenu(): AppRouteRecordRaw[] {
       return filterTree(this.dynamicRoutes, route => {
         return !route.meta?.hideMenu;
       });
     },
+    getDynamicRoutes(): AppRouteRecordRaw[] {
+      return this.dynamicRoutes;
+    },
     getPermCodeList(): string[] {
       return this.permCodeList;
-    },
-    getDynamicRoutes(): RouteRecordRaw[] {
-      return this.dynamicRoutes;
     },
   },
   actions: {
@@ -87,9 +87,9 @@ export const authStore = defineStore("auth", {
      * @description: 获取菜单
      * @return {*}
      */
-    async getMenuListAction(): Promise<RouteRecordRaw[] | unknown> {
+    async getMenuListAction(): Promise<AppRouteRecordRaw[] | unknown> {
       try {
-        let routeList: RouteRecordRaw[] = [];
+        let routeList: AppRouteRecordRaw[] = [];
         if (productConfig.isDynamicAddedRoute) {
           const { data } = await getMenuList();
           routeList = menuToRoute(data.list);
@@ -98,8 +98,12 @@ export const authStore = defineStore("auth", {
         }
         // 重置路由
         resetRouter();
-        routeList.forEach((route: any) => {
+        routeList.forEach(route => {
           router.addRoute(route as RouteRecordRaw);
+        });
+        // 对菜单进行排序
+        routeList.sort((a, b) => {
+          return (a.meta?.orderNo || 0) - (b.meta?.orderNo || 0);
         });
         this.dynamicRoutes = routeList;
         return routeList;
@@ -109,17 +113,20 @@ export const authStore = defineStore("auth", {
     },
     /**
      * @description: 获取按钮权限
-     * @return {*}
      */
+    setPermCodeList(data: string[]) {
+      this.permCodeList = data;
+    },
     async getPermCodeListAction(): Promise<string[] | unknown> {
       try {
         const { data } = await getPermCodeList();
-        this.permCodeList = data;
+        this.setPermCodeList(data);
         return data;
       } catch (error) {
         return Promise.reject(error);
       }
     },
+
     /**
      * @description: 前端登出
      */

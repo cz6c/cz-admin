@@ -1,6 +1,7 @@
 interface ProductConfig {
   isDynamicAddedRoute: boolean;
   isPermCode: boolean;
+  openKeepAlive: boolean;
 }
 
 export const productConfig: ProductConfig = {
@@ -8,4 +9,6 @@ export const productConfig: ProductConfig = {
   isDynamicAddedRoute: false,
   // 是否启用按钮权限控制
   isPermCode: false,
+  // 是否启用多标签页缓存
+  openKeepAlive: false,
 };

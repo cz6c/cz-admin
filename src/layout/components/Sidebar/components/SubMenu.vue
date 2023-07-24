@@ -19,28 +19,33 @@
 </template>
 
 <script setup lang="ts" name="SubMenu">
-import { useRouter, RouteRecordRaw } from "vue-router";
+import { useRouter } from "vue-router";
+import type { AppRouteRecordRaw } from "/@/router/type";
+import { openWindow } from "/@/utils";
+import { isUrl } from "/@/utils/is";
 
-defineProps<{ menuList: RouteRecordRaw[] }>();
+defineProps<{ menuList: AppRouteRecordRaw[] }>();
 
 const router = useRouter();
 
 /**
  * @description: 判断路由是否有可显示的子集菜单
- * @param {RouteRecordRaw} item 路由
+ * @param {AppRouteRecordRaw} item 路由
  * @return {boolean} boolean
  */
-function isSubmenu(item: RouteRecordRaw): boolean {
+function isSubmenu(item: AppRouteRecordRaw): boolean {
   const childItem = item.children || [];
   const showItemList = childItem.filter(({ meta }) => !meta?.hidden);
   return showItemList.length > 0;
 }
 /**
  * @description: 点击菜单栏
- * @param {RouteRecordRaw} item 当前路由
+ * @param {AppRouteRecordRaw} item 当前路由
  */
-const handleClickMenu = (item: RouteRecordRaw) => {
-  if (item?.meta?.linkUrl as string) return window.open(item?.meta?.linkUrl as string, "_blank");
+const handleClickMenu = (item: AppRouteRecordRaw) => {
+  if (isUrl(item.path)) {
+    openWindow(item.path);
+  }
   router.push(item.path);
 };
 </script>

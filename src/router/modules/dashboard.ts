@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from "vue-router";
+import type { AppRouteRecordRaw } from "/@/router/type";
 import { Layout } from "/@/router";
 
 export default {
@@ -8,6 +8,7 @@ export default {
   meta: {
     title: "Dashboard",
     icon: "menu-dashboard",
+    orderNo: 1,
   },
   redirect: "/dashboard/workbench",
   children: [
@@ -21,4 +22,4 @@ export default {
       },
     },
   ],
-} as RouteRecordRaw;
+} as AppRouteRecordRaw;
