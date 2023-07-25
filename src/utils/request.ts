@@ -14,7 +14,7 @@ const service = axios.create({
 // request 拦截器 ==> 对请求参数做处理
 service.interceptors.request.use(
   config => {
-    // 判断为模板文件
+    // 判断为文件流
     const isFileApi = config.params && config.params.isExportApi;
     if (isFileApi) {
       config.responseType = "blob";
@@ -30,7 +30,7 @@ service.interceptors.request.use(
 // response 拦截器 ==> 对响应做处理
 service.interceptors.response.use(
   response => {
-    // 判断为模板文件
+    // 判断为文件流
     const isFileApi = response.config.params && response.config.params.isExportApi;
     if (isFileApi) {
       return response;
@@ -38,7 +38,8 @@ service.interceptors.response.use(
     const res = response.data;
     // 当请求不为200时，报错
     if (res.code !== 200) {
-      if (res.code === -401 || res.code === -403) {
+      if (res.code === -403) {
+        // 登录过期或权限变更处理
         const { webLogout } = useAuthStore();
         webLogout();
         router.replace(RouterEnum.BASE_LOGIN_PATH);
@@ -62,8 +63,8 @@ interface Response<T> {
   message: string; // 接口消息
   data: T;
 }
-export const createGet = <P extends Record<string, any>, R>(url: string) => {
-  return (params?: P, config: AxiosRequestConfig = {}): Promise<Response<R>> => {
+export const createGet = <P extends Record<string, any>, R>(url: string, config: AxiosRequestConfig = {}) => {
+  return (params?: P): Promise<Response<R>> => {
     return service.request({
       method: "get",
       url,
@@ -72,8 +73,8 @@ export const createGet = <P extends Record<string, any>, R>(url: string) => {
     });
   };
 };
-export const createPost = <P extends Record<string, any>, R>(url: string) => {
-  return (data?: P, config: AxiosRequestConfig = {}): Promise<Response<R>> => {
+export const createPost = <P extends Record<string, any>, R>(url: string, config: AxiosRequestConfig = {}) => {
+  return (data?: P): Promise<Response<R>> => {
     return service.request({
       method: "post",
       url,

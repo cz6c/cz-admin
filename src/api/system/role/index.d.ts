@@ -16,7 +16,7 @@ export interface RoleInfo extends Omit<RoleItem, "id" | "status" | "isDel"> {
   isDel?: 0 | 1;
 }
 // 列表
-export type ResponseRoleList = GetListResponse<RoleItem>;
-export interface ParamsRoleList extends GetListParams {
+export type RoleListResponse = GetListResponse<RoleItem>;
+export interface RoleListParams extends GetListParams {
   roleName?: number;
 }
