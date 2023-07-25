@@ -43,7 +43,7 @@ export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   name: "PAGE_NOT_FOUND_NAME",
   component: () => import("/@/views/public/404.vue"),
   meta: {
-    title: "ErrorPage",
+    title: "",
     hideBreadcrumb: true,
     hideMenu: true,
     hideTag: true,

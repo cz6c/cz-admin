@@ -9,11 +9,12 @@ export class LocalStorage<T> {
   }
   /** 设置值 */
   setItem(value: T) {
-    localStorage.setItem(this.key, JSON.stringify(value));
+    sessionStorage.setItem(this.key, JSON.stringify(value));
+    sessionStorage;
   }
   /** 获取值 */
   getItem(): T {
-    const value = localStorage[this.key] && localStorage.getItem(this.key);
+    const value = sessionStorage[this.key] && sessionStorage.getItem(this.key);
     if (value === undefined) return this.defaultValue;
     try {
       return value && value !== "null" && value !== "undefined" ? (JSON.parse(value) as T) : this.defaultValue;
@@ -23,6 +24,6 @@ export class LocalStorage<T> {
   }
   /** 删除值 */
   removeItem() {
-    localStorage.removeItem(this.key);
+    sessionStorage.removeItem(this.key);
   }
 }

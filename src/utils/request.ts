@@ -1,7 +1,8 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
-import router from "/@/router/index";
-import { getToken, removeToken } from "/@/utils/auth";
+import { getToken } from "/@/utils/auth";
+import { useAuthStore } from "/@/store/modules/auth";
+import router, { RouterEnum } from "/@/router";
 
 // 封装axios
 const service = axios.create({
@@ -17,10 +18,6 @@ service.interceptors.request.use(
     const isFileApi = config.params && config.params.isExportApi;
     if (isFileApi) {
       config.responseType = "blob";
-    }
-    // 判断如为导入接口则接口超时设置为0，即不超时
-    if (config.url === "/device/assets/importExcel") {
-      config.timeout = 0;
     }
     config.headers["ctoken"] = config.headers["ctoken"] || getToken();
     return config;
@@ -42,8 +39,9 @@ service.interceptors.response.use(
     // 当请求不为200时，报错
     if (res.code !== 200) {
       if (res.code === -401 || res.code === -403) {
-        removeToken();
-        router.push(`/login?redirect=${(router.currentRoute as any).fullPath}`);
+        const { webLogout } = useAuthStore();
+        webLogout();
+        router.replace(RouterEnum.BASE_LOGIN_PATH);
         return;
       }
       return Promise.reject(new Error(res.message || "Error"));
@@ -60,7 +58,7 @@ export default service;
 
 // 封装 get post 方法
 interface Response<T> {
-  code: number; // 接口数据状态码,不是接口状态码
+  code: number; // 状态码
   message: string; // 接口消息
   data: T;
 }

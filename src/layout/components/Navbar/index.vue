@@ -27,11 +27,11 @@
 <script setup lang="ts" name="Navbar">
 import Breadcrumb from "./components/BreadCrumb.vue";
 import FoldButton from "./components/FoldButton.vue";
-import { useRouter } from "vue-router";
 import { useAuthStore } from "/@/store/modules/auth";
+import { RouterEnum } from "/@/router";
+import { useRouter } from "vue-router";
 
 const { webLogout } = useAuthStore();
-
 const router = useRouter();
 
 /**
@@ -39,7 +39,13 @@ const router = useRouter();
  */
 async function logout() {
   await webLogout();
-  router.push("/login");
+  router.replace({
+    path: RouterEnum.BASE_LOGIN_PATH,
+    replace: true,
+    query: {
+      redirect: `${router.currentRoute.value.fullPath}`,
+    },
+  });
 }
 </script>
 

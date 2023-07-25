@@ -1,4 +1,4 @@
-import { PAGE_NOT_FOUND_ROUTE, RouterEnum } from "/@/router";
+import { RouterEnum } from "/@/router";
 import { useAuthStore } from "/@/store/modules/auth";
 import { getToken } from "/@/utils/auth";
 import type { Router } from "vue-router";
@@ -15,29 +15,30 @@ function createPermissionGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
     const token = getToken();
     const authStore = useAuthStore();
-    // 验证是否有token
+    console.log(to, from);
+    // 验证token
     if (token) {
+      console.log("有token");
       if (to.path === RouterEnum.BASE_LOGIN_PATH) {
         next((to.query?.redirect as string) || "/");
       } else {
-        // console.log(to, from);
-        // 验证是否有用户信息
+        console.log("用户信息", authStore.id);
+        // 验证用户信息
         if (authStore.id) {
           next();
         } else {
           try {
             await authStore.getLoginUserInfoAction();
-            if (to.name === PAGE_NOT_FOUND_ROUTE.name) {
-              // 动态添加路由后，此处应当重定向到fullPath，否则会加载404页面内容
-              next({ path: to.fullPath, replace: true, query: to.query });
-            } else {
-              next({ ...to, replace: true });
-            }
+            console.log("动态添加路由");
+            // 动态添加路由后，此处应当重定向到fullPath，否则会加载404页面内容
+            next({ path: to.fullPath, replace: true, query: to.query });
           } catch (error) {
-            // 前端登出
+            console.log("登录过期或登录无效时，前端登出");
+            // 登录过期或登录无效时，前端登出
             await authStore.webLogout();
             next({
               path: RouterEnum.BASE_LOGIN_PATH,
+              replace: true,
               query: {
                 redirect: `${to.fullPath}`,
               },
@@ -48,14 +49,13 @@ function createPermissionGuard(router: Router) {
     } else {
       // 白名单
       if (whitePathList.includes(to.path)) {
+        console.log("在白名单");
         next();
       } else {
-        await authStore.webLogout();
+        console.log("不在白名单");
         next({
           path: RouterEnum.BASE_LOGIN_PATH,
-          query: {
-            redirect: `${to.fullPath}`,
-          },
+          replace: true,
         });
       }
     }
