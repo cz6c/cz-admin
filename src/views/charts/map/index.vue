@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup name="Map">
 import { ref, Ref, onMounted } from "vue";
 import { useEcharts } from "/@/hooks/useEcharts";
 import { registerMap } from "echarts";

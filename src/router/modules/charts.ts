@@ -29,11 +29,11 @@ export default {
       },
     },
     {
-      path: "/charts/bar",
-      name: "Bar",
-      component: () => import("/@/views/charts/bar/index.vue"),
+      path: "/charts/other",
+      name: "Other",
+      component: () => import("/@/views/charts/other/index.vue"),
       meta: {
-        title: "柱状图",
+        title: "ECharts其他图表",
       },
     },
   ],

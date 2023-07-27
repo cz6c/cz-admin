@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup name="Line">
 import { ref, Ref, onMounted } from "vue";
 import { useEcharts } from "/@/hooks/useEcharts";
 
@@ -26,8 +26,9 @@ onMounted(() => {
     },
     series: [
       {
-        data: [120, 200, 150, 80, 70, 110, 130],
-        type: "bar",
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: "line",
+        smooth: true,
       },
     ],
   });
@@ -38,8 +39,4 @@ onMounted(() => {
   <div ref="chartRef" :style="{ height, width }" class="chart-view"></div>
 </template>
 
-<style lang="scss" scoped>
-.chart-view {
-  overflow: hidden;
-}
-</style>
+<style lang="scss" scoped></style>
