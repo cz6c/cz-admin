@@ -31,6 +31,12 @@ declare global {
     VITE_USE_REPORT: boolean;
   }
 
+  interface Window {
+    _AMapSecurityConfig: {
+      securityJsCode: string;
+    };
+  }
+
   function parseInt(s: string | number, radix?: number): number;
 
   function parseFloat(string: string | number): number;

@@ -45,6 +45,7 @@ function isSubmenu(item: AppRouteRecordRaw): boolean {
 const handleClickMenu = (item: AppRouteRecordRaw) => {
   if (isUrl(item.path)) {
     openWindow(item.path);
+    return;
   }
   router.push(item.path);
 };
