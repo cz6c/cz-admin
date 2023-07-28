@@ -10,6 +10,15 @@ export default {
     icon: "menu-feat",
     orderNo: 4,
   },
-  redirect: "/components/tablePage",
-  children: [],
+  redirect: "/feat/drag",
+  children: [
+    {
+      path: "/feat/drag",
+      name: "Drag",
+      component: () => import("/@/views/feat/drag/index.vue"),
+      meta: {
+        title: "拖拽",
+      },
+    },
+  ],
 } as AppRouteRecordRaw;
