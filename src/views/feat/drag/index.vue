@@ -2,8 +2,8 @@
 import { ref, onMounted, unref } from "vue";
 import { useDrag } from "./useDrag";
 
-const dragRef = ref<HTMLDivElement | null>(null);
-const wrapRef = ref<HTMLDivElement | null>(null);
+const dragRef: Ref<HTMLElement | null> = ref(null);
+const wrapRef: Ref<HTMLElement | null> = ref(null);
 
 function onMove(left: number, top: number) {
   // 如果传入了外部元素，说明需要限制元素拖拽范围

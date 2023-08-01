@@ -36,5 +36,13 @@ export default {
         title: "ECharts其他图表",
       },
     },
+    {
+      path: "/charts/flowChart",
+      name: "FlowChartPage",
+      component: () => import("/@/views/charts/flowChart/index.vue"),
+      meta: {
+        title: "流程图",
+      },
+    },
   ],
 } as AppRouteRecordRaw;

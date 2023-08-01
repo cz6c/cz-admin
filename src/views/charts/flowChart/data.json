@@ -1,0 +1,236 @@
+{
+  "nodes": [
+    {
+      "id": "6f742146-3515-489a-b521-adc56d68080c",
+      "type": "circle",
+      "x": 260,
+      "y": 220,
+      "properties": {},
+      "text": {
+        "x": 260,
+        "y": 220,
+        "value": "开始"
+      }
+    },
+    {
+      "id": "ab2f1216-2395-4ba6-ad63-ff2d6c61b5bd",
+      "type": "rect",
+      "x": 420,
+      "y": 220,
+      "properties": {},
+      "text": {
+        "x": 420,
+        "y": 220,
+        "value": "用户任务"
+      }
+    },
+    {
+      "id": "b5780b90-8b7e-46af-bbf7-c19cc8105e06",
+      "type": "diamond",
+      "x": 560,
+      "y": 220,
+      "properties": {},
+      "text": {
+        "x": 560,
+        "y": 220,
+        "value": "条件判断"
+      }
+    },
+    {
+      "id": "6cdbe337-5046-4ef2-8153-56ea5dc5421e",
+      "type": "rect",
+      "x": 720,
+      "y": 220,
+      "properties": {},
+      "text": {
+        "x": 720,
+        "y": 220,
+        "value": "系统任务"
+      }
+    },
+    {
+      "id": "741487db-0366-4dbe-8fa5-10563386cd8e",
+      "type": "circle",
+      "x": 900,
+      "y": 220,
+      "properties": {},
+      "text": {
+        "x": 900,
+        "y": 220,
+        "value": "结束"
+      }
+    },
+    {
+      "id": "ccd35fff-8a1d-48a6-a88f-570c7ab17ce9",
+      "type": "rect",
+      "x": 720,
+      "y": 360,
+      "properties": {},
+      "text": {
+        "x": 720,
+        "y": 360,
+        "value": "系统任务"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "Flow_0iuk755",
+      "type": "bpmn:sequenceFlow",
+      "sourceNodeId": "6f742146-3515-489a-b521-adc56d68080c",
+      "targetNodeId": "ab2f1216-2395-4ba6-ad63-ff2d6c61b5bd",
+      "startPoint": {
+        "x": 310,
+        "y": 220
+      },
+      "endPoint": {
+        "x": 370,
+        "y": 220
+      },
+      "properties": {},
+      "pointsList": [
+        {
+          "x": 310,
+          "y": 220
+        },
+        {
+          "x": 370,
+          "y": 220
+        }
+      ]
+    },
+    {
+      "id": "Flow_3s86lvn",
+      "type": "bpmn:sequenceFlow",
+      "sourceNodeId": "ab2f1216-2395-4ba6-ad63-ff2d6c61b5bd",
+      "targetNodeId": "b5780b90-8b7e-46af-bbf7-c19cc8105e06",
+      "startPoint": {
+        "x": 470,
+        "y": 220
+      },
+      "endPoint": {
+        "x": 530,
+        "y": 220
+      },
+      "properties": {},
+      "pointsList": [
+        {
+          "x": 470,
+          "y": 220
+        },
+        {
+          "x": 530,
+          "y": 220
+        }
+      ]
+    },
+    {
+      "id": "Flow_33b1898",
+      "type": "bpmn:sequenceFlow",
+      "sourceNodeId": "b5780b90-8b7e-46af-bbf7-c19cc8105e06",
+      "targetNodeId": "6cdbe337-5046-4ef2-8153-56ea5dc5421e",
+      "startPoint": {
+        "x": 590,
+        "y": 220
+      },
+      "endPoint": {
+        "x": 670,
+        "y": 220
+      },
+      "properties": {},
+      "pointsList": [
+        {
+          "x": 590,
+          "y": 220
+        },
+        {
+          "x": 670,
+          "y": 220
+        }
+      ]
+    },
+    {
+      "id": "Flow_1c08lcb",
+      "type": "bpmn:sequenceFlow",
+      "sourceNodeId": "6cdbe337-5046-4ef2-8153-56ea5dc5421e",
+      "targetNodeId": "741487db-0366-4dbe-8fa5-10563386cd8e",
+      "startPoint": {
+        "x": 770,
+        "y": 220
+      },
+      "endPoint": {
+        "x": 850,
+        "y": 220
+      },
+      "properties": {},
+      "pointsList": [
+        {
+          "x": 770,
+          "y": 220
+        },
+        {
+          "x": 850,
+          "y": 220
+        }
+      ]
+    },
+    {
+      "id": "Flow_2opofi9",
+      "type": "bpmn:sequenceFlow",
+      "sourceNodeId": "b5780b90-8b7e-46af-bbf7-c19cc8105e06",
+      "targetNodeId": "ccd35fff-8a1d-48a6-a88f-570c7ab17ce9",
+      "startPoint": {
+        "x": 560,
+        "y": 270
+      },
+      "endPoint": {
+        "x": 670,
+        "y": 360
+      },
+      "properties": {},
+      "pointsList": [
+        {
+          "x": 560,
+          "y": 270
+        },
+        {
+          "x": 560,
+          "y": 360
+        },
+        {
+          "x": 670,
+          "y": 360
+        }
+      ]
+    },
+    {
+      "id": "Flow_3mvo51q",
+      "type": "bpmn:sequenceFlow",
+      "sourceNodeId": "ccd35fff-8a1d-48a6-a88f-570c7ab17ce9",
+      "targetNodeId": "741487db-0366-4dbe-8fa5-10563386cd8e",
+      "startPoint": {
+        "x": 770,
+        "y": 360
+      },
+      "endPoint": {
+        "x": 900,
+        "y": 270
+      },
+      "properties": {},
+      "pointsList": [
+        {
+          "x": 770,
+          "y": 360
+        },
+        {
+          "x": 900,
+          "y": 360
+        },
+        {
+          "x": 900,
+          "y": 270
+        }
+      ]
+    }
+  ]
+}

@@ -156,7 +156,7 @@ defineExpose({ getList });
 }
 
 // el-table 表格样式
-::v-deep(.el-table) {
+:deep(.el-table) {
   flex: 1;
 }
 </style>

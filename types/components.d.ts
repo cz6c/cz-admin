@@ -9,17 +9,17 @@ export {};
 
 declare module "@vue/runtime-core" {
   export interface GlobalComponents {
-    Components: typeof import("./../src/components/index.vue")["default"];
+    Control: typeof import("./../src/components/FlowChart/components/Control.vue")["default"];
     ElAside: typeof import("element-plus/es")["ElAside"];
     ElAvatar: typeof import("element-plus/es")["ElAvatar"];
     ElBreadcrumb: typeof import("element-plus/es")["ElBreadcrumb"];
     ElBreadcrumbItem: typeof import("element-plus/es")["ElBreadcrumbItem"];
     ElButton: typeof import("element-plus/es")["ElButton"];
+    ElButtun: typeof import("element-plus/es")["ElButtun"];
     ElCheckbox: typeof import("element-plus/es")["ElCheckbox"];
     ElCheckboxGroup: typeof import("element-plus/es")["ElCheckboxGroup"];
-    ElCol: typeof import("element-plus/es")["ElCol"];
     ElContainer: typeof import("element-plus/es")["ElContainer"];
-    ElDatePicker: typeof import("element-plus/es")["ElDatePicker"];
+    ElDialog: typeof import("element-plus/es")["ElDialog"];
     ElDivider: typeof import("element-plus/es")["ElDivider"];
     ElDrawer: typeof import("element-plus/es")["ElDrawer"];
     ElDropdown: typeof import("element-plus/es")["ElDropdown"];
@@ -29,24 +29,19 @@ declare module "@vue/runtime-core" {
     ElFormItem: typeof import("element-plus/es")["ElFormItem"];
     ElHeader: typeof import("element-plus/es")["ElHeader"];
     ElIcon: typeof import("element-plus/es")["ElIcon"];
-    ElImageViewer: typeof import("element-plus/es")["ElImageViewer"];
     ElInput: typeof import("element-plus/es")["ElInput"];
     ElMain: typeof import("element-plus/es")["ElMain"];
     ElMenu: typeof import("element-plus/es")["ElMenu"];
     ElMenuItem: typeof import("element-plus/es")["ElMenuItem"];
-    ElOption: typeof import("element-plus/es")["ElOption"];
     ElPagination: typeof import("element-plus/es")["ElPagination"];
     ElPopover: typeof import("element-plus/es")["ElPopover"];
-    ElRadio: typeof import("element-plus/es")["ElRadio"];
-    ElRadioGroup: typeof import("element-plus/es")["ElRadioGroup"];
-    ElRow: typeof import("element-plus/es")["ElRow"];
     ElScrollbar: typeof import("element-plus/es")["ElScrollbar"];
-    ElSelect: typeof import("element-plus/es")["ElSelect"];
-    ElSelectV2: typeof import("element-plus/es")["ElSelectV2"];
     ElSubMenu: typeof import("element-plus/es")["ElSubMenu"];
     ElSwitch: typeof import("element-plus/es")["ElSwitch"];
     ElTableColumn: typeof import("element-plus/es")["ElTableColumn"];
-    ElUpload: typeof import("element-plus/es")["ElUpload"];
+    ElTooltip: typeof import("element-plus/es")["ElTooltip"];
+    FlowChart: typeof import("./../src/components/FlowChart/index.vue")["default"];
+    GraphDataDialog: typeof import("./../src/components/FlowChart/components/GraphDataDialog.vue")["default"];
     Grid: typeof import("./../src/components/Grid/index.vue")["default"];
     GridItem: typeof import("./../src/components/Grid/components/GridItem.vue")["default"];
     RouterLink: typeof import("vue-router")["RouterLink"];
