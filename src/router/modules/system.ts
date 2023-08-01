@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from "vue-router";
+import type { AppRouteRecordRaw } from "/@/router/type";
 import { Layout } from "/@/router";
 
 export default {
@@ -8,6 +8,7 @@ export default {
   meta: {
     title: "组织架构",
     icon: "menu-system",
+    orderNo: 2,
   },
   redirect: "/system/user",
   children: [
@@ -27,5 +28,13 @@ export default {
         title: "角色管理",
       },
     },
+    {
+      path: "/system/auth",
+      name: "Auth",
+      component: () => import(`/@/views/system/auth/index.vue`),
+      meta: {
+        title: "按钮权限",
+      },
+    },
   ],
-} as RouteRecordRaw;
+} as AppRouteRecordRaw;

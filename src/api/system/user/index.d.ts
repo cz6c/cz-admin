@@ -3,7 +3,6 @@ import { GetListParams, GetListResponse } from "/@/api/public/index.d";
 export interface UserItem {
   id: number;
   roleId: number | string;
-  deptId: number | string;
   username: string;
   avatar: string;
   status: 0 | 1;
@@ -16,7 +15,7 @@ export interface UserInfo extends Omit<UserItem, "id" | "status" | "isDel"> {
   isDel?: 0 | 1;
 }
 // 列表
-export type ResponseUserList = GetListResponse<UserItem>;
-export interface ParamsUserList extends GetListParams {
+export type UserListResponse = GetListResponse<UserItem>;
+export interface UserListParams extends GetListParams {
   username?: string;
 }

@@ -1,28 +1,31 @@
-import type { Router, RouteRecordNormalized, RouteRecordRaw } from "vue-router";
+import type { Router, RouteRecordNormalized } from "vue-router";
 import { createRouter, createWebHashHistory } from "vue-router";
-import { Layout } from "/@/router";
+import type { AppRouteRecordRaw } from "/@/router/type";
+import { Layout, IFrame } from "/@/router";
 import { cloneDeep, omit } from "lodash-es";
 
 const modulesRoutes = (import.meta as any).glob("/src/views/**/*.{vue,tsx}");
 const modulesRoutesKeys = Object.keys(modulesRoutes);
 
-export function menuToRoute(routeList: any): RouteRecordRaw[] {
+export function menuToRoute(routeList: AppRouteRecordRaw[]): AppRouteRecordRaw[] {
   transformRoute(routeList);
-  return flatMultiLevelRoutes(routeList as RouteRecordRaw[]);
+  return flatMultiLevelRoutes(routeList);
 }
 
 /**
  * @description: 动态菜单转路由
- * @param {any} routeList
+ * @param {AppRouteRecordRaw[]} routeList
  */
-export function transformRoute(routeList: any) {
-  routeList.forEach((item: any) => {
+export function transformRoute(routeList: AppRouteRecordRaw[]) {
+  routeList.forEach(item => {
     const { component, children } = item;
     if (component === "Layout") {
       item.component = Layout;
-      if (children.length) {
+      if (children && children.length) {
         item.redirect = children[0].path;
       }
+    } else if (component === "IFrame") {
+      item.component = IFrame;
     } else {
       const index = modulesRoutesKeys.findIndex(x => x.includes((component as string).replace(/@[\/]?views\//, "")));
       item.component = modulesRoutes[modulesRoutesKeys[index]];
@@ -33,11 +36,11 @@ export function transformRoute(routeList: any) {
 
 /**
  * @description: 将多级路由转换为 2 级路由
- * @param {RouteRecordRaw} routeModules
+ * @param {AppRouteRecordRaw[]} routeModules
  * @return {*}
  */
-export function flatMultiLevelRoutes(routeModules: RouteRecordRaw[]): RouteRecordRaw[] {
-  const modules: RouteRecordRaw[] = cloneDeep(routeModules);
+export function flatMultiLevelRoutes(routeModules: AppRouteRecordRaw[]): AppRouteRecordRaw[] {
+  const modules: AppRouteRecordRaw[] = cloneDeep(routeModules);
   for (let index = 0; index < modules.length; index++) {
     const routeModule = modules[index];
     // 判断级别是否多级路由
@@ -53,9 +56,9 @@ export function flatMultiLevelRoutes(routeModules: RouteRecordRaw[]): RouteRecor
 
 /**
  * @description: 路由等级提升
- * @param {RouteRecordRaw} routeModule
+ * @param {AppRouteRecordRaw} routeModule
  */
-function promoteRouteLevel(routeModule: RouteRecordRaw) {
+function promoteRouteLevel(routeModule: AppRouteRecordRaw) {
   // 使用vue-router拼接菜单
   // createRouter 创建一个可以被 Vue 应用程序使用的路由实例
   let router: Router | null = createRouter({
@@ -68,16 +71,16 @@ function promoteRouteLevel(routeModule: RouteRecordRaw) {
   addToChildren(routes, routeModule.children || [], routeModule);
   router = null;
   // omit lodash的函数 对传入的item对象的children进行删除
-  routeModule.children = routeModule.children?.map(item => omit(item, "children")) as RouteRecordRaw[];
+  routeModule.children = routeModule.children?.map(item => omit(item, "children")) as AppRouteRecordRaw[];
 }
 
 /**
  * @description: 将所有子路由添加到二级路由
  * @param {RouteRecordNormalized} routes
- * @param {RouteRecordRaw} children
- * @param {RouteRecordRaw} routeModule
+ * @param {AppRouteRecordRaw} children
+ * @param {AppRouteRecordRaw} routeModule
  */
-function addToChildren(routes: RouteRecordNormalized[], children: RouteRecordRaw[], routeModule: RouteRecordRaw) {
+function addToChildren(routes: RouteRecordNormalized[], children: AppRouteRecordRaw[], routeModule: AppRouteRecordRaw) {
   for (let index = 0; index < children.length; index++) {
     const child = children[index];
     const route = routes.find(item => item.name === child.name);
@@ -86,7 +89,7 @@ function addToChildren(routes: RouteRecordNormalized[], children: RouteRecordRaw
     }
     routeModule.children = routeModule.children || [];
     if (!routeModule.children.find(item => item.name === route.name)) {
-      routeModule.children?.push(route as unknown as RouteRecordRaw);
+      routeModule.children?.push(route as unknown as AppRouteRecordRaw);
     }
     if (child.children?.length) {
       addToChildren(routes, child.children, routeModule);
@@ -96,10 +99,10 @@ function addToChildren(routes: RouteRecordNormalized[], children: RouteRecordRaw
 
 /**
  * @description: 判断级别是否超过2级
- * @param {RouteRecordRaw} routeModule
+ * @param {AppRouteRecordRaw} routeModule
  * @return {*}
  */
-function isMultipleRoute(routeModule: RouteRecordRaw): boolean {
+function isMultipleRoute(routeModule: AppRouteRecordRaw): boolean {
   // Reflect.has 与 in 操作符 相同, 用于检查一个对象(包括它原型链上)是否拥有某个属性
   if (!routeModule || !Reflect.has(routeModule, "children") || !routeModule.children?.length) {
     return false;
@@ -117,25 +120,14 @@ function isMultipleRoute(routeModule: RouteRecordRaw): boolean {
 }
 
 /**
- * @description: 查找对应path的路由信息
- * @param {string} path
- * @param {RouteRecordRaw} routes
- * @return {*}
+ * @description: 获取本地静态路由
  */
-export function findRouteByPath(path: string, routes: RouteRecordRaw[]): RouteRecordRaw | undefined {
-  let res = routes.find((item: { path: string }) => item.path == path);
-  if (res) {
-    return res;
-  } else {
-    for (let i = 0; i < routes.length; i++) {
-      const children: RouteRecordRaw[] = routes[i].children || [];
-      if (children.length > 0) {
-        res = findRouteByPath(path, children);
-        if (res) {
-          return res;
-        }
-      }
-    }
-    return undefined;
+export async function getStaticRoutes(): Promise<AppRouteRecordRaw[]> {
+  try {
+    const files = (import.meta as any).glob("./modules/*.ts", { import: "default", eager: true });
+    return Object.values(files);
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 }

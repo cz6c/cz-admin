@@ -1,8 +1,8 @@
 import { createGet, createPost } from "/@/utils/request";
-import { ParamsRoleList, ResponseRoleList, RoleItem, RoleInfo } from "./index.d";
+import { RoleListParams, RoleListResponse, RoleItem, RoleInfo } from "./index.d";
 
 // 获取列表
-export const getRoleListApi = createGet<ParamsRoleList, ResponseRoleList>("/admin/role/list");
+export const getRoleListApi = createGet<RoleListParams, RoleListResponse>("/admin/role/list");
 // 获取信息
 export const getRoleInfoApi = createGet<{ id: number }, RoleItem>("/admin/role/info");
 // 新增

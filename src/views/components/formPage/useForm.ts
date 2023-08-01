@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { FormJsonItem } from ".";
+import { FormJsonItem } from "./index.d";
 
 interface Options {
   rawList: FormJsonItem[];

@@ -123,6 +123,3 @@ const sumbit = (payload: any) => {
   console.log("submit!", payload);
 };
 </script>
-
-<style></style>
-.

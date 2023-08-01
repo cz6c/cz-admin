@@ -2,27 +2,30 @@
 
 `vue-cz-admin` 是一款开源免费且开箱即用的中后台管理系统模版，也可用于学习参考。使用了最新的 `Vue3`、`Vite4`、`Element-Plus`、`TypeScript`、`Pinia` 等主流技术开发。
 
+[文档地址](https://blog.cz6hy9.top/product/admin/)
+
 ## 预览
 
 ## 准备
 
-- [node](http://nodejs.org/) 和 [git](https://git-scm.com/) -项目开发环境
-- [Vite4](https://vitejs.dev/) - 熟悉 vite 特性
+- [node](http://nodejs.org/) 和 [git](https://git-scm.com/) -项目开发环境，node 版本建议`v16.18.1`以上
 - [Vue3](https://v3.vuejs.org/) - 熟悉 Vue 基础语法
+- [Vite4](https://vitejs.dev/) - 熟悉 vite 特性
 - [TypeScript](https://www.typescriptlang.org/) - 熟悉`TypeScript`基本语法
 - [Es6+](http://es6.ruanyifeng.com/) - 熟悉 es6 基本语法
 - [Vue-Router](https://next.router.vuejs.org/) - 熟悉 vue-router 基本使用
-- [Element-Plus](https://element-plus.org/zh-CN/) - ui 基本使用
+- [Element-Plus](https://element-plus.org/zh-CN/) - 熟悉 ui 基本使用
+- [Pinia](https://element-plus.org/zh-CN/) - 熟悉状态管理插件的基本使用
 
 ## 安装使用
 
 - 获取项目代码
 
 ```bash
-git clone https://github.com/cz6c/czadmin.git
+git clone https://github.com/cz6c/vue-cz-admin.git
 ```
 
-- 安装依赖
+- 安装依赖，推荐使用 pnpm 包管理
 
 ```bash
 pnpm install
@@ -31,13 +34,16 @@ pnpm install
 - 运行
 
 ```bash
-pnpm serve
+pnpm run dev
 ```
 
 - 打包
 
 ```bash
-pnpm build
+# 测试环境打包
+pnpm run build:test
+# 生产环境打包
+pnpm run build:test
 ```
 
 ## Git 贡献提交规范
@@ -60,9 +66,7 @@ pnpm build
 
 ## 项目开发规范
 
-### 1. 目录规范
-
-按功能不同来划分
+### 目录按功能不同来划分
 
 ```yaml
 ├─build               #  项目打包目录
@@ -132,44 +136,9 @@ pnpm build
 └─vite.config.ts      #  vite配置文件
 ```
 
-### 2. 代码书写规范
+### 代码书写规范
 
-#### 2.1 组件基础结构
-
-```vue
-<template>
-  <input :value="value" @input="handleChange">{{value}}</input>
-</template>
-
-<script setup lang="ts" name="Input">
-
-interface Props {
-  value: string;
-}
-
-// 接受父组件参数
-const props = withDefaults(defineProps<Props>(), {
-  value: "",
-});
-
-/**
- * @description 触发更新
- */
-interface Emits {
-  (e: "update:value", value: string): void;
-}
-const emits = defineEmits<UploadEmits>();
-const handleChange =  (value) => {
-    emit("update:value", value);
-};
-</script>
-
-<style scoped lang="scss">
-
-</style>
-```
-
-#### 2.2 命名规范
+**命名规范**
 
 - 组件命名统一使用大驼峰，页面命名统一使用小驼峰
 - TS 类型文件命名统一后缀 .d.ts
@@ -178,32 +147,29 @@ const handleChange =  (value) => {
 - store 状态模块命名后面统一加 Store
 - handle 开头代表事件，
 
-#### 2.3 工具约束代码规范
+**工具约束代码规范**
 
 除了约定的规范，可以借助一些工具和插件来协助进一步规范化。
 
-- vscode：统一前端编辑器。
-- editorconfig: 统一团队 vscode 编辑器默认配置。
-- prettier: 保存文件自动格式化代码。
-- eslint: 检测代码语法规范和错误。
-- stylelint: 检测和格式化样式文件语法。
-- husky:可以监听 githooks 执行，在对应 hook 执行阶段做一些处理的操作。
-- lint-staged: 只检测暂存区文件代码，优化 eslint 检测速度。
-- pre-commit：githooks 之一， 在 commit 提交前使用 tsc 和 eslint 对语法进行检测。
-- commit-msg：githooks 之一，在 commit 提交前对 commit 备注信息进行检测。
-- commitlint：在 githooks 的 pre-commit 阶段对 commit 备注信息进行检测。
-- commitizen：git 的规范化提交工具，辅助填写 commit 信息。
+- **vscode**：统一编辑器。
+- **editorconfig**: 统一编辑器默认配置。
+- **prettier**: 自动格式化代码。
+- **eslint**: 检测代码语法规范和错误。
+- **stylelint**: 检测和格式化样式文件语法。
+- **husky**:可以监听 githooks 执行，在对应 hook 执行阶段做一些处理的操作。
+- **lint-staged**: 只检测暂存区文件代码，优化 eslint 检测速度。
+- **commitlint**：在 githooks 的 pre-commit 阶段对 commit 备注信息进行检测。
 
-### 3. git 工作流
+### git 工作流
 
-#### 3.1 分支管理
+**分支管理**
 
 - master，项目的主分支，管理生产环境代码
 - develop，项目的测试分支，管理测试环境代码
 - featrue，项目的开发分支，管理开发环境代码
 - version，项目的版本分支，管理项目各版本代码
 
-#### 3.2 开发部署工作流
+**开发部署工作流**
 
 - 迭代版本：从 master 拉取代码到 featrue 下的新分支-->在新分支中开发新功能提交代码-->新功能开发完成后，合并新分支到 develop 触发测试环境构建-->测试没问题后，develop 合并到 master 触发生产环境构建-->测试并回归-->从 master 拉取代码到 version 下的新版本号分支
 - 修复线上 bug：从 master 拉取代码到 featrue 下的新分支-->在新分支中修复 bug 提交代码-->合并新分支到 develop 触发测试环境构建-->测试没问题后，develop 合并到 master 触发生产环境构建-->测试并回归-->从 master 拉取代码到 version 下的新版本号分支

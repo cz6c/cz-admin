@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from "vue-router";
+import type { AppRouteRecordRaw } from "/@/router/type";
 import { Layout } from "/@/router";
 
 export default {
@@ -8,7 +8,17 @@ export default {
   meta: {
     title: "功能",
     icon: "menu-feat",
+    orderNo: 4,
   },
-  redirect: "/components/tablePage",
-  children: [],
-} as RouteRecordRaw;
+  redirect: "/feat/drag",
+  children: [
+    {
+      path: "/feat/drag",
+      name: "Drag",
+      component: () => import("/@/views/feat/drag/index.vue"),
+      meta: {
+        title: "拖拽",
+      },
+    },
+  ],
+} as AppRouteRecordRaw;

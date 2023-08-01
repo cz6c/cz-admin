@@ -1,8 +1,9 @@
 import { createGet, createPost } from "/@/utils/request";
-import { ParamsUserList, ResponseUserList, UserItem, UserInfo } from "./index.d";
+import { UserListParams, UserListResponse, UserItem, UserInfo } from "./index.d";
 
 // 获取列表
-export const getUserListApi = createGet<ParamsUserList, ResponseUserList>("/admin/user/list");
+export const getUserListApi = createGet<UserListParams, UserListResponse>("/admin/user/list");
+
 // 获取信息
 export const getLoginUserInfoApi = createGet<never, UserItem>("/admin/user/info");
 // 新增
