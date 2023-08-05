@@ -1,22 +1,76 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <component
-    :is="`el-${column?.el}`"
-    v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
-    v-model="searchParam[handleProp(column.prop)]"
-    :data="column?.el === 'tree-select' ? column.options : []"
-    :options="['cascader', 'select-v2'].includes(column?.el!) ? column.options : []"
-  >
-    <template v-if="column?.el === 'select'">
-      <component
-        :is="`el-option`"
-        v-for="(col, index) in column.options"
-        :key="index"
-        :label="col['label']"
-        :value="col['value']"
-      />
-    </template>
-  </component>
+  <template v-if="column?.el === 'input'">
+    <el-input
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+    />
+  </template>
+  <template v-if="column?.el === 'input-number'">
+    <el-input-number
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+    />
+  </template>
+  <template v-if="column?.el === 'select'">
+    <el-select
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+    >
+      <el-option v-for="(col, index) in column.options" :key="index" :label="col['label']" :value="col['value']" />
+    </el-select>
+  </template>
+  <template v-if="column?.el === 'select-v2'">
+    <el-select-v2
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+      :options="column.options"
+    />
+  </template>
+  <template v-if="column?.el === 'tree-select'">
+    <el-tree-select
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+      :data="column.options"
+    />
+  </template>
+  <template v-if="column?.el === 'cascader'">
+    <el-cascader
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+      :options="column.options"
+    />
+  </template>
+  <template v-if="column?.el === 'date-picker'">
+    <el-date-picker
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+    />
+  </template>
+  <template v-if="column?.el === 'time-picker'">
+    <el-time-picker
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+    />
+  </template>
+  <template v-if="column?.el === 'time-select'">
+    <el-time-select
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+    />
+  </template>
+  <template v-if="column?.el === 'switch'">
+    <el-switch
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+    />
+  </template>
+  <template v-if="column?.el === 'slider'">
+    <el-slider
+      v-bind="{ ...(column?.props || {}), ...placeholder, clearable }"
+      v-model="searchParam[handleProp(column.prop)]"
+    />
+  </template>
 </template>
 
 <script setup lang="ts" name="SearchFormItem">

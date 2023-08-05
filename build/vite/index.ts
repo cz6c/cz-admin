@@ -15,8 +15,6 @@ import { ConfigRestartPlugin } from "./plugins/restart";
 import { ConfigProgressPlugin } from "./plugins/progress";
 import { ConfigImageminPlugin } from "./plugins/imagemin";
 import { ConfigVisualizerConfig } from "./plugins/visualizer";
-import OptimizationPersist from "vite-plugin-optimize-persist";
-import PkgConfig from "vite-plugin-package-config";
 
 export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   const { VITE_USE_COMPRESS, VITE_USE_REPORT } = env;
@@ -28,9 +26,6 @@ export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
     vueJsx(),
     // setup语法糖组件名支持
     vueSetupExtend(),
-    // 预构建
-    PkgConfig(),
-    OptimizationPersist(),
   ];
 
   // 自动按需注册组件

@@ -1,4 +1,6 @@
 import type { App } from "vue";
+// elementui
+import "element-plus/dist/index.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 function install(app: App<Element>) {
