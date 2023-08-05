@@ -39,7 +39,7 @@ const routesList: AppRouteRecordRaw[] = [
 
 // Layout  404
 export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
-  path: "/:path(.*)*",
+  path: "/:pathMatch(.*)*",
   name: "PAGE_NOT_FOUND_NAME",
   component: () => import("/@/views/public/404.vue"),
   meta: {
@@ -55,18 +55,18 @@ export const REDIRECT_ROUTE: AppRouteRecordRaw = {
   component: Layout,
   name: "RouterEnum.REDIRECT_NAME",
   meta: {
-    title: "REDIRECT_NAME",
+    title: "",
     hideBreadcrumb: true,
     hideMenu: true,
     hideTag: true,
   },
   children: [
     {
-      path: "/redirect/:path(.*)",
+      path: "/redirect/:path(.*)/:_redirect_type(.*)/:_origin_params(.*)?",
       name: RouterEnum.REDIRECT_NAME,
       component: () => import("/@/views/public/auth-redirect.vue"),
       meta: {
-        title: "REDIRECT_NAME",
+        title: "",
         hideBreadcrumb: true,
         hideMenu: true,
         hideTag: true,
