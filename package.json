@@ -26,6 +26,7 @@
     "dayjs": "^1.11.7",
     "echarts": "^5.4.3",
     "element-plus": "^2.2.28",
+    "gsap": "^3.12.2",
     "lodash-es": "^4.17.21",
     "mitt": "^3.0.0",
     "node-sass": "^7.0.1",
