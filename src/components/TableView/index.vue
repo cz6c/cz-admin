@@ -1,5 +1,5 @@
 <script lang="ts" setup name="TableView">
-import { ElTable } from "element-plus";
+import type { ElTable } from "element-plus";
 import TableHeader from "./components/TableHeader.vue";
 import TableColumn from "./components/TableColumn.vue";
 import TableFooter from "./components/TableFooter.vue";

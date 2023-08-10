@@ -20,5 +20,21 @@ export default {
         title: "拖拽",
       },
     },
+    {
+      path: "/feat/gsap",
+      name: "Gsap",
+      component: () => import("/@/views/feat/gsap/index.vue"),
+      meta: {
+        title: "gsap",
+      },
+    },
+    {
+      path: "/feat/pixi",
+      name: "Pixi",
+      component: () => import("/@/views/feat/pixi/index.vue"),
+      meta: {
+        title: "pixi",
+      },
+    },
   ],
 } as AppRouteRecordRaw;

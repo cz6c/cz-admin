@@ -28,7 +28,7 @@ export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
     vueSetupExtend(),
   ];
 
-  // 自动按需引入组件
+  // 自动按需注册组件
   vitePlugins.push(AutoRegistryComponents());
 
   // 自动按需引入依赖

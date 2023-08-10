@@ -14,32 +14,16 @@ declare module "@vue/runtime-core" {
     ElAvatar: typeof import("element-plus/es")["ElAvatar"];
     ElBreadcrumb: typeof import("element-plus/es")["ElBreadcrumb"];
     ElBreadcrumbItem: typeof import("element-plus/es")["ElBreadcrumbItem"];
-    ElButton: typeof import("element-plus/es")["ElButton"];
-    ElButtun: typeof import("element-plus/es")["ElButtun"];
-    ElCheckbox: typeof import("element-plus/es")["ElCheckbox"];
-    ElCheckboxGroup: typeof import("element-plus/es")["ElCheckboxGroup"];
     ElContainer: typeof import("element-plus/es")["ElContainer"];
-    ElDialog: typeof import("element-plus/es")["ElDialog"];
-    ElDivider: typeof import("element-plus/es")["ElDivider"];
-    ElDrawer: typeof import("element-plus/es")["ElDrawer"];
     ElDropdown: typeof import("element-plus/es")["ElDropdown"];
     ElDropdownItem: typeof import("element-plus/es")["ElDropdownItem"];
     ElDropdownMenu: typeof import("element-plus/es")["ElDropdownMenu"];
-    ElForm: typeof import("element-plus/es")["ElForm"];
-    ElFormItem: typeof import("element-plus/es")["ElFormItem"];
     ElHeader: typeof import("element-plus/es")["ElHeader"];
-    ElIcon: typeof import("element-plus/es")["ElIcon"];
-    ElInput: typeof import("element-plus/es")["ElInput"];
     ElMain: typeof import("element-plus/es")["ElMain"];
     ElMenu: typeof import("element-plus/es")["ElMenu"];
     ElMenuItem: typeof import("element-plus/es")["ElMenuItem"];
-    ElPagination: typeof import("element-plus/es")["ElPagination"];
-    ElPopover: typeof import("element-plus/es")["ElPopover"];
     ElScrollbar: typeof import("element-plus/es")["ElScrollbar"];
     ElSubMenu: typeof import("element-plus/es")["ElSubMenu"];
-    ElSwitch: typeof import("element-plus/es")["ElSwitch"];
-    ElTableColumn: typeof import("element-plus/es")["ElTableColumn"];
-    ElTooltip: typeof import("element-plus/es")["ElTooltip"];
     FlowChart: typeof import("./../src/components/FlowChart/index.vue")["default"];
     GraphDataDialog: typeof import("./../src/components/FlowChart/components/GraphDataDialog.vue")["default"];
     Grid: typeof import("./../src/components/Grid/index.vue")["default"];
@@ -56,8 +40,5 @@ declare module "@vue/runtime-core" {
     UploadImg: typeof import("./../src/components/Upload/UploadImg.vue")["default"];
     UploadImgs: typeof import("./../src/components/Upload/UploadImgs.vue")["default"];
     WangEditor: typeof import("./../src/components/WangEditor/index.vue")["default"];
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import("element-plus/es")["ElLoadingDirective"];
   }
 }

@@ -126,12 +126,10 @@ pnpm run build:test
 ├─.gitignore          #  git提交忽略文件配置
 ├─.prettierignore     #  prettierrc忽略文件配置
 ├─.prettierrc.js      #  prettierrc配置
-├─.stylelintignore    #  stylelint忽略文件配置
 ├─.commitlint.config.js  #  git提交规范配置
 ├─index.html          #  index.html
 ├─package.json        #  依赖包管理以及命令配置
 ├─README.md           #  描述文件
-├─stylelint.config.js #  stylelint配置
 ├─tsconfig.json       #  ts配置文件
 └─vite.config.ts      #  vite配置文件
 ```
@@ -155,7 +153,6 @@ pnpm run build:test
 - **editorconfig**: 统一编辑器默认配置。
 - **prettier**: 自动格式化代码。
 - **eslint**: 检测代码语法规范和错误。
-- **stylelint**: 检测和格式化样式文件语法。
 - **husky**:可以监听 githooks 执行，在对应 hook 执行阶段做一些处理的操作。
 - **lint-staged**: 只检测暂存区文件代码，优化 eslint 检测速度。
 - **commitlint**：在 githooks 的 pre-commit 阶段对 commit 备注信息进行检测。
