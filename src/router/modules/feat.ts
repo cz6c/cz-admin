@@ -28,5 +28,13 @@ export default {
         title: "gsap",
       },
     },
+    {
+      path: "/feat/pixi",
+      name: "Pixi",
+      component: () => import("/@/views/feat/pixi/index.vue"),
+      meta: {
+        title: "pixi",
+      },
+    },
   ],
 } as AppRouteRecordRaw;
