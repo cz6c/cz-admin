@@ -3,10 +3,10 @@ import type { ElTable } from "element-plus";
 import TableHeader from "./components/TableHeader.vue";
 import TableColumn from "./components/TableColumn.vue";
 import TableFooter from "./components/TableFooter.vue";
-import SearchForm from "/@/components/SearchForm/index.vue";
+import SearchForm from "@/components/SearchForm/index.vue";
 import { TableCol } from "./type";
 import { useTable } from "./useTable";
-import { SearchProps } from "/@/components/SearchForm/type";
+import { SearchProps } from "@/components/SearchForm/type";
 import { cloneDeep } from "lodash-es";
 
 // 表格配置

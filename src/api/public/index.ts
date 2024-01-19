@@ -1,9 +1,9 @@
-import { createGet, createPost } from "/@/utils/request";
+import { createGet, createPost } from "@/utils/request";
 import { LoginParams, GetListResponse } from "./index.d";
-import type { AppRouteRecordRaw } from "/@/router/type";
+import type { AppRouteRecordRaw } from "@/router/type";
 
 // 登录
-export const login = createPost<LoginParams, string>("/admin/login");
+export const login = createPost<LoginParams, { token: string }>("/auth/login");
 // 获取当前用户菜单
 export const getMenuList = createGet<never, GetListResponse<AppRouteRecordRaw>>("/admin/getMenuList");
 // 获取按钮权限

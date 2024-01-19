@@ -1,8 +1,9 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
-import { getToken } from "/@/utils/auth";
-import { useAuthStore } from "/@/store/modules/auth";
-import router, { RouterEnum } from "/@/router";
+import { getToken } from "@/utils/auth";
+import { useAuthStore } from "@/store/modules/auth";
+import router, { RouterEnum } from "@/router";
+import { $message } from "@/utils/message";
 
 // 封装axios
 const service = axios.create({
@@ -19,7 +20,7 @@ service.interceptors.request.use(
     if (isFileApi) {
       config.responseType = "blob";
     }
-    config.headers["ctoken"] = config.headers["ctoken"] || getToken();
+    config.headers.Authorization = config.headers.Authorization || `bearer ${getToken()}`;
     return config;
   },
   error => {
@@ -36,23 +37,29 @@ service.interceptors.response.use(
       return response;
     }
     const res = response.data;
-    // 当请求不为200时，报错
-    if (res.code !== 200) {
-      if (res.code === -403) {
-        // 登录过期或权限变更处理
-        const { webLogout } = useAuthStore();
-        webLogout();
-        router.replace(RouterEnum.BASE_LOGIN_PATH);
-        return;
-      }
+    // 当请求不为1时，报错
+    if (res.code !== 0) {
+      console.log(res.message);
+      $message.error(res.message);
       return Promise.reject(new Error(res.message || "Error"));
     } else {
       return res;
     }
   },
   error => {
-    console.log("err" + error); // for debug
-    return Promise.reject(error);
+    const err = error.response;
+    if (err.status === 401) {
+      // 登录过期或权限变更处理
+      const { webLogout } = useAuthStore();
+      webLogout();
+      router.replace(RouterEnum.BASE_LOGIN_PATH);
+      $message.error("登录超时");
+      return;
+    }
+    const message = err.data ? err.data.message : err.statusText;
+    $message.error(message);
+    console.log("err" + message); // for debug
+    return Promise.reject(new Error(message || "Error"));
   },
 );
 export default service;

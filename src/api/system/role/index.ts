@@ -1,4 +1,4 @@
-import { createGet, createPost } from "/@/utils/request";
+import { createGet, createPost } from "@/utils/request";
 import { RoleListParams, RoleListResponse, RoleItem, RoleInfo } from "./index.d";
 
 // 获取列表

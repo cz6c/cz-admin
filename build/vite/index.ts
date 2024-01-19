@@ -15,6 +15,7 @@ import { ConfigRestartPlugin } from "./plugins/restart";
 import { ConfigProgressPlugin } from "./plugins/progress";
 import { ConfigImageminPlugin } from "./plugins/imagemin";
 import { ConfigVisualizerConfig } from "./plugins/visualizer";
+import { UnoCSSPlugin } from "./plugins/unocss";
 
 export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   const { VITE_USE_COMPRESS, VITE_USE_REPORT } = env;
@@ -40,8 +41,8 @@ export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
   // 构建时显示进度条
   vitePlugins.push(ConfigProgressPlugin());
 
-  // 打包体积分析 rollup-plugin-visualizer
-  VITE_USE_REPORT && vitePlugins.push(ConfigVisualizerConfig());
+  // unocss
+  vitePlugins.push(UnoCSSPlugin());
 
   // vite-plugin-svg-icons
   vitePlugins.push(ConfigSvgIconsPlugin(isBuild));
@@ -52,6 +53,9 @@ export function createVitePlugins(env: ViteEnv, isBuild: boolean) {
 
     // 开启.gz压缩  rollup-plugin-gzip
     VITE_USE_COMPRESS && vitePlugins.push(ConfigCompressPlugin());
+
+    // 打包体积分析 rollup-plugin-visualizer
+    VITE_USE_REPORT && vitePlugins.push(ConfigVisualizerConfig());
   }
 
   return vitePlugins;

@@ -1,5 +1,5 @@
-import type { AppRouteRecordRaw } from "/@/router/type";
-import { Layout } from "/@/router";
+import type { AppRouteRecordRaw } from "@/router/type";
+import { Layout } from "@/router";
 
 export default {
   path: "/charts",
@@ -15,7 +15,7 @@ export default {
     {
       path: "/charts/aMap",
       name: "AMap",
-      component: () => import("/@/views/charts/aMap/index.vue"),
+      component: () => import("@/views/charts/aMap/index.vue"),
       meta: {
         title: "高德地图",
       },
@@ -23,7 +23,7 @@ export default {
     {
       path: "/charts/map",
       name: "Map",
-      component: () => import("/@/views/charts/map/index.vue"),
+      component: () => import("@/views/charts/map/index.vue"),
       meta: {
         title: "ECharts地图",
       },
@@ -31,7 +31,7 @@ export default {
     {
       path: "/charts/other",
       name: "Other",
-      component: () => import("/@/views/charts/other/index.vue"),
+      component: () => import("@/views/charts/other/index.vue"),
       meta: {
         title: "ECharts其他图表",
       },
@@ -39,7 +39,7 @@ export default {
     {
       path: "/charts/flowChart",
       name: "FlowChartPage",
-      component: () => import("/@/views/charts/flowChart/index.vue"),
+      component: () => import("@/views/charts/flowChart/index.vue"),
       meta: {
         title: "流程图",
       },

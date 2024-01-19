@@ -25,8 +25,8 @@ import { IToolbarConfig, IEditorConfig, IDomEditor } from "@wangeditor/editor";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import "@wangeditor/editor/dist/css/style.css";
 import { formContextKey, formItemContextKey } from "element-plus";
-import { uploadImg } from "/@/api/public";
-import { qiniuUpload } from "/@/components/Upload/qiniu";
+import { uploadImg } from "@/api/public";
+import { qiniuUpload } from "@/components/Upload/qiniu";
 
 // 富文本 DOM 元素
 const editorRef = shallowRef<IDomEditor | undefined>(undefined);

@@ -1,6 +1,6 @@
-import { RouterEnum } from "/@/router";
-import { useAuthStore } from "/@/store/modules/auth";
-import { getToken } from "/@/utils/auth";
+import { RouterEnum } from "@/router";
+import { useAuthStore } from "@/store/modules/auth";
+import { getToken } from "@/utils/auth";
 import type { Router } from "vue-router";
 import nProgress from "nprogress";
 import { ElMessage, ElNotification } from "element-plus";

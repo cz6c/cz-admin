@@ -20,8 +20,8 @@
 
 <script setup lang="ts" name="Auth">
 import { computed } from "vue";
-import { useAuthStore } from "/@/store/modules/auth";
-import { useRedo } from "/@/hooks/usePage";
+import { useAuthStore } from "@/store/modules/auth";
+import { useRedo } from "@/hooks/usePage";
 
 const authStore = useAuthStore();
 

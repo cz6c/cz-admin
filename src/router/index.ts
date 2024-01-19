@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 import type { App } from "vue";
-import type { AppRouteRecordRaw } from "/@/router/type";
+import type { AppRouteRecordRaw } from "@/router/type";
 
-export const Layout = () => import("/@/layout/index.vue");
-export const IFrame = () => import("/@/views/iframe/index.vue");
+export const Layout = () => import("@/layout/index.vue");
+export const IFrame = () => import("@/views/iframe/index.vue");
 
 export enum RouterEnum {
   // login path
@@ -30,7 +30,7 @@ const routesList: AppRouteRecordRaw[] = [
   {
     path: "/login",
     name: "Login",
-    component: () => import("/@/views/public/login.vue"),
+    component: () => import("@/views/public/login.vue"),
     meta: {
       title: "login",
     },
@@ -41,7 +41,7 @@ const routesList: AppRouteRecordRaw[] = [
 export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   path: "/:pathMatch(.*)*",
   name: "PAGE_NOT_FOUND_NAME",
-  component: () => import("/@/views/public/404.vue"),
+  component: () => import("@/views/public/404.vue"),
   meta: {
     title: "",
     hideBreadcrumb: true,
@@ -64,7 +64,7 @@ export const REDIRECT_ROUTE: AppRouteRecordRaw = {
     {
       path: "/redirect/:path(.*)/:_redirect_type(.*)/:_origin_params(.*)?",
       name: RouterEnum.REDIRECT_NAME,
-      component: () => import("/@/views/public/auth-redirect.vue"),
+      component: () => import("@/views/public/auth-redirect.vue"),
       meta: {
         title: "",
         hideBreadcrumb: true,

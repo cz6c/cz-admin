@@ -30,13 +30,13 @@
 </template>
 <script setup lang="ts" name="Role">
 import { ref, reactive } from "vue";
-import { TableCol, TableViewInstance } from "/@/components/TableView/type";
-import { SearchProps } from "/@/components/SearchForm/type";
-import { getRoleListApi, statusChangeApi, delRoleApi } from "/@/api/system/role";
-import { RoleItem } from "/@/api/system/role/index.d";
+import { TableCol, TableViewInstance } from "@/components/TableView/type";
+import { SearchProps } from "@/components/SearchForm/type";
+import { getRoleListApi, statusChangeApi, delRoleApi } from "@/api/system/role";
+import { RoleItem } from "@/api/system/role/index.d";
 import RoleDrawerEdit from "./components/RoleDrawerEdit.vue";
 import { ElMessageBox } from "element-plus";
-import { $message } from "/@/utils/message";
+import { $message } from "@/utils/message";
 
 const getListApi = getRoleListApi;
 const delApi = delRoleApi;

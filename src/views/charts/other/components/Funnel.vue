@@ -1,6 +1,6 @@
 <script lang="ts" setup name="Funnel">
 import { ref, Ref, onMounted } from "vue";
-import { useEcharts } from "/@/hooks/useEcharts";
+import { useEcharts } from "@/hooks/useEcharts";
 
 withDefaults(
   defineProps<{

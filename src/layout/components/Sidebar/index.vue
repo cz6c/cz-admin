@@ -34,8 +34,8 @@
 </template>
 <script setup lang="ts" name="Sidebar">
 import SubMenu from "./components/SubMenu.vue";
-import { useLayoutStore } from "/@/store/modules/layout";
-import { useAuthStore } from "/@/store/modules/auth";
+import { useLayoutStore } from "@/store/modules/layout";
+import { useAuthStore } from "@/store/modules/auth";
 
 const BASE_TITLE = computed(() => {
   return import.meta.env.VITE_APP_TITLE;

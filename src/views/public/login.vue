@@ -25,9 +25,9 @@
 </template>
 
 <script setup lang="ts" name="Login">
-import { useAuthStore } from "/@/store/modules/auth";
+import { useAuthStore } from "@/store/modules/auth";
 import type { FormInstance, FormRules } from "element-plus";
-import { $message } from "/@/utils/message";
+import { $message } from "@/utils/message";
 
 const BASE_TITLE = computed(() => {
   return import.meta.env.VITE_APP_TITLE;

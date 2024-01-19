@@ -1,9 +1,9 @@
 import { reactive, onMounted, toRefs, computed } from "vue";
-import { isFunction } from "/@/utils/is";
-import { $message } from "/@/utils/message";
+import { isFunction } from "@/utils/is";
+import { $message } from "@/utils/message";
 import { TableProps } from "./index.vue";
-import { GetListParams } from "/@/api/public/index.d";
-import { SearchProps } from "/@/components/SearchForm/type";
+import { GetListParams } from "@/api/public/index.d";
+import { SearchProps } from "@/components/SearchForm/type";
 
 interface State {
   loading: boolean;

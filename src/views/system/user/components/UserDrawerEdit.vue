@@ -22,9 +22,9 @@
 <script lang="ts" setup name="UserDrawerEdit">
 import { reactive, ref, computed, unref } from "vue";
 import { FormInstance, FormRules } from "element-plus";
-import { useFrom } from "/@/hooks/useFrom";
-import { saveUserApi, updateUserApi } from "/@/api/system/user";
-import { UserInfo } from "/@/api/system/user/index.d";
+import { useFrom } from "@/hooks/useFrom";
+import { saveUserApi, updateUserApi } from "@/api/system/user";
+import { UserInfo } from "@/api/system/user/index.d";
 
 const props = defineProps({
   modelValue: {

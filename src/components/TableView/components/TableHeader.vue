@@ -1,8 +1,8 @@
 <script setup lang="ts" name="TableHeader">
 import { CheckboxValueType } from "element-plus/es/components/checkbox";
 import { TableCol } from "../type";
-import { useSortable } from "/@/hooks/useSortable";
-import { isNullAndUnDef } from "/@/utils/is";
+import { useSortable } from "@/hooks/useSortable";
+import { isNullAndUnDef } from "@/utils/is";
 import { cloneDeep } from "lodash-es";
 
 const props = defineProps<{

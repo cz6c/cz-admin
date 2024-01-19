@@ -16,7 +16,7 @@
 
 <script setup lang="ts" name="RightDropdown">
 import { unref, computed, CSSProperties } from "vue";
-import { useMultiTagsStore, MultiTagsItem } from "/@/store/modules/multiTags";
+import { useMultiTagsStore, MultiTagsItem } from "@/store/modules/multiTags";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{

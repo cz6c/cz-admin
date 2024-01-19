@@ -1,5 +1,5 @@
-import type { AppRouteRecordRaw } from "/@/router/type";
-import { Layout, IFrame } from "/@/router";
+import type { AppRouteRecordRaw } from "@/router/type";
+import { Layout, IFrame } from "@/router";
 
 export default {
   path: "/iframe",

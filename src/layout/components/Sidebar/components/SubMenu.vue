@@ -20,9 +20,9 @@
 
 <script setup lang="ts" name="SubMenu">
 import { useRouter } from "vue-router";
-import type { AppRouteRecordRaw } from "/@/router/type";
-import { openWindow } from "/@/utils";
-import { isUrl } from "/@/utils/is";
+import type { AppRouteRecordRaw } from "@/router/type";
+import { openWindow } from "@/utils";
+import { isUrl } from "@/utils/is";
 
 defineProps<{ menuList: AppRouteRecordRaw[] }>();
 

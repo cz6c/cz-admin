@@ -1,4 +1,4 @@
-import { createGet } from "/@/utils/request";
+import { createGet } from "@/utils/request";
 import { ParamsLoginLogList, ResponseLoginLogList } from "./index.d";
 
 // 获取当前用户菜单

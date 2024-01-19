@@ -1,5 +1,5 @@
 // 控制token
-import { LocalStorage } from "/@/utils/storage";
+import { LocalStorage } from "@/utils/storage";
 
 const TokenKey = "token";
 

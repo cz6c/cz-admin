@@ -13,8 +13,8 @@
 <script lang="ts" setup name="TreeMenu">
 import { ref, computed, watch } from "vue";
 import { ElTree } from "element-plus";
-import { useAuthStore } from "/@/store/modules/auth";
-import { eachTree } from "/@/utils/tree";
+import { useAuthStore } from "@/store/modules/auth";
+import { eachTree } from "@/utils/tree";
 
 interface Props {
   modelValue: number[] | string;

@@ -1,6 +1,6 @@
 <script lang="ts" setup name="Map">
 import { ref, Ref, onMounted } from "vue";
-import { useEcharts } from "/@/hooks/useEcharts";
+import { useEcharts } from "@/hooks/useEcharts";
 import { registerMap } from "echarts";
 import { mapData } from "./data";
 import mapJson from "./map.json";

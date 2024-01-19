@@ -1,6 +1,6 @@
 import * as qiniu from "qiniu-js";
 import { Config, Extra } from "qiniu-js/esm/upload";
-import { getQiniuToken } from "/@/api/public";
+import { getQiniuToken } from "@/api/public";
 
 /**
  * @description: 上传七牛云

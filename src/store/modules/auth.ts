@@ -1,17 +1,17 @@
 import { defineStore } from "pinia";
-import store from "/@/store";
-import { setToken, removeToken } from "/@/utils/auth";
-import { login, getMenuList, getPermCodeList } from "/@/api/public";
-import { getLoginUserInfoApi } from "/@/api/system/user";
-import { LoginParams } from "/@/api/public/index.d";
-import { UserItem } from "/@/api/system/user/index.d";
-import { productConfig } from "/@/config";
-import router, { resetRouter } from "/@/router";
-import { menuToRoute, getStaticRoutes } from "/@/router/utils";
+import store from "@/store";
+import { setToken, removeToken } from "@/utils/auth";
+import { login, getMenuList, getPermCodeList } from "@/api/public";
+import { getLoginUserInfoApi } from "@/api/system/user";
+import { LoginParams } from "@/api/public/index.d";
+import { UserItem } from "@/api/system/user/index.d";
+import { productConfig } from "@/config";
+import router, { resetRouter } from "@/router";
+import { menuToRoute, getStaticRoutes } from "@/router/utils";
 import type { RouteRecordRaw } from "vue-router";
-import type { AppRouteRecordRaw } from "/@/router/type";
+import type { AppRouteRecordRaw } from "@/router/type";
 import { useMultiTagsStore } from "./multiTags";
-import { filterTree } from "/@/utils/tree";
+import { filterTree } from "@/utils/tree";
 
 interface authStoreState {
   id: number;
@@ -56,7 +56,7 @@ export const authStore = defineStore("auth", {
     async login(loginParams: LoginParams): Promise<string | unknown> {
       try {
         const { data } = await login(loginParams);
-        setToken(data);
+        setToken(data.token);
         await this.getLoginUserInfoAction();
         return data;
       } catch (error) {

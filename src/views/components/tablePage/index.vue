@@ -23,10 +23,10 @@
 </template>
 <script setup lang="ts" name="Table">
 import { ref, reactive } from "vue";
-import { TableCol } from "/@/components/TableView/type";
-import { getRoleListApi } from "/@/api/system/role";
-import { RoleItem } from "/@/api/system/role/index.d";
-import { SearchProps } from "/@/components/SearchForm/type";
+import { TableCol } from "@/components/TableView/type";
+import { getRoleListApi } from "@/api/system/role";
+import { RoleItem } from "@/api/system/role/index.d";
+import { SearchProps } from "@/components/SearchForm/type";
 
 const getListApi = getRoleListApi;
 const columns: TableCol<RoleItem>[] = [

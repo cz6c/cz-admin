@@ -1,8 +1,8 @@
 <script lang="ts" setup name="AMap">
 import { ref, unref, onMounted } from "vue";
-import startImg from "/@/assets/images/map/start.png";
-import endImg from "/@/assets/images/map/end.png";
-import carImg from "/@/assets/images/map/car.png";
+import startImg from "@/assets/images/map/start.png";
+import endImg from "@/assets/images/map/end.png";
+import carImg from "@/assets/images/map/car.png";
 import AMapLoader from "@amap/amap-jsapi-loader";
 window._AMapSecurityConfig = {
   securityJsCode: "7513b68945f8cd5d80e9f2a447e8a5cb",

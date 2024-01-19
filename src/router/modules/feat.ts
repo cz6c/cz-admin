@@ -1,5 +1,5 @@
-import type { AppRouteRecordRaw } from "/@/router/type";
-import { Layout } from "/@/router";
+import type { AppRouteRecordRaw } from "@/router/type";
+import { Layout } from "@/router";
 
 export default {
   path: "/feat",
@@ -15,7 +15,7 @@ export default {
     {
       path: "/feat/drag",
       name: "Drag",
-      component: () => import("/@/views/feat/drag/index.vue"),
+      component: () => import("@/views/feat/drag/index.vue"),
       meta: {
         title: "拖拽",
       },
@@ -23,7 +23,7 @@ export default {
     {
       path: "/feat/gsap",
       name: "Gsap",
-      component: () => import("/@/views/feat/gsap/index.vue"),
+      component: () => import("@/views/feat/gsap/index.vue"),
       meta: {
         title: "gsap",
       },
@@ -31,7 +31,7 @@ export default {
     {
       path: "/feat/pixi",
       name: "Pixi",
-      component: () => import("/@/views/feat/pixi/index.vue"),
+      component: () => import("@/views/feat/pixi/index.vue"),
       meta: {
         title: "pixi",
       },

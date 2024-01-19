@@ -1,4 +1,4 @@
-import { RouterEnum } from "/@/router";
+import { RouterEnum } from "@/router";
 import { unref } from "vue";
 import { useRouter, Router } from "vue-router";
 

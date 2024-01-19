@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import store from "/@/store";
+import store from "@/store";
 import type { RouteMeta, Router } from "vue-router";
-import { useRedo } from "/@/hooks/usePage";
+import { useRedo } from "@/hooks/usePage";
 import { unref, toRaw } from "vue";
-import { RouterEnum } from "/@/router";
+import { RouterEnum } from "@/router";
 
 export type MultiTagsItem = {
   name: string;

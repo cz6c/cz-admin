@@ -25,9 +25,9 @@
 <script lang="ts" setup name="RoleDrawerEdit">
 import { reactive, ref, computed, unref } from "vue";
 import { FormInstance, FormRules } from "element-plus";
-import { useFrom } from "/@/hooks/useFrom";
-import { getRoleInfoApi, saveRoleApi, updateRoleApi } from "/@/api/system/role";
-import { RoleInfo } from "/@/api/system/role/index.d";
+import { useFrom } from "@/hooks/useFrom";
+import { getRoleInfoApi, saveRoleApi, updateRoleApi } from "@/api/system/role";
+import { RoleInfo } from "@/api/system/role/index.d";
 import TreeMenu from "./TreeMenu.vue";
 
 const props = defineProps({
